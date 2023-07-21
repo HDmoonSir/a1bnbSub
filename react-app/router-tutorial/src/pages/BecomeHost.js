@@ -2,7 +2,35 @@
 import {useState} from 'react';
 import Image from 'react-bootstrap/Image'
 import Button from 'react-bootstrap/Button';
+import axios from 'axios';
 
+// const serverUrl='http://127.0.0.1:8000/mainpage'
+const serverUrl= 'upload/'
+//CSRF 토큰 
+axios.defaults.xsrfCookieName = "csrftoken";
+axios.defaults.xsrfHeaderName = "X-CSRFToken";
+// 서버로 데이터 전송하는 함수 
+function uploadData(previewImg){
+    console.log("숙소 업로드");
+    axios.post(serverUrl, previewImg,{
+        headers: {'content-type': 'multipart/form-data'}
+    })
+    .then((e) =>{
+        // e.preventDefault();
+        console.log(e)})
+    .catch(()=>{})
+    // $.ajax({
+    //     type: "POST",
+    //     url: "/upload/images",
+    //     data: {previewImg},
+    //     success: function (response){
+    //         if(response['result'] =='success'){
+    //             alert('서버로 전송 완료!')
+    //         }
+    //     }
+    // })
+    console.log(previewImg);
+} 
 const BecomeHost = () => {
     const [previewImg, setPreviewImg]= useState([]);
     // 이미지 업로드 
@@ -64,7 +92,8 @@ const BecomeHost = () => {
             숙소 등록하는 화면입니다
         </p>
         <p style={{textAlign:'center'}}>숙소 이미지 10장 이내로 올려주세요</p>
-        <Button variant="primary" type="submit" href="/become-host/ammenities">다음</Button>
+        <Button onClick={uploadData(previewImg)} variant="primary" type="submit" href="/become-host/ammenities">다음</Button>
+        {/* <Button onClick={uploadData(previewImg)} variant="primary" type="submit" href="">다음</Button> */}
         {/* 이미지 업로드 */}
         <form encType='multipart/form-data'>
             <input 
