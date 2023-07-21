@@ -1,0 +1,26 @@
+version: "2"
+services: # docker-compose 에서 컨테이너(service) 단위를 묶음
+  frontend: # 앱 service 이름
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile # 빌드할 Docker 파일 위치
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./frontend:/app/frontend
+    image: movie5/a1bnb_frontend
+    depends_on:
+      - backend
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./backend:/app/backend
+    image: movie5/a1bnb_backend
+
+    command: python manage.py runserver 0.0.0.0:8000 # docker-compose up 을 command 창에 입력하면 실행할 명령어
+

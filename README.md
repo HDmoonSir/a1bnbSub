@@ -2,8 +2,15 @@
 
 ### 소개
 
-Object Detection, Classification, Image-to-text generation을 활용하여
-숙박공유 사이트 호스트가 사진을 업로드해서 바로 어떤 공간인지, 어떤 어매니티가 있는지, 그리고 사진을 기반으로 숙소 소개글을 작성해주는 서비스 입니다.
+- We will create two `docker-compose` configuration files. One for development (easier version) and one for production (with SSL certificate from Let’s Encrypt).
+
+- The React static files will be served by `nginx`.
+
+- The Django static files (from admin and DRF browsable API) will be served by `nginx`.
+
+- The `nginx` will be reverse-proxy to the Django server (`gunicorn`).
+
+- In the production, we will add `certbot to renew the certificate. To issue a certificate we will use a bash script. You need to have a domain to issue the certificate .
 
 ### 🔥 팀원 소개 🔥
 
