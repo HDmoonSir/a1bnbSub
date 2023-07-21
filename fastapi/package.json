@@ -1,7 +1,0 @@
-{
-  "dependencies": {
-    "cors": "^2.8.5",
-    "mongodb": "^5.7.0",
-    "mongoose": "^7.3.2"
-  }
-}
