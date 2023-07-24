@@ -154,7 +154,7 @@ const BecomeHost = () => {
             const blob = new Blob([ia], {
                 type: "image/jpeg"
             });
-            const file = new File([blob], "image.jpg");
+            const file = new File([blob], name[index]);
             // 위 과정을 통해 만든 image폼을 FormData 에 저장 
             formData.append("images", file);
         }
