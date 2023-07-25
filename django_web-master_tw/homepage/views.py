@@ -75,24 +75,17 @@ def upload_images(request):
     
     if request.FILES.getlist("images"):
         # fast-api post 요청 부분
-        fast_api_images = request.FILES.get('images')
-        files = {"image": fast_api_images}
-        response = requests.post(serverUrl, files=files)
-        
-        images = request.FILES.getlist("images")
+        fast_api_images = request.FILES.getlist("images")
+
+        file = [('images', img) for img in fast_api_images]
+        response = requests.post(serverUrl, files=file)
+
         saved_image_paths = []
     
-        for image in images:
+        for image in fast_api_images:
             # 이미지를 저장하고 저장된 파일 경로를 리스트에 추가
             saved_path = save_image(image)
             saved_image_paths.append(saved_path)
-        
-        # fast-api post 요청 부분
-        # response= requests.post(
-        #     url=serverUrl, 
-        #     data=request.FILES,
-        #     headers= {"content-type": "multipart/form-data"})
-        # print(type(request.FILES))
 
         return JsonResponse({'result': "success", 'saved_paths': saved_image_paths}, status=200)
     
