@@ -74,23 +74,24 @@ def upload_images(request):
     serverUrl="http://127.0.0.1:9596/upload" # fast-api 테스트용 임시 url # fast-api 실행: uvicorn main:app --port 9596 --reload
     
     if request.FILES.getlist("images"):
+        # fast-api post 요청 부분
+        fast_api_images = request.FILES.get('images')
+        files = {"image": fast_api_images}
+        response = requests.post(serverUrl, files=files)
+        
         images = request.FILES.getlist("images")
         saved_image_paths = []
-        
+    
         for image in images:
             # 이미지를 저장하고 저장된 파일 경로를 리스트에 추가
             saved_path = save_image(image)
             saved_image_paths.append(saved_path)
-            
-            # print(saved_image_paths)
-        
-        # files= {"images": images}
         
         # fast-api post 요청 부분
-        response= requests.post(
-            url=serverUrl, 
-            data=request.FILES,
-            headers= {"content-type": "multipart/form-data"})
+        # response= requests.post(
+        #     url=serverUrl, 
+        #     data=request.FILES,
+        #     headers= {"content-type": "multipart/form-data"})
         # print(type(request.FILES))
 
         return JsonResponse({'result': "success", 'saved_paths': saved_image_paths}, status=200)

@@ -3,8 +3,9 @@ from typing import Union
 from fastapi import FastAPI, UploadFile, File
 import uvicorn
 from starlette.middleware.cors import CORSMiddleware
+from typing import List
 
-app =FastAPI()
+app =FastAPI(debug=True)
 
 origins= ["*"]
 
@@ -37,9 +38,11 @@ def read_root():
 # django '/upload' post 요청시 호출
 # 모델로 이미지를 넘겨주는 부분 
 @app.post("/upload")
-async def upload_images():
+async def upload_images(image: UploadFile = File(...)):
 # async def upload_images(images: File):
     # 여기에서 이미지를 처리하는 로직을 구현합니다.
     # 예를 들면 이미지를 저장하거나 분석하는 작업 등이 가능합니다.
     print("success!")
+    file_data = image.file.read()
+    print(len(file_data))
     return {}
