@@ -32,19 +32,6 @@ app.add_middleware(
 
 
 
-# @app.post('/upload')
-# async def upload_images(images: List[UploadFile] = File(...)):
-#     print("come!!!!!!!!!!!!!!!!!")
-    
-#     # file_data = images[0].file.read()
-#     file_data = images[0].file.read()
-#     image = Image.open(io.BytesIO(file_data))
-
-#     model = YOLO('detection.pt')
-#     result = model(image)
-#     print(result[0].tojson())
-#     # print(result.tojson())
-#     return {}
 
 def custom_jsonify(result, file_names):
     output = {}
@@ -61,7 +48,7 @@ def custom_jsonify(result, file_names):
 
 
 
-
+#fast-api 실행: uvicorn main:app --port 9596 --reload
 
 @app.post('/upload')
 async def upload_images(images: List[UploadFile] = File(...)):
@@ -73,7 +60,5 @@ async def upload_images(images: List[UploadFile] = File(...)):
     model = YOLO('detection.pt')
     result = model(infer_images)
     
-    print(custom_jsonify(result, file_names))
-    return {}
-
-
+    # print(custom_jsonify(result, file_names))
+    return custom_jsonify(result, file_names)

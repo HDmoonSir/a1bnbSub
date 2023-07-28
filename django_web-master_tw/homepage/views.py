@@ -14,6 +14,8 @@ import os
 import requests
 from django.http import JsonResponse
 
+from PIL import Image, ImageDraw
+
 
 # Create your views here.
 class mainpageView(viewsets.ModelViewSet):
@@ -39,53 +41,48 @@ class uploadImageList(APIView):
 
 # 이미지 저장 함수 
 def save_image(image):
-    # 이미지 파일을 저장할 디렉토리를 지정합니다.
     upload_dir = 'images'
     if not os.path.exists(upload_dir):
         os.makedirs(upload_dir)
 
-    # 이미지 파일의 확장자를 추출합니다.
     filename, ext = os.path.splitext(image.name)
 
-    # 저장될 파일의 경로를 생성합니다.
     saved_path = os.path.join(upload_dir, f"{filename}{ext}")
 
-    # 파일을 저장합니다.
     fs = FileSystemStorage()
     fs.save(saved_path, image)
 
     return saved_path
+
+# bbox 그려주는 함수
+# def draw_bbox(response, image_nums):
+#     for i in range(image_nums):
+
     
 # /upload POST 요청 시 호출 
 # 이미지를 fast-api 로 post 한다
 @api_view(['post'])
-def upload_images(request):
-    # image data 를 media/images 폴더 안에 저장 
-    # image 한 장에 대해 
-    # serializer= mainpageSerializer(
-    #             data= request.data, many= True)
-    # if serializer.is_valid():
-    #     serializer.save()
-    #     return Response(serializer.data, status=status.HTTP_201_CREATED)
-    # return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    # image_file= request.FILES['images']
-    # test= request.POST['text']
-    
-    serverUrl="http://127.0.0.1:9596/upload" # fast-api 테스트용 임시 url # fast-api 실행: uvicorn main:app --port 9596 --reload
+def upload_images(request): 
+    serverUrl="http://127.0.0.1:9596/upload" 
     
     if request.FILES.getlist("images"):
-        # fast-api post 요청 부분
+        # reqeust(사용자 첨부 파일)을 전처리하여 모델(fastapi)로 쏘기
         fast_api_images = request.FILES.getlist("images")
-
         file = [('images', img) for img in fast_api_images]
+        # response <- detection된 결과를 json(dict)형식
         response = requests.post(serverUrl, files=file)
+        print(response.json())
 
+        # 이미지를 media/images에 저장
         saved_image_paths = []
-    
         for image in fast_api_images:
-            # 이미지를 저장하고 저장된 파일 경로를 리스트에 추가
             saved_path = save_image(image)
             saved_image_paths.append(saved_path)
+
+        # media/images에 저장된 이미지 위에 bbox그려서 다시 저장
+
+
+
 
         return JsonResponse({'result': "success", 'saved_paths': saved_image_paths}, status=200)
     
