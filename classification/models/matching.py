@@ -40,7 +40,10 @@ def group_connected_nodes(connections):
 
     return grouped_nodes
 
-def label_rooms(images):
+def label_rooms(filename_image_pairs, room_type, label_dict):
+    filenames = [filename_image_pair[0] for filename_image_pair in filename_image_pairs]
+    images = [filename_image_pair[1] for filename_image_pair in filename_image_pairs]
+    
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu') 
     extractor = SuperPoint(max_num_keypoints=1024).eval().to(device)  # load the extractor
     matcher = LightGlue(features='superpoint').eval().to(device)
@@ -103,39 +106,34 @@ def label_rooms(images):
             connections.append(image_pair)
 
     result = group_connected_nodes(connections)
-    # matched_images = sum(result, [])
+    matched_images = sum(result, [])
 
-    # current_result_num = 0
-    # not_matched_count = 0
-    # current_connection_number = 0
-    # in_connection = False
+    current_result_num = 0
+    not_matched_count = 0
+    current_connection_number = 0
+    in_connection = False
 
-    # for i in range(len(images)):
-    #     if i in matched_images:
-    #         if not in_connection:
-    #             current_connection_number += (not_matched_count + 1)
-    #             in_connection = True
-    #             next_count = 1
-    #         else:
-    #             next_count += 1
-    #             if len(result[current_result_num]) == next_count:
-    #                 not_matched_count = 0
-    #                 in_connection = False
-    #                 current_result_num += 1
-                    
-    #         if image_labels[image] == f'{room_type}{current_connection_number}':
-    #             accuracy_list[i][0] += 1
-    #         else:
-    #             accuracy_list[i][1] += 1
-    #     else:
-    #         if in_connection:
-    #             not_matched_count += 1
-    #         else:
-    #             current_connection_number += 1
+    for i in range(len(images)):
+        if i in matched_images:
+            if not in_connection:
+                current_connection_number += (not_matched_count + 1)
+                in_connection = True
+                next_count = 1
+            else:
+                next_count += 1
+                if len(result[current_result_num]) == next_count:
+                    not_matched_count = 0
+                    in_connection = False
+                    current_result_num += 1
+            label_dict[filenames[i]] = f'{room_type} {current_connection_number}'         
+            
+        else:
+            if in_connection:
+                not_matched_count += 1
+            else:
+                current_connection_number += 1
 
-    #         if image_labels[image] == f'{room_type}{current_connection_number + not_matched_count}':
-    #             accuracy_list[i][0] += 1
-    #         else:
-    #             accuracy_list[i][1] += 1
-    return result
+            label_dict[filenames[i]] = f'{room_type} {current_connection_number + not_matched_count}'
+
+    return label_dict
 
