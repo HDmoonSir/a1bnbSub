@@ -10,12 +10,13 @@ args = {"resize": (224, 224),
         "mean": [0.485, 0.456, 0.406], 
         "std": [0.229, 0.224, 0.225], 
         "batch_size": 32, # 
-        "weight_path": '/Users/mc/Desktop/a1bnbSub/classification/models/weights',
+        "weight_path": 'C:/Users/SJ/Documents/a1bnbSub/classification/models/weights',
         "model": "efficientnet_v2_s",
         "weight_name": "efficientnet_v2_s_cutmix_6.pt", # {모델 이름}_{augmentation}_{epoch}.pt
         "num_classes": 9,
         "load_weight": True,
-        "DEVICE" : torch.device("cuda: 0" if torch.cuda.is_available() else 'cpu')}
+        # "DEVICE" : torch.device("cuda" if torch.cuda.is_available() else 'cpu')
+        "DEVICE" : torch.device("cpu")}
 
 def get_classes():
     classes = ['exterior',

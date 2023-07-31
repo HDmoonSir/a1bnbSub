@@ -97,12 +97,12 @@ def upload_images(request):
 
         # fast api 각각 3번 호출
         # detection fast api 호출
-        result_detect = requests.post(detect_Url, files=file)
+        # result_detect = requests.post(detect_Url, files=file)
         # 이미지 박스 쳐서 그림
 
         # # classification fast api 호출
-        # result_classification= requests.post(classification_Url, files=files)
-
+        result_classification= requests.post(classification_Url, files=file)
+        print(result_classification.json())
         # text generation fast api 호출
         # result_textgen= requests.post(textgen_Url, files=files)
 
@@ -113,12 +113,14 @@ def upload_images(request):
             saved_image_paths.append(saved_path)
 
         # media/images에 저장된 이미지 위에 bbox그려서 다시 저장
-        detect_json = result_detect.json()
-        print(detect_json)
-        draw_bbox(detect_json["result"], len(file))
-        print("draw 끝")
+        # detect_json = result_detect.json()
+        # print(detect_json)
+        # draw_bbox(detect_json["result"], len(file))
+        # print("draw 끝")
 
-        return JsonResponse({"detect_result": result_detect.json()})
+        # return JsonResponse({"detect_result": result_detect.json(), "classi_result": result_classification.json()})
+        return JsonResponse({"classi_result": result_classification.json()})
+
         # return JsonResponse({'result': "success", 'saved_paths': saved_image_paths}, status=200)
         # return JsonResponse({'result': "success", 'result_detect': result_detect, 'result_classi': result_classi, 'result_text': result_text}, status=200)
 

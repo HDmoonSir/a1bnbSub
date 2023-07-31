@@ -30,10 +30,10 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-@app.post('/upload')
+@app.post('/dl/classification')
 async def upload_images(images: List[UploadFile] = File(...)):
     file_data = [image.file.read() for image in images]
-    infer_images = [Image.open(io.BytesIO(data)) for data in file_data]
+    infer_images = [Image.open(io.BytesIO(data)).convert('RGB') for data in file_data]
     file_names = [image.filename for image in images]
     
     test_dataset = TestDataset(infer_images)

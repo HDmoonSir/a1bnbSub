@@ -1,11 +1,17 @@
 import React from 'react';
-import Breadcrumb from 'react-bootstrap/Breadcrumb';
+import { useNavigate } from "react-router-dom";
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import {useState} from 'react';
 import Axios from 'axios';
 // 로그인 화면 
 const Login = () => {
+    const navigate = useNavigate();
+ 
+    const navigateToSignup = () => {
+      navigate("/accounts/signup");
+    };
+
     return (
       <div>
         <h1 style={{textAlign:'center'}}>로그인</h1>
@@ -14,9 +20,9 @@ const Login = () => {
         <BasicExample></BasicExample>
         {/* <GoogleLoginButton></GoogleLoginButton> */}
         {/* <p Link="" style={{textAlign:'center'}}>회원가입</p> */}
-        <Breadcrumb>
-            <Breadcrumb.Item href="signin" className="mx-auto">회원가입</Breadcrumb.Item>
-        </Breadcrumb>
+        <Button size="large" onClick={navigateToSignup}>
+            회원가입
+        </Button>
       </div>
     );
   };
@@ -49,7 +55,7 @@ function BasicExample() {
         e.preventDefault(); // 새로고침 없애기
         console.log("onSubmit :", inputs);
 
-        Axios.post("http://localhost:8000/account/signin", inputs) // 장고 api 
+        Axios.post("http://localhost:8000/accounts/login", inputs) // 장고 api 
         .then(response =>{
             console.log("response :", response);
         })

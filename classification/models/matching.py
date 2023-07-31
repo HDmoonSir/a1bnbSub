@@ -44,7 +44,8 @@ def label_rooms(filename_image_pairs, room_type, label_dict):
     filenames = [filename_image_pair[0] for filename_image_pair in filename_image_pairs]
     images = [filename_image_pair[1] for filename_image_pair in filename_image_pairs]
     
-    device = torch.device('cuda' if torch.cuda.is_available() else 'cpu') 
+    # device = torch.device('cuda' if torch.cuda.is_available() else 'cpu') 
+    device = torch.device('cpu')
     extractor = SuperPoint(max_num_keypoints=1024).eval().to(device)  # load the extractor
     matcher = LightGlue(features='superpoint').eval().to(device)
 
