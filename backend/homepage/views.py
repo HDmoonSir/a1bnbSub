@@ -13,7 +13,7 @@ from rest_framework.permissions import AllowAny
 from .serializers import PostSerializer, PhotoSerializer, mainpageSerializer
 
 from PIL import Image, ImageDraw
-
+from django_web.server_urls import *
 
 # Create your views here.
 class mainpageView(viewsets.ModelViewSet):
@@ -80,12 +80,6 @@ def draw_bbox(detect_json, image_nums):
 # 이미지를 fast-api 로 post
 @api_view(['post'])
 def upload_images(request):
-    # URL
-    serverUrl = "http://127.0.0.1:9596/upload"
-    detect_Url = "http://127.0.0.1:9596/dl/detection"
-    classification_Url = "http://127.0.0.1:9596/dl/classification"
-    textgen_Url = "http://127.0.0.1:9596/dl/generation"
-
     if request.FILES.getlist("images"):
         # fast-api post 요청 부분
         fast_api_images = request.FILES.getlist("images")
@@ -97,12 +91,11 @@ def upload_images(request):
 
         # fast api 각각 3번 호출
         # detection fast api 호출
-        # result_detect = requests.post(detect_Url, files=file)
+        result_detect = requests.post(detect_Url, files=file)
         # 이미지 박스 쳐서 그림
 
         # # classification fast api 호출
         result_classification= requests.post(classification_Url, files=file)
-        print(result_classification.json())
         # text generation fast api 호출
         # result_textgen= requests.post(textgen_Url, files=files)
 
@@ -119,7 +112,7 @@ def upload_images(request):
         # print("draw 끝")
 
         # return JsonResponse({"detect_result": result_detect.json(), "classi_result": result_classification.json()})
-        return JsonResponse({"classi_result": result_classification.json()})
+        return JsonResponse({"detect_result": result_detect.json(), "classi_result": result_classification.json()})
 
         # return JsonResponse({'result': "success", 'saved_paths': saved_image_paths}, status=200)
         # return JsonResponse({'result': "success", 'result_detect': result_detect, 'result_classi': result_classi, 'result_text': result_text}, status=200)

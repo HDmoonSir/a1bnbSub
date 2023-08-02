@@ -2,3 +2,5 @@ backend/venv_winV
 detection/venv_winV
 
 *.pt
+
+classification/LightGlue
