@@ -1,10 +1,5 @@
 from rest_framework import serializers
-from .models import mainpage, Post, Photo
-
-class mainpageSerializer(serializers.ModelSerializer):
-    class Meta:
-        model= mainpage 
-        fields= '__all__'
+from .models import Post, Photo
 
 class PostSerializer(serializers.ModelSerializer):
     class Meta:
