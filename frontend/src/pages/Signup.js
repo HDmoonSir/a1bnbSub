@@ -4,6 +4,7 @@ import { SmileOutlined, FrownOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
 import Axios from "axios";
 
+
 export default function Signup() {
     const navigate = useNavigate();
     const [fieldErrors, setFieldErrors]=useState({});
@@ -40,7 +41,7 @@ export default function Signup() {
                             (acc, [fieldName, errors]) => {
                                 acc[fieldName] = {
                                     validateStatus: "error",
-                                    help: error.join(" ")
+                                    help: errors.join(" ")
                                 };
                                 return acc;
                             },
@@ -54,11 +55,15 @@ export default function Signup() {
     };
 
     return (
+      <div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "500px" }}>
         <Form
           {...layout}
           onFinish={onFinish}
 
         >
+          <Form.Item>
+            <h1>회원가입</h1>
+          </Form.Item>
           <Form.Item
             label="Username"
             name="username"
@@ -83,10 +88,11 @@ export default function Signup() {
     
           <Form.Item {...tailLayout}>
             <Button type="primary" htmlType="submit">
-              Submit
+              Signup
             </Button>
           </Form.Item>
         </Form>
+      </div>
     );
 }
 
