@@ -171,7 +171,8 @@ const BecomeHost = () => {
             // POST 요청 
             axios({
                 method: "POST",
-                url: serverUrl,
+                // url: serverUrl,
+                url : 'http://127.0.0.1:8000/become-host/',
                 mode: "cors",
                 // data: previewImg,
                 data: formData,
@@ -180,7 +181,7 @@ const BecomeHost = () => {
                 .then(response => {
                     // console.log(response.data['detect_result']['result']['post_1']);
                     console.log(response.data);
-                    // let detect_result = response.data.detect_result.result;
+                    let detect_result = response.data.detect_result.result;
                     let classi_result = response.data.classi_result.result;
                     // let text_result= response.data.text_result.result;
                     // console.log(tmp);
@@ -190,7 +191,8 @@ const BecomeHost = () => {
                     // model result 다음 페이지로 전달 
                     // navigate("/become-host/ammenities", {state: {detection_result: detect_result, classification_result: classi_result_result,
                     //                                             textgeneration_result: text_result}});
-                    navigate("/become-host/ammenities", { state: { classification_result: classi_result} });
+                    // navigate("/become-host/ammenities", { state: { classification_result: classi_result} });
+                    navigate("/become-host/ammenities", { state: { detection_result: detect_result, classification_result: classi_result} });
                 })
                 .catch((err) => { console.log(err) })
             alert("성공!") // test 

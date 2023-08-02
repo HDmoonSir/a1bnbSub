@@ -11,19 +11,19 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 """
 
 from pathlib import Path
+from .server_urls import *
 import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 # 리액트 폴더 
-REACT_DIR= Path(__file__).resolve().parent.parent.parent / 'frontend'
+# REACT_DIR= Path(__file__).resolve().parent.parent.parent / 'frontend'
 
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '_hb19%o6hdnp*9i=_epdb5i%^+q!s#9na0ff#&welq9&j0m%a1'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -59,27 +59,15 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-# React와 연결 하기 위한 CORS 추가 2023.07.20
-CORS_ORIGIN_WHITELIST = [
-    "http://localhost:3000",
-    "http://127.0.0.1:3000",
-    "http://localhost:8000",
-    "http://127.0.0.1:8000",
-    "http://127.0.0.1:9596" # fast api test url
-]
 CORS_ALLOW_CREDENTIALS = True
-
-# React와 연결 하기 위한 CORS 추가 2023.07.20
-# CSRF_TRUSTED_ORIGINS = ['http://localhost:3000', "http://127.0.0.1:8000"]
-# ALLOWED_HOSTS = ["http://localhost:3000", "http://127.0.0.1:8000"]
 
 ROOT_URLCONF = 'django_web.urls'
 
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [# 리액트 템플릿 
-                 os.path.join(REACT_DIR, 'build')],
+        'DIRS': [],# 리액트 템플릿 
+                #  os.path.join(REACT_DIR, 'build')],
         # 'mysite/templates/mysite/',
         'APP_DIRS': True,
         'OPTIONS': {
@@ -145,14 +133,13 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
 STATIC_URL = '/static/'
-STATICFILES_DIRS = [ # 리액트 템플릿 
-                    os.path.join(REACT_DIR, 'build', 'static')]
+STATICFILES_DIRS = [] # 리액트 템플릿 
+                    # os.path.join(REACT_DIR, 'build', 'static')]
 # 'mysite/static/css/',
 # upload image save
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
-INTERNAL_IPS = ["127.0.0.1"]
 
 #REST_FRAMEWORK = {
 #    "DEFAULT_PERMISSION_CLASSES": ["rest_framework.permissions.IsAuthenticated"],

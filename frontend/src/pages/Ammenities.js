@@ -155,11 +155,11 @@ const getGenerateText= (textgeneration_result)=> {
 const Ammenities = () => {
     // /become-host 에서 navigate 으로 데이터 전달 받음
     const location = useLocation();
-    // const detection_result= location.state.detection_result;
+    const detection_result= location.state.detection_result;
     const classification_result= location.state.classification_result;
     // const textgeneration_result= location.state.textgeneration_result
 
-    // console.log(detection_result)
+    console.log(detection_result)
     console.log(classification_result)
     // console.log(textgeneration_result)
     return (
@@ -173,7 +173,7 @@ const Ammenities = () => {
             <Button variant="primary" type="submit" href="/become-host">이전</Button>
             <Button variant="primary" type="submit" href="">완료</Button>
             {/* detecion 결과 화면 보기 */}
-            {/* {getDetectImg(detection_result)} */}
+            {getDetectImg(detection_result)}
             {/* classification 결과 화면 보기 */}
             {getClassiImg(classification_result)}
             {/* textgeneration 결과 화면 보기 */}
