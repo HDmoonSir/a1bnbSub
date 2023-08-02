@@ -69,7 +69,7 @@ async def detection(images: List[UploadFile] = File(...)):
 
     model = YOLO('detection.pt')
     result = model(infer_images)
-    
+    print('detection success!!!!!!!!')
     # print(custom_jsonify(result, file_names))
     return {"result": custom_jsonify(result, file_names)}
 

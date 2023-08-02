@@ -33,6 +33,7 @@ app.add_middleware(
 @app.post('/dl/classification')
 async def upload_images(images: List[UploadFile] = File(...)):
     file_data = [image.file.read() for image in images]
+    print('일단 들어옴!')
     infer_images = [Image.open(io.BytesIO(data)).convert('RGB') for data in file_data]
     file_names = [image.filename for image in images]
     
