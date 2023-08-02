@@ -1,9 +1,7 @@
 from django.contrib import admin
-from .models import mainpage, Post, Photo
+from .models import Post, Photo
 from django.utils.safestring import mark_safe
 
-# Register your models here.
-admin.site.register(mainpage)
 
 @admin.register(Post)
 class PostAdmin(admin.ModelAdmin):
