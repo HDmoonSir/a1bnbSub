@@ -1,8 +1,4 @@
-from rest_framework import viewsets
-from .models import Post, Photo, mainpage
-from rest_framework import status
-from rest_framework.views import APIView
-from rest_framework.response import Response
+from .models import Post, Photo
 from rest_framework.decorators import api_view
 from django.core.files.storage import FileSystemStorage
 import os
@@ -10,35 +6,10 @@ import requests
 from django.http import JsonResponse
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.permissions import AllowAny
-from .serializers import PostSerializer, PhotoSerializer, mainpageSerializer
+from .serializers import PostSerializer, PhotoSerializer
 
 from PIL import Image, ImageDraw
 from django_web.server_urls import *
-
-# Create your views here.
-class mainpageView(viewsets.ModelViewSet):
-    serializer_class = mainpageSerializer
-    queryset = mainpage.objects.all()
-
-
-# upload image view # /admin/
-class uploadImageList(APIView):
-    def get(self, request):  # GET
-        images = mainpage.objects.all()
-
-        serializer = mainpageSerializer(images, many=True)
-        return Response(serializer.data)
-
-    def post(self, request):  # POST
-        serializer = mainpageSerializer(
-            data=request.data)
-
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-        x
-
 
 # 이미지 저장 함수 ./media/images
 def save_image(image):
