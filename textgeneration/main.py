@@ -20,11 +20,11 @@ app.add_middleware(
 )
 
 @app.post("/dl/generation")
-async def generation(images: UploadFile = File(...)):
+async def generation(images: List[UploadFile] = File(...)):
     try:
-        file_data = await images.read()
-        infer_image = Image.open(io.BytesIO(file_data)).convert('RGB')
-        file_name = images.filename
+        file_data = await [images.file.read() for image in images]
+        infer_image = Image.open(io.BytesIO(file_data[0])).convert('RGB')
+        file_name = images[0].filename
     except Exception:
         return {"message": "There was an error uploading file"}
     finally:
