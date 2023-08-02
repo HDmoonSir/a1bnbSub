@@ -6,7 +6,7 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
 // const serverUrl='http://127.0.0.1:8000/mainpage'
-const serverUrl = 'upload/'
+const serverUrl = 'become-host/'
 //CSRF 토큰 
 axios.defaults.xsrfCookieName = "csrftoken";
 axios.defaults.xsrfHeaderName = "X-CSRFToken";

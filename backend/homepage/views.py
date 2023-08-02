@@ -14,6 +14,7 @@ from .serializers import PostSerializer, PhotoSerializer, mainpageSerializer
 
 from PIL import Image, ImageDraw
 from django_web.server_urls import *
+import copy
 
 # Create your views here.
 class mainpageView(viewsets.ModelViewSet):
@@ -84,18 +85,21 @@ def upload_images(request):
         # fast-api post 요청 부분
         fast_api_images = request.FILES.getlist("images")
         file = [('images', img) for img in fast_api_images]
-
+        file2 = copy.deepcopy(file)
         # upload_dir = 'images'
         # if os.path.exists(upload_dir): # 항상 새로 시작 (이전 데이터 삭제)
         #     shutil.rmtree(upload_dir
 
         # fast api 각각 3번 호출
         # detection fast api 호출
+        print('detect response start!!!!!!!!')
+        
         result_detect = requests.post(detect_Url, files=file)
         # 이미지 박스 쳐서 그림
-
         # # classification fast api 호출
-        result_classification= requests.post(classification_Url, files=file)
+        result_classification= requests.post(classification_Url, files=file2)
+        print(result_classification.json())
+
         # text generation fast api 호출
         # result_textgen= requests.post(textgen_Url, files=files)
 
@@ -120,11 +124,11 @@ def upload_images(request):
     return JsonResponse({'result': "fail"}, status=400)
 
 
-# django 에서 get/ammenities/ GET 요청 시 호출
-@api_view(['get'])
-def get_ammenities(request):
-    upload_dir = 'images'
-    return JsonResponse({'image_file': 'image.jpg', "text": "ammenities des"})
+# # django 에서 get/ammenities/ GET 요청 시 호출
+# @api_view(['get'])
+# def get_ammenities(request):
+#     upload_dir = 'images'
+#     return JsonResponse({'image_file': 'image.jpg', "text": "ammenities des"})
 
 
 #####################################################################################################333
