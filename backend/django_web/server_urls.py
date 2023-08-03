@@ -11,4 +11,4 @@ SECRET_KEY = '_hb19%o6hdnp*9i=_epdb5i%^+q!s#9na0ff#&welq9&j0m%a1'
 
 detect_Url = "http://127.0.0.1:9596/dl/detection"
 classification_Url = "http://127.0.0.1:9597/dl/classification"
-textgen_Url = "http://127.0.0.1:9596/dl/generation"
+textgen_Url = "http://127.0.0.1:9598/dl/generation"

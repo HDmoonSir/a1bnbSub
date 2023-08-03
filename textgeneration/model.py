@@ -42,7 +42,7 @@ image_token_len = (vision_config.image_size // vision_config.patch_size) ** 2
 
 
 def eval_model(image):
-    qs = "이 숙소를 소개하는 광고글을 작성해줘"
+    qs = "이 숙소를 소개하는 글을 작성해줘"
     qs = qs + '\n' + DEFAULT_IM_START_TOKEN + DEFAULT_IMAGE_PATCH_TOKEN * image_token_len + DEFAULT_IM_END_TOKEN
     # Pretrained finetuning default chat mode
     conv_mode = "multimodal"
@@ -68,7 +68,7 @@ def eval_model(image):
             # 얼마나 창의적인 답변을 원하는지
             temperature=0.3,
             # 얼마나 길게 답변을 원하는지
-            max_new_tokens=512,
+            max_new_tokens=700,
             stopping_criteria=[stopping_criteria])
 
     input_token_len = input_ids.shape[1]
@@ -77,6 +77,8 @@ def eval_model(image):
         print(f'[Warning] {n_diff_input_output} output_ids are not the same as the input_ids')
     outputs = tokenizer.batch_decode(output_ids[:, input_token_len:], skip_special_tokens=True)[0]
     outputs = outputs.strip()
+    # 모델에서 미리 cache를 지워보자
+    torch.cuda.empty_cache()
     if outputs.endswith(stop_str):
         outputs = outputs[:-len(stop_str)]
     outputs = outputs.strip()
