@@ -18,6 +18,7 @@ def upload_images(request):
         fast_api_images = request.FILES.getlist("images")
         file = [('images', img) for img in fast_api_images]
         file2 = copy.deepcopy(file)
+        file3 = copy.deepcopy(file)
 
         # fast api 각각 3번 호출
         # detection fast api 호출     
@@ -29,9 +30,9 @@ def upload_images(request):
         print(result_classification.json())
 
         # text generation fast api 호출
-        # result_textgen= requests.post(textgen_Url, files=files)
+        result_textgen= requests.post(textgen_Url, files=files3)
 
-        return JsonResponse({"detect_result": result_detect.json(), "classi_result": result_classification.json()})
+        return JsonResponse({"detect_result": result_detect.json(), "classi_result": result_classification.json(), "text_result":result_generation.json()})
     return JsonResponse({'result': "fail"}, status=400)
 
 
