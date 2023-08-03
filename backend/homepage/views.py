@@ -1,11 +1,5 @@
-from rest_framework import viewsets
-from .models import Post, Photo, mainpage
-from rest_framework import status
-from rest_framework.views import APIView
-from rest_framework.response import Response
+from .models import Post, Photo
 from rest_framework.decorators import api_view
-from django.core.files.storage import FileSystemStorage
-import os
 import requests
 from django.http import JsonResponse
 from rest_framework.viewsets import ModelViewSet
@@ -13,7 +7,6 @@ from rest_framework.permissions import AllowAny
 from .serializers import PostSerializer, PhotoSerializer, mainpageSerializer
 import copy
 
-from PIL import Image, ImageDraw
 from django_web.server_urls import *
 
 # Create your views here.
@@ -119,7 +112,6 @@ def get_ammenities(request):
     upload_dir = 'images'
     return JsonResponse({'image_file': 'image.jpg', "text": "ammenities des"})
 
-
 #####################################################################################################333
 
 class PostViewSet(ModelViewSet):
@@ -142,3 +134,5 @@ class PhotoViewSet(ModelViewSet):
     queryset = Photo.objects.all()
     serializer_class = PhotoSerializer
     permission_classes = [AllowAny]  # FIXME: 인증 적용
+    
+    
