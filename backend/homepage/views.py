@@ -11,10 +11,10 @@ from django.http import JsonResponse
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.permissions import AllowAny
 from .serializers import PostSerializer, PhotoSerializer, mainpageSerializer
+import copy
 
 from PIL import Image, ImageDraw
 from django_web.server_urls import *
-import copy
 
 # Create your views here.
 class mainpageView(viewsets.ModelViewSet):
@@ -77,31 +77,26 @@ def draw_bbox(detect_json, image_nums):
         count += 1
 
 
-# /upload POST 요청 시 호출
+# /become-host POST 요청 시 호출
 # 이미지를 fast-api 로 post
 @api_view(['post'])
 def upload_images(request):
     if request.FILES.getlist("images"):
+        print("regist in")
         # fast-api post 요청 부분
         fast_api_images = request.FILES.getlist("images")
         file = [('images', img) for img in fast_api_images]
         file2 = copy.deepcopy(file)
-        # upload_dir = 'images'
-        # if os.path.exists(upload_dir): # 항상 새로 시작 (이전 데이터 삭제)
-        #     shutil.rmtree(upload_dir
+        file3 = copy.deepcopy(file)
 
-        # fast api 각각 3번 호출
-        # detection fast api 호출
-        print('detect response start!!!!!!!!')
-        
-        result_detect = requests.post(detect_Url, files=file)
-        # 이미지 박스 쳐서 그림
-        # # classification fast api 호출
-        result_classification= requests.post(classification_Url, files=file2)
-        print(result_classification.json())
-
-        # text generation fast api 호출
-        # result_textgen= requests.post(textgen_Url, files=files)
+        result_detect = requests.post(fast_api_ip_detection, files=file)
+        print(result_detect.json())
+        print("detect in")
+        result_classification= requests.post(fast_api_ip_classification, files=file2)
+        print("classification in")
+        result_generation = requests.post(fast_api_ip_generation, files=file3)
+        print("textgeneraion in")
+        print(result_generation.json())
 
         # 이미지 저장
         saved_image_paths = []
@@ -109,14 +104,8 @@ def upload_images(request):
             saved_path = save_image(image)
             saved_image_paths.append(saved_path)
 
-        # media/images에 저장된 이미지 위에 bbox그려서 다시 저장
-        # detect_json = result_detect.json()
-        # print(detect_json)
-        # draw_bbox(detect_json["result"], len(file))
-        # print("draw 끝")
-
-        # return JsonResponse({"detect_result": result_detect.json(), "classi_result": result_classification.json()})
-        return JsonResponse({"detect_result": result_detect.json(), "classi_result": result_classification.json()})
+        return JsonResponse({"detect_result": result_detect.json(), "classi_result": result_classification.json(), "text_result":result_generation.json()})
+        # return JsonResponse({"classi_result": result_classification.json()})
 
         # return JsonResponse({'result': "success", 'saved_paths': saved_image_paths}, status=200)
         # return JsonResponse({'result': "success", 'result_detect': result_detect, 'result_classi': result_classi, 'result_text': result_text}, status=200)
@@ -124,11 +113,11 @@ def upload_images(request):
     return JsonResponse({'result': "fail"}, status=400)
 
 
-# # django 에서 get/ammenities/ GET 요청 시 호출
-# @api_view(['get'])
-# def get_ammenities(request):
-#     upload_dir = 'images'
-#     return JsonResponse({'image_file': 'image.jpg', "text": "ammenities des"})
+# django 에서 get/ammenities/ GET 요청 시 호출
+@api_view(['get'])
+def get_ammenities(request):
+    upload_dir = 'images'
+    return JsonResponse({'image_file': 'image.jpg', "text": "ammenities des"})
 
 
 #####################################################################################################333

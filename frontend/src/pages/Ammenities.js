@@ -83,21 +83,19 @@ const getClassiImg= (classification_result)=> {
 };
 // generation 결과 보여주는 함수
 const getGenerateText= (textgeneration_result)=> {
-    // let result = JSON.stringify(textgeneration_result.post_1)
-    let result = JSON.stringify(textgeneration_result)
-    result= JSON.parse(result);
-    // let result = JSON.parse(textgeneration_result.post_1);
+    let result = JSON.stringify(textgeneration_result);
+    // result= JSON.parse(result);
     return (
         <div>
             <p style={{textAlign:'center'}}>숙소 소개글 확인 부분입니다.</p>
             <center>
                 <label>
                     <textarea name="text_generation" rows={4} cols={40}
-                    defaultValue={result.test1} // generation 결과
+                    defaultValue={result} // generation 결과
                     />
                 </label>
             </center>
-            <hr/>
+                <hr/>
         </div>
     )
 };
@@ -157,11 +155,11 @@ const Ammenities = () => {
     const location = useLocation();
     const detection_result= location.state.detection_result;
     const classification_result= location.state.classification_result;
-    // const textgeneration_result= location.state.textgeneration_result
+    const textgeneration_result= location.state.textgeneration_result;
 
     console.log(detection_result)
     console.log(classification_result)
-    // console.log(textgeneration_result)
+    console.log(textgeneration_result)
     return (
         <div>
             {/* {onLoading} */}
@@ -177,7 +175,7 @@ const Ammenities = () => {
             {/* classification 결과 화면 보기 */}
             {getClassiImg(classification_result)}
             {/* textgeneration 결과 화면 보기 */}
-            {/* {getGenerateText(textgeneration_result)} */}
+            {getGenerateText(textgeneration_result)}
             </div>
     );
 }
