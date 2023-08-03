@@ -5,7 +5,7 @@ from fastapi import FastAPI, UploadFile, File
 
 from starlette.middleware.cors import CORSMiddleware
 
-from try_llava import eval_model
+from model import eval_model
 
 app=FastAPI()
 
@@ -32,6 +32,7 @@ async def generation(images: List[UploadFile] = File(...)):
     return {"generation_result": {file_name:result}}
 
 """
+#FastAPI만 했을 때, docs에서 사진 파일 올리고 확인
 @app.post("/dl/generation")
 async def generation(images: bytes = File(...)):
         file_data = Image.open(io.BytesIO(images)).convert("RGB")
