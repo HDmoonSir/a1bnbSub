@@ -85,7 +85,7 @@ const getClassiImg= (classification_result)=> {
 const getGenerateText= (textgeneration_result)=> {
     // let result = JSON.stringify(textgeneration_result.post_1)
     let result = JSON.stringify(textgeneration_result)
-    result= JSON.parse(result);
+    //result= JSON.parse(result);
     // let result = JSON.parse(textgeneration_result.post_1);
     return (
         <div>
@@ -93,7 +93,7 @@ const getGenerateText= (textgeneration_result)=> {
             <center>
                 <label>
                     <textarea name="text_generation" rows={4} cols={40}
-                    defaultValue={result.test1} // generation 결과
+                    defaultValue={result} // generation 결과
                     />
                 </label>
             </center>
@@ -177,7 +177,7 @@ const Ammenities = () => {
             {/* classification 결과 화면 보기 */}
             {getClassiImg(classification_result)}
             {/* textgeneration 결과 화면 보기 */}
-            {/* {getGenerateText(textgeneration_result)} */}
+            {getGenerateText(textgeneration_result)}
             </div>
     );
 }
