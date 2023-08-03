@@ -9,7 +9,6 @@ from .serializers import PostSerializer, PhotoSerializer
 from django_web.server_urls import *
 import copy
 
-
 # /upload POST 요청 시 호출
 # 이미지를 fast-api 로 post
 @api_view(['post'])
