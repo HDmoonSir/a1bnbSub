@@ -30,6 +30,9 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+# post - ram 확장
+FILE_UPLOAD_MAX_MEMORY_SIZE = 10 * 1024 * 1024
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -143,14 +146,13 @@ STATICFILES_DIRS = [] # 리액트 템플릿
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
-
-REST_FRAMEWORK = {
-    "DEFAULT_PERMISSION_CLASSES": ["rest_framework.permissions.IsAuthenticated",],
-    "DEFAULT_AUTHENTICATION_CLASSES": [
-        "rest_framework_simplejwt.authentication.JWTAuthentication",
-        "rest_framework.authentication.SessionAuthentication",
-    ],
-}
+# REST_FRAMEWORK = {
+#     "DEFAULT_PERMISSION_CLASSES": ["rest_framework.permissions.IsAuthenticated",],
+#     "DEFAULT_AUTHENTICATION_CLASSES": [
+#         "rest_framework_simplejwt.authentication.JWTAuthentication",
+#         "rest_framework.authentication.SessionAuthentication",
+#     ],
+# }
 
 JWT_AUTH = {
     "JWT_SECRET_KEY": SECRET_KEY,  # FIXME: JWT_SECRET_KEY

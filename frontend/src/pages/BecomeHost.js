@@ -11,31 +11,7 @@ const serverUrl = 'become-host/'
 axios.defaults.xsrfCookieName = "csrftoken";
 axios.defaults.xsrfHeaderName = "X-CSRFToken";
 
-// // 서버로 데이터 전송하는 함수 
-// const uploadData = (previewImg) => {
-// // function uploadData(previewImg){
-//     console.log("숙소 업로드");
-//     console.log(previewImg);
-//     // POST
-//     axios.post(serverUrl, previewImg,{
-//         headers: {'content-type': 'multipart/form-data'}
-//     })
-//     .then((e) =>{
-//         // e.preventDefault();
-//         console.log(e)
-//     })
-//     .catch((err)=>{ console.log(err)})
-//     // $.ajax({
-//     //     type: "POST",
-//     //     url: "/upload/images",
-//     //     data: {previewImg},
-//     //     success: function (response){
-//     //         if(response['result'] =='success'){
-//     //             alert('서버로 전송 완료!')
-//     //         }
-//     //     }
-//     // })
-// }
+
 
 const BecomeHost = () => {
     const [previewImg, setPreviewImg] = useState([]); // image url
@@ -64,21 +40,7 @@ const BecomeHost = () => {
                 }
             };
         }
-        // if (e.target.files[0]){
-        //     reader.readAsDataURL(e.target.files[0]) // file url
-
-        // }
-
-        // reader.onloadend =() =>{
-        //     const previewImgUrl= reader.result
-
-        //     if (previewImgUrl && previewImg.length <10){
-        //         setPreviewImg([...previewImg,previewImgUrl])
-        //         setName([...name, e.target.files[0]['name']])
-        //     }else{
-        //         alert("등록된 이미지가 10장을 초과할 수 없습니다!");
-        //     }
-        // };
+        
 
         if (e.target.files) {
             // 이미지를 여러 장 올릴 때 array 의 각 인덱스 마다 insertAll 함수를 호출하는 부분 
@@ -124,27 +86,6 @@ const BecomeHost = () => {
     async function uploadData() {
         // const uploadData = () => {
         const formData = new FormData();
-        // 이미지 한 장 전송 
-        // formData.append('text', name[0])
-        // // formData.append('images', previewImg[0])
-        // // dataURL 변환
-        // const byteString = atob(previewImg[0].split(",")[1]);
-        // // Blob를 구성하기 위한 준비
-        // const ab = new ArrayBuffer(byteString.length);
-        // const ia = new Uint8Array(ab);
-        // for (let i = 0; i < byteString.length; i++) {
-        //     ia[i] = byteString.charCodeAt(i);
-        // }
-        // const blob = new Blob([ia], {
-        //     type: "image/jpeg"
-        // });
-        // const file = new File([blob], "image.jpg");
-        // // 위 과정을 통해 만든 image폼을 FormData에 넣어줍니다.
-        // // 서버에서는 이미지를 받을 때, FormData가 아니면 받지 않도록 세팅해야합니다.
-        // formData.append("images", file);
-
-        // console.log(previewImg[0])
-        // alert("!")
         // 이미지 여러 장 전송 
         for (let index = 0; index < previewImg.length; index++) {
             formData.append('text', name[index])
@@ -166,7 +107,6 @@ const BecomeHost = () => {
         if (previewImg) {
             console.log("숙소 업로드"); // test 
             console.log(previewImg); // test 
-            // navigate("/become-host/ammenities", {state: { name: {name}, images: {previewImg}}}) // 데이터 전달
 
             // POST 요청 
             axios({
@@ -184,19 +124,10 @@ const BecomeHost = () => {
                     let detect_result = response.data.detect_result.result;
                     let classi_result = response.data.classi_result.result;
                     // let text_result= response.data.text_result.result;
-                    // console.log(tmp);
-                    // setModelResult(tmp);
-                    // console.log(modelResult);
-                    // alert("!");
-                    // model result 다음 페이지로 전달 
-                    // navigate("/become-host/ammenities", {state: {detection_result: detect_result, classification_result: classi_result_result,
-                    //                                             textgeneration_result: text_result}});
-                    // navigate("/become-host/ammenities", { state: { classification_result: classi_result} });
                     navigate("/become-host/ammenities", { state: { detection_result: detect_result, classification_result: classi_result} });
                 })
                 .catch((err) => { console.log(err) })
             alert("성공!") // test 
-            // navigate("/become-host/ammenities", {state: {value: modelResult}});
         }
     }
     return (
