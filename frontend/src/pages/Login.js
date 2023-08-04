@@ -23,7 +23,7 @@ export default function Login() {
     };
 
     const navigateToSignup = () => {
-        navigate("/accounts/signup");
+        navigate("/user/signup");
       };
 
     const onFinish = values => {

@@ -13,7 +13,7 @@ const Header = () =>{
                 <Nav.Link href="/user/regist">호스트가 되어 보세요</Nav.Link> 
                 <Nav.Link href="/">Home</Nav.Link> 
                 <Nav.Link href="/user">My Page</Nav.Link>
-                <Nav.Link href="/accounts/login">Login</Nav.Link>
+                <Nav.Link href="/user/login">Login</Nav.Link>
               </Nav>
             </Container>
           </Navbar>

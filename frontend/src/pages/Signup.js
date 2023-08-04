@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import Axios from "axios";
 import { back_ip_port } from './back_ip_port'
 
-const serverUrl = `${back_ip_port}accounts/signup/`;
+const serverUrl = `${back_ip_port}user/signup`;
 
 export default function Signup() {
     const navigate = useNavigate();

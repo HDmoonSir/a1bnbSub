@@ -22,8 +22,8 @@ function App(){
         {/* <Route path= "user/logout" element= {<Logout />} />  */}
         <Route path= "/user/regist" element= {<BecomeHost />} />
         <Route path= "/user/regist/result" element= {<Ammenities />} />
-        <Route path= "/user/regist/uploaded" element= {<Ammenities />} />
-        <Route path= "room" element ={<Room />} />
+        {/* <Route path= "/user/uploaded" element= {<Uploaded />} /> */}
+        <Route path= "/room" element ={<Room />} />
       </Routes>
     </Layout>
   )
