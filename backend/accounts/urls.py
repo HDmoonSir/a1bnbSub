@@ -8,7 +8,7 @@ from . import views
 
 urlpatterns = [
     # 회원가입 api
-    path("signup/", views.SignupView.as_view(), name="login"),
+    path("signup/", views.SignupView.as_view(), name="signup"),
 
     # 토큰
     path("token/", TokenObtainPairView.as_view()),

@@ -21,7 +21,7 @@ from django.conf import settings
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path("accounts/", include("accounts.urls")),
+    path("user/", include("accounts.urls")),
     path('', include('homepage.urls')), # add
     re_path('.*', TemplateView.as_view(template_name='index.html')), # 리액트
 
