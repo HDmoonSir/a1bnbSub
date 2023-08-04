@@ -1,4 +1,6 @@
-from .models import Post, Photo
+from django.contrib.auth import get_user_model
+
+from .models import Post
 from rest_framework.decorators import api_view
 from django.core.files.storage import FileSystemStorage
 import os
@@ -6,11 +8,13 @@ import requests
 from django.http import JsonResponse
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.permissions import AllowAny
-from .serializers import PostSerializer, PhotoSerializer
+from .serializers import PostSerializer
 
 from PIL import Image, ImageDraw
 from django_web.server_urls import *
 import copy
+
+from djongo import models
 
 # 이미지 저장 함수 ./media/images
 def save_image(image):
@@ -69,16 +73,53 @@ def upload_images(request):
         # 이미지 박스 쳐서 그림
         # # classification fast api 호출
         result_classification= requests.post(classification_Url, files=file2)
-        print(result_classification.json())
 
         # text generation fast api 호출
         # result_textgen= requests.post(textgen_Url, files=files)
 
+
         # 이미지 저장
         saved_image_paths = []
+        photo_names = []
         for image in fast_api_images:
             saved_path = save_image(image)
             saved_image_paths.append(saved_path)
+
+###########################   태원 작성    ###########################################################
+
+            filename, ext = os.path.splitext(image.name)
+            photo_names.append(f"{filename}{ext}")
+
+        print(result_detect.json())
+        print(result_classification.json())
+        print(saved_image_paths)
+
+        photo_paths = {}
+        for i in range(len(saved_image_paths)):
+            photo_paths[photo_names[i]] = saved_image_paths[i]
+
+        # 로그인 시에 유저 id
+        if request.user.is_authenticated:
+            User = get_user_model()
+            user = User.objects.get(id=request.user.id)
+            user_id = user.id
+        else:
+            print("실패 ㅋ")
+            user_id = 1
+
+        # 게시물 모델 생성
+        post_model = Post.objects.create(
+            userId = user_id,
+            title = "미구현",
+            caption="미구현",
+            photos = photo_paths,
+            classifications = result_classification.json(),
+            detections = result_detect.json(),
+            ammenities = "미구현",
+        )
+        print('게시물 모델 생성:', post_model)
+
+#######################################################################################
 
         # media/images에 저장된 이미지 위에 bbox그려서 다시 저장
         # detect_json = result_detect.json()
@@ -114,13 +155,3 @@ class PostViewSet(ModelViewSet):
     serializer_class = PostSerializer
     permission_classes = [AllowAny]  # FIXME: 인증 적용
 
-
-class PhotoViewSet(ModelViewSet):
-    queryset = Post.objects.all()
-    serializer_class = PhotoSerializer
-
-
-class PhotoViewSet(ModelViewSet):
-    queryset = Photo.objects.all()
-    serializer_class = PhotoSerializer
-    permission_classes = [AllowAny]  # FIXME: 인증 적용

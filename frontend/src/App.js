@@ -8,12 +8,13 @@ import Signup from './pages/Signup';
 import Mypage from './pages/Mypage';
 import BecomeHost from './pages/BecomeHost';
 import Ammenities from './pages/Ammenities';
+import LoginRequiredRoute from './utils/LoginRequiredRoute';
 
 function App(){
   return (
     <Layout>
       <Routes>
-        <Route path= "/become-host" element= {<BecomeHost />} />
+        <LoginRequiredRoute path= "/become-host" element= {<BecomeHost />} />
         <Route path= "/become-host/ammenities" element= {<Ammenities />} />
         <Route path= "/" element= {<Home />} />
         <Route path= "accounts/login" element ={<Login />} />
