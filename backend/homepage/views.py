@@ -21,16 +21,21 @@ def upload_images(request):
         file3 = copy.deepcopy(file)
 
         # fast api 각각 3번 호출
-        # detection fast api 호출     
-        result_detect = requests.post(detect_Url, files=file)
+        # print 부분 logging으로 변경 고려
+        # detection fast api 호출
+        result_detect = requests.post(fast_api_ip_detection, files=file)
         print(result_detect.json())
+        print("detection complete")
 
         # # classification fast api 호출
-        result_classification= requests.post(classification_Url, files=file2)
+        result_classification= requests.post(fast_api_ip_classification, files=file2)
         print(result_classification.json())
+        print("classification complete")
 
         # text generation fast api 호출
-        result_textgen= requests.post(textgen_Url, files=files3)
+        result_textgen= requests.post(fast_api_ip_generation, files=file3)
+        print(result_textgen.json())
+        print("textgeneration complete")
 
         return JsonResponse({"detect_result": result_detect.json(), "classi_result": result_classification.json(), "text_result":result_generation.json()})
     return JsonResponse({'result': "fail"}, status=400)
