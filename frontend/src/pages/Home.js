@@ -20,7 +20,7 @@ const Home = () => {
                   {/* Some quick example text to build on the card title and make up the
                             bulk of the card's content. 보여줄 내용 */}
                 </Card.Text>
-                <Button variant="primary">이동</Button>
+                <Button variant="primary" href='/room'>이동</Button>
               </Card.Body>
             </Card>
           </Col>

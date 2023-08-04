@@ -5,20 +5,25 @@ import Layout from './components/Layout';
 import Login from './pages/Login';
 import Home from './pages/Home';
 import Signup from './pages/Signup';
-import Mypage from './pages/Mypage';
+import User from './pages/User';
 import BecomeHost from './pages/BecomeHost';
 import Ammenities from './pages/Ammenities';
+import Room from './pages/Room';
+// import LoginRequiredRoute from './utils/LoginRequiredRoute';
 
 function App(){
   return (
     <Layout>
       <Routes>
-        <Route path= "/become-host" element= {<BecomeHost />} />
-        <Route path= "/become-host/ammenities" element= {<Ammenities />} />
         <Route path= "/" element= {<Home />} />
-        <Route path= "accounts/login" element ={<Login />} />
-        <Route path= "accounts/signup" element= {<Signup />} />
-        <Route path= "/mypage" element ={<Mypage />} />
+        <Route path= "/user" element ={<User />} /> 
+        <Route path= "/user/signup" element= {<Signup />} />
+        <Route path= "/user/login" element ={<Login />} />
+        {/* <Route path= "user/logout" element= {<Logout />} />  */}
+        <Route path= "/user/regist" element= {<BecomeHost />} />
+        <Route path= "/user/regist/result" element= {<Ammenities />} />
+        <Route path= "/user/regist/uploaded" element= {<Ammenities />} />
+        <Route path= "room" element ={<Room />} />
       </Routes>
     </Layout>
   )
