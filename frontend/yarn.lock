@@ -9869,6 +9869,11 @@ url-parse@^1.5.3:
     querystringify "^2.1.1"
     requires-port "^1.0.0"
 
+use-reducer-with-side-effects@^2.2.0:
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/use-reducer-with-side-effects/-/use-reducer-with-side-effects-2.2.0.tgz#c314d5e76f1196799792af94fd1a20361697107d"
+  integrity sha512-/5XGudjgG8c+HoqQlSa/kp6RzaO10wBLZj6pbgpl2abp9xX2KuHa7KDJLf7UshHuI0sCZRWEYve6NK7uGURGOg==
+
 util-deprecate@^1.0.1, util-deprecate@^1.0.2, util-deprecate@~1.0.1:
   version "1.0.2"
   resolved "https://registry.npmjs.org/util-deprecate/-/util-deprecate-1.0.2.tgz"
