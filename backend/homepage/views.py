@@ -1,10 +1,10 @@
-from .models import Post, Photo
+from .models import Post
 from rest_framework.decorators import api_view
 import requests
 from django.http import JsonResponse
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.permissions import AllowAny
-from .serializers import PostSerializer, PhotoSerializer
+from .serializers import PostSerializer
 
 from django_web.server_urls import *
 import copy
@@ -33,13 +33,26 @@ def upload_images(request):
         print("classification complete")
 
         # text generation fast api 호출
-        result_textgen= requests.post(fast_api_ip_generation, files=file3)
-        print(result_textgen.json())
+        result_generation= requests.post(fast_api_ip_generation, files=file3)
+        print(result_generation.json())
         print("textgeneration complete")
+
 
         return JsonResponse({"detect_result": result_detect.json(), "classi_result": result_classification.json(), "text_result":result_generation.json()})
     return JsonResponse({'result': "fail"}, status=400)
 
+# 태원 추가
+# 게시물 모델 생성
+# post_model = Post.objects.create(
+#    userId = user_id,
+#    title = "미구현",
+#    caption="미구현",
+#    photos = photo_paths,
+#    classifications = result_classification.json(),
+#    detections = result_detect.json(),
+#    ammenities = "미구현",
+# )
+# print('게시물 모델 생성:', post_model)
 
 #####################################################################################################333
 
@@ -53,13 +66,3 @@ class PostViewSet(ModelViewSet):
     serializer_class = PostSerializer
     permission_classes = [AllowAny]  # FIXME: 인증 적용
 
-
-class PhotoViewSet(ModelViewSet):
-    queryset = Post.objects.all()
-    serializer_class = PhotoSerializer
-
-
-class PhotoViewSet(ModelViewSet):
-    queryset = Photo.objects.all()
-    serializer_class = PhotoSerializer
-    permission_classes = [AllowAny]  # FIXME: 인증 적용
