@@ -9,7 +9,7 @@ cors_list = [
     default_ip+":9596",
 ]
 
-secret_key = ''
+secret_key = '_hb19%o6hdnp*9i=_epdb5i%^+q!s#9na0ff#&welq9&j0m%a1'
 
 fast_api_ip_detection = default_ip+":9596/dl/detection"
 fast_api_ip_classification = default_ip+":9597/dl/classification"
