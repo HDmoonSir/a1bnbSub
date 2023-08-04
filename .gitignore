@@ -2,5 +2,11 @@ backend/venv_winV
 detection/venv_winV
 
 *.pt
+*.pyc
 
 classification/LightGlue
+
+backend/media/images
+
+backend/django_web/server_urls.py
+frontend/src/pages/back_ip_port.js

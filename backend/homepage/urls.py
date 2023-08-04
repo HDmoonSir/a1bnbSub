@@ -6,14 +6,13 @@ from .views import upload_images
 
 router = DefaultRouter()
 router.register('posts', views.PostViewSet)
-router.register('photos', views.PhotoViewSet)
 
 urlpatterns =[
     # path('upload/', upload_images), # /become-host 에서 post 요청 올 때 호출 
     path('become-host/', upload_images),
     # path('get/ammenities/', get_ammenities), # /become-host/ammenities에서 get 요청 올 때 호출
 
-    # 게시물 api
+    # 모델 api
     path('api/', include(router.urls)),
 ]
 
