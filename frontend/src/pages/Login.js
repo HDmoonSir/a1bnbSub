@@ -5,16 +5,19 @@ import { useNavigate } from "react-router-dom";
 import Axios from "axios";
 import useLocalStorage from "../utils/useLocalStorage";
 import { back_ip_port } from './back_ip_port'
+import { useAppContext } from "../store";
+import { setToken } from "../store";
 
 const serverUrl = `${back_ip_port}accounts/token/`;
 
 export default function Login() {
+    const { dispatch } = useAppContext();
+    const location = useLocation();
     const navigate = useNavigate();
-    const [jwtToken, setJwtToken] = useLocalStorage("jwtToken", "");
     const [fieldErrors, setFieldErrors] = useState({});
 
-    const navigateToSignup = () => {
-        navigate("/accounts/signup");
+    const { from: loginRedirectUrl } = location.state || {
+        from: { pathname: "/" }
     };
 
     const onFinish = values => {
@@ -32,13 +35,13 @@ export default function Login() {
                     data: { token: jwtToken }
                 } = response;
 
-                setJwtToken(jwtToken);
+                dispatch(setToken(jwtToken));
 
                 notification.open({
                     message: "로그인 성공",
                     icon: <SmileOutlined style={{ color: "#108ee9" }} />
                 });
-                navigate("/");
+                navigate(loginRedirectUrl);
             } catch (error) {
                 if (error.response) {
                     notification.open({

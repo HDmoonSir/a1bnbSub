@@ -8,6 +8,7 @@ import Signup from './pages/Signup';
 import Mypage from './pages/Mypage';
 import BecomeHost from './pages/BecomeHost';
 import Ammenities from './pages/Ammenities';
+import LoginRequiredRoute from './utils/LoginRequiredRoute';
 
 function App(){
   return (
