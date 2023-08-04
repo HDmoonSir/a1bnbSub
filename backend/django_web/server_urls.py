@@ -1,14 +1,20 @@
-CORS_ORIGIN_WHITELIST = [
-    "http://localhost:3000",
-    "http://127.0.0.1:3000",
-    "http://localhost:8000",
-    "http://127.0.0.1:8000",
-    "http://127.0.0.1:9596" # fast api test url
+#gitignore에 꼭 넣기
+default_ip = "http://localhost"
+
+cors_list = [
+    default_ip+":3000", 
+    default_ip+":3000", 
+    default_ip+":8000", 
+    default_ip+":8000",
+    default_ip+":9596",
 ]
 
-INTERNAL_IPS = ["127.0.0.1"]
-SECRET_KEY = '_hb19%o6hdnp*9i=_epdb5i%^+q!s#9na0ff#&welq9&j0m%a1'
+secret_key = ''
 
-detect_Url = "http://127.0.0.1:9596/dl/detection"
-classification_Url = "http://127.0.0.1:9597/dl/classification"
-textgen_Url = "http://127.0.0.1:9596/dl/generation"
+fast_api_ip_detection = default_ip+":9596/dl/detection"
+fast_api_ip_classification = default_ip+":9597/dl/classification"
+fast_api_ip_generation = default_ip+":9598/dl/generation"
+
+frontend_ip = [default_ip, default_ip+":3000", default_ip+":8000",]
+
+INTERNAL_IPS = ["127.0.0.1"]

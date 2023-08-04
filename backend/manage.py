@@ -18,6 +18,7 @@ def main():
         ) from exc
     
     # add
+    # react 부분 제거 필요
     try: # 리액트 
         if sys.argv[2] == 'react':
             react_root = Path(__file__).resolve().parent.parent / 'frontend'

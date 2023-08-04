@@ -5,11 +5,14 @@ import uvicorn
 from starlette.middleware.cors import CORSMiddleware
 from typing import List
 
-from PIL import Image
+from PIL import Image, ImageDraw
 import io
 import shutil
 import os
 from pathlib import Path
+import pylab
+
+import torch
 
 import json
 
@@ -32,20 +35,6 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# from pymongo import MongoClient
-# client =MongoClient('localhost', 27017)
-# db= client.kdt
-
-# # db.users.insert_one({'name': 'admin'}) # insert
-# db.users.delete_one({'name':'admin'})
-
-# all_users= list(db.users.find({}))
-# print(all_users)
-
-# @app.get("/items/{item_id}")
-# def read_item(item_id: int, q: Union[str, None] = None):
-#     return {"item_id": item_id, "q": q}
-
 # detection용 json형식 변환 함수
 def custom_jsonify(result, file_names):
     output = {}
@@ -60,6 +49,37 @@ def custom_jsonify(result, file_names):
             output[n][name] = bbox
     return output
 
+object_list = ['Bathtub', 
+                'Bed',
+                'Chest of drawers',
+                'Closet',
+                'Computer monitor',
+                'Couch',
+                'Frying pan',
+                'Hair dryer',
+                'Home appliance',
+                'Jacuzzi',
+                'Kitchen appliance',
+                'Microwave oven',
+                'Oven',
+                'Pressure cooker',
+                'Printer',
+                'Refrigerator',
+                'Sink',
+                'Sofa bed',
+                'Swimming pool',
+                'Table',
+                'Wardrobe',
+                'Washing machine',
+                'Television',
+                'toaster']
+NUM_COLORS = len(object_list)
+
+def get_color(label):
+    cm = pylab.get_cmap('gist_rainbow')
+    color = cm(1.*object_list.index(label)/NUM_COLORS) 
+    return color
+
 @app.post("/dl/detection")
 async def detection(images: List[UploadFile] = File(...)):
     file_data = [image.file.read() for image in images]
@@ -69,35 +89,26 @@ async def detection(images: List[UploadFile] = File(...)):
 
     model = YOLO('detection.pt')
     result = model(infer_images)
-    print('detection success!!!!!!!!')
-    # print(custom_jsonify(result, file_names))
+
+    # (detection) bbox 그려주는 함수
+    def draw_bbox(detect_json):
+        img_dir = "../backend/media/images"
+        if not os.path.exists(img_dir):
+            os.makedirs(img_dir)
+
+        for img_file, bbox in detect_json.items():
+            img_idx = file_names.index(img_file)
+            image = infer_images[img_idx]
+            draw = ImageDraw.Draw(image)
+
+            for label, bbox in bbox.items():
+                x1, y1, x2, y2, _ = bbox
+                color = get_color(label)
+                color = (int(color[0] * 255), int(color[1] * 255), int(color[2] * 255))
+                draw.rectangle([x1, y1, x2, y2], outline = color, width = 4)
+
+            output_path = os.path.join(img_dir, img_file)
+            image.save(output_path)
+    draw_bbox(custom_jsonify(result, file_names))
+    torch.cuda.empty_cache()
     return {"result": custom_jsonify(result, file_names)}
-
-# @app.post("/dl/classification")
-# async def classification(images: List[UploadFile] = File(...)):
-#     # test 용 return 값
-#     test_result= {
-#          "post_1" : {
-#                 "test1" : ["Room 1", 0.5],
-# 				"test2" : ["Bathroom 1", 0.3],
-# 				"test3" : ["Room 1", 0.8],
-# 				"test4" : ["Balcony", 0.6],
-# 				"test5" : ["Living room", 0.7],
-# 				"test6" : ["Room 2", 0.9],
-# 				"test7" : ["Bathroom 2", 0.8],
-# 				"test8" : ["Others", 0.2],
-#          }
-#     }
-#     # return {"result": "classification success!"}
-#     return {"result": test_result}
-
-# @app.post("/dl/generation")
-# async def generation(images: List[UploadFile] = File(...)):
-#      # test 용 return 값
-#     test_result= {
-#          "post_1" : {
-#                  "test1" : "편안한 분위기의 방입니다."
-#          }
-#     }
-#     # return {"result": "generation success!"}
-#     return {"result": test_result}

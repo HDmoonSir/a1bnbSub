@@ -44,8 +44,8 @@ def label_rooms(filename_image_pairs, room_type, label_dict):
     filenames = [filename_image_pair[0] for filename_image_pair in filename_image_pairs]
     images = [filename_image_pair[1] for filename_image_pair in filename_image_pairs]
     
-    # device = torch.device('cuda' if torch.cuda.is_available() else 'cpu') 
-    device = torch.device('cpu')
+    device = torch.device('cuda' if torch.cuda.is_available() else 'cpu') 
+    # device = torch.device('cpu')
     extractor = SuperPoint(max_num_keypoints=1024).eval().to(device)  # load the extractor
     matcher = LightGlue(features='superpoint').eval().to(device)
 
@@ -72,17 +72,17 @@ def label_rooms(filename_image_pairs, room_type, label_dict):
         top_k = torch.topk(scores, top_k).indices
         m_kpts0_top_k, m_kpts1_top_k = m_kpts0[top_k], m_kpts1[top_k]
 
-        H, _ = cv2.findHomography(m_kpts0_top_k.numpy(), m_kpts1_top_k.numpy(), cv2.USAC_MAGSAC)
+        H, _ = cv2.findHomography(m_kpts0_top_k.cpu().numpy(), m_kpts1_top_k.cpu().numpy(), cv2.USAC_MAGSAC)
 
         correct = 0
         projected_m_kpts1 = []
         projection_errors = []
         for i in range(len(matches)):
-            projected_m_kpts0 = H @ np.append(m_kpts0[i].numpy(), 1)
+            projected_m_kpts0 = H @ np.append(m_kpts0[i].cpu().numpy(), 1)
             projected_m_kpts0 /= projected_m_kpts0[2]
             projected_m_kpts0 = projected_m_kpts0[:2]
             projected_m_kpts1.append(projected_m_kpts0)
-            projection_error = np.linalg.norm(projected_m_kpts0 - m_kpts1[i].numpy())
+            projection_error = np.linalg.norm(projected_m_kpts0 - m_kpts1[i].cpu().numpy())
             projection_errors.append(projection_error)
             if projection_error < 30:
                 correct += 1

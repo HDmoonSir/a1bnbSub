@@ -4,6 +4,9 @@ import { SmileOutlined, FrownOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
 import Axios from "axios";
 import useLocalStorage from "../utils/useLocalStorage";
+import { back_ip_port } from './back_ip_port'
+
+const serverUrl = `${back_ip_port}accounts/token/`;
 
 export default function Login() {
     const navigate = useNavigate();
@@ -23,7 +26,7 @@ export default function Login() {
             const data = { username, password };
             try {
                 const response = await Axios.post(
-                    "http://localhost:8000/accounts/token/",
+                    serverUrl,
                     data);
                 const {
                     data: { token: jwtToken }
