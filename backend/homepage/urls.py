@@ -6,9 +6,10 @@ from .views import upload_images
 
 router = DefaultRouter()
 router.register('posts', views.PostViewSet)
+router.register('images', views.PostViewSet)
 
 urlpatterns =[
-    # path('upload/', upload_images), # /become-host 에서 post 요청 올 때 호출 
+    # path('upload/', upload_images), # /become-host 에서 post 요청 올 때 호출
     path('become-host/', upload_images),
     # path('get/ammenities/', get_ammenities), # /become-host/ammenities에서 get 요청 올 때 호출
 
