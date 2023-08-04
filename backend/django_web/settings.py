@@ -16,10 +16,6 @@ import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-# 리액트 폴더 
-# REACT_DIR= Path(__file__).resolve().parent.parent.parent / 'frontend'
-
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
@@ -28,7 +24,43 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+SECRET_KEY = secret_key
+
+ALLOWED_HOSTS = frontend_ip + ["*"]
+
+# CSRF Setting
+CORS_ORIGIN_ALLOW_ALL = True
+
+CORS_ALLOW_CREDENTIALS = True
+
+CSRF_TRUSTED_ORIGINS = frontend_ip
+
+CORS_ORIGIN_WHITELIST = cors_list
+
+CSRF_COOKIE_NAME = 'csrftoken'
+
+CSRF_HEADER_NAME = 'X-CSRFToken'
+
+CORS_ALLOW_HEADERS = (
+    'access-control-allow-credentials',
+    'access-control-allow-origin',
+    'access-control-request-method',
+    'access-control-request-headers',
+    'accept',
+    'accept-encoding',
+    'accept-language',
+    'authorization',
+    'connection',
+    'content-type',
+    'dnt',
+    'credentials',
+    'host',
+    'origin',
+    'user-agent',
+    'X-CSRFToken',
+    'csrftoken',
+    'x-requested-with',
+)
 
 # post - ram 확장
 FILE_UPLOAD_MAX_MEMORY_SIZE = 10 * 1024 * 1024
@@ -56,7 +88,7 @@ MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
+    # 'django.middleware.csrf.CsrfViewMiddleware', # 임시로 주석 처리
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
@@ -155,7 +187,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 # }
 
 JWT_AUTH = {
-    "JWT_SECRET_KEY": SECRET_KEY,  # FIXME: JWT_SECRET_KEY
+    "JWT_SECRET_KEY": secret_key,  # FIXME: JWT_SECRET_KEY
     "JWT_ALGORITHM": "HS256",
     "JWT_ALLOW_REFRESH": True,
     "JWT_EXPIRATION_DELTA": timedelta(days=7),
