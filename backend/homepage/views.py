@@ -33,8 +33,8 @@ def upload_images(request):
         print("classification complete")
 
         # text generation fast api 호출
-        result_textgen= requests.post(fast_api_ip_generation, files=file3)
-        print(result_textgen.json())
+        result_generation= requests.post(fast_api_ip_generation, files=file3)
+        print(result_generation.json())
         print("textgeneration complete")
 
         return JsonResponse({"detect_result": result_detect.json(), "classi_result": result_classification.json(), "text_result":result_generation.json()})
