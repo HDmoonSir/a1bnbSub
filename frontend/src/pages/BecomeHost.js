@@ -4,14 +4,12 @@ import Image from 'react-bootstrap/Image'
 import Button from 'react-bootstrap/Button';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { back_ip_port } from './back_ip_port'
 
-// const serverUrl='http://127.0.0.1:8000/mainpage'
-const serverUrl = 'become-host/'
+const serverUrl = `${back_ip_port}become-host/`;
 //CSRF 토큰 
 axios.defaults.xsrfCookieName = "csrftoken";
 axios.defaults.xsrfHeaderName = "X-CSRFToken";
-
-
 
 const BecomeHost = () => {
     const [previewImg, setPreviewImg] = useState([]); // image url
@@ -111,8 +109,7 @@ const BecomeHost = () => {
             // POST 요청 
             axios({
                 method: "POST",
-                // url: serverUrl,
-                url : 'http://127.0.0.1:8000/become-host/',
+                url: serverUrl,
                 mode: "cors",
                 // data: previewImg,
                 data: formData,

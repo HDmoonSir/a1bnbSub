@@ -7,4 +7,3 @@ detection/venv_winV
 classification/LightGlue
 
 backend/media/images
-backend/django_web/server_urls.py

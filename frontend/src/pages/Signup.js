@@ -3,7 +3,9 @@ import { Form, Input, Button, notification } from "antd";
 import { SmileOutlined, FrownOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
 import Axios from "axios";
+import { back_ip_port } from './back_ip_port'
 
+const serverUrl = `${back_ip_port}accounts/signup/`;
 
 export default function Signup() {
     const navigate = useNavigate();
@@ -17,7 +19,7 @@ export default function Signup() {
 
             const data = { username, password };
             try{
-                await Axios.post("http://localhost:8000/accounts/signup/", data);
+                await Axios.post(serverUrl, data);
 
                 notification.open({
                     message: "회원가입 성공",
