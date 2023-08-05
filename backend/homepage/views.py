@@ -47,30 +47,62 @@ def upload_images(request):
     if request.FILES.getlist("images"):
         # fast-api post 요청 부분
         fast_api_images = request.FILES.getlist("images")
-        file = [('images', img) for img in fast_api_images]
-        file2 = copy.deepcopy(file)
-        file3 = copy.deepcopy(file)
+        image_files_detection = [('images', img) for img in fast_api_images]
+        image_files_classification = copy.deepcopy(image_files_detection)
+        image_files_generation = copy.deepcopy(image_files_detection)
 
         # fast api 각각 3번 호출
         # print 부분 logging으로 변경 고려
         # detection fast api 호출
-        result_detect = requests.post(fast_api_ip_detection, files=file)
-        print(result_detect.json())
+        result_detection = requests.post(fast_api_ip_detection, files = image_files_detection)
+        print(result_detection.json())
         print("detection complete")
 
         # # classification fast api 호출
-        result_classification= requests.post(fast_api_ip_classification, files=file2)
+        result_classification= requests.post(fast_api_ip_classification, files = image_files_classification)
         print(result_classification.json())
         print("classification complete")
 
         # text generation fast api 호출
-        result_generation= requests.post(fast_api_ip_generation, files=file3)
+        result_generation= requests.post(fast_api_ip_generation, files = image_files_generation)
         print(result_generation.json())
         print("textgeneration complete")
 
-        return JsonResponse({"detect_result": result_detect.json(), "classi_result": result_classification.json(), "text_result":result_generation.json()})
+        return JsonResponse({"detect_result": result_detection.json(), "classi_result": result_classification.json(), "text_result":result_generation.json()})
     return JsonResponse({'result': "fail"}, status=400)
 
+@api_view(['get'])
+def get_homepage(request):
+    return JsonResponse({'result': "get_homepage success"}, status=200)
+
+@api_view(['get'])
+def get_mypage(request):
+    return JsonResponse({'result': "get_mypage success"}, status=200)
+
+@api_view(['get'])
+def get_result(request):
+    # 태원 추가
+    # 게시물 모델 생성
+    # post_model = Post.objects.create(
+    #    userId = user_id,
+    #    title = "미구현",
+    #    caption = result_generation.json(),
+    #    photos = photo_paths,
+    #    classifications = result_classification.json(),
+    #    detections = result_detection.json(),
+    #    ammenities = "미구현",
+    # )
+    # print('게시물 모델 생성:', post_model)
+    return JsonResponse({'result': "get_result success"}, status=200)
+
+@api_view(['get'])
+def get_uploaded_page(request):
+    return JsonResponse({'result': "get_uploaded_page success"}, status=200)
+
+@api_view(['get'])
+def get_rooms(request):
+    post_id = request.json()
+    return JsonResponse({'result': "get_rooms success"}, status=200)
 
 class PostViewSet(ModelViewSet):
     queryset = Post.objects.all()

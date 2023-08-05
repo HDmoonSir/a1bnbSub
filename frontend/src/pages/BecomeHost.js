@@ -6,7 +6,7 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { back_ip_port } from './back_ip_port'
 
-const serverUrl = `${back_ip_port}become-host/`;
+const serverUrl = `${back_ip_port}user/regist`;
 //CSRF 토큰 
 axios.defaults.xsrfCookieName = "csrftoken";
 axios.defaults.xsrfHeaderName = "X-CSRFToken";
@@ -121,7 +121,7 @@ const BecomeHost = () => {
                     let detect_result = response.data.detect_result.result;
                     let classi_result = response.data.classi_result.result;
                     let text_result= response.data.text_result.result;
-                    navigate("/become-host/ammenities", { state: { detection_result: detect_result, classification_result: classi_result, textgeneration_result: text_result} });
+                    navigate("/user/regist/result", { state: { detection_result: detect_result, classification_result: classi_result, textgeneration_result: text_result} });
                 })
                 .catch((err) => { console.log(err) })
             alert("성공!") // test 

@@ -2,16 +2,19 @@ from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 from rest_framework.urlpatterns import format_suffix_patterns
 from . import views
-from .views import upload_images
+from .views import get_homepage, upload_images, get_rooms, get_mypage, get_result, get_uploaded_page
 
 router = DefaultRouter()
 router.register('posts', views.PostViewSet)
 router.register('images', views.PostViewSet)
 
 urlpatterns =[
-    # path('upload/', upload_images), # /become-host 에서 post 요청 올 때 호출
-    path('become-host/', upload_images),
-    # path('get/ammenities/', get_ammenities), # /become-host/ammenities에서 get 요청 올 때 호출
+    path('home/', get_homepage), 
+    path('user/', get_mypage),
+    path('user/regist', upload_images),
+    path('user/regist/result/', get_result),
+    path('user/regist/uploaded/', get_uploaded_page),
+    path('room/', get_rooms),
 
     # 게시물 api
     path('api/', include(router.urls)),
