@@ -1,7 +1,8 @@
 // 리액트 react-router-dom 수정
 
 import React from "react";
-import { Route, Redirect } from "react-router-dom";
+
+import { Route} from "react-router-dom";
 import { useAppContext } from "../store";
 
 export default function LoginRequiredRoute({
@@ -16,6 +17,9 @@ export default function LoginRequiredRoute({
     } else {
     }
 
+    const navigate = navigate();
+
+
     return (
         <Route
             {...kwargs}
@@ -24,12 +28,14 @@ export default function LoginRequiredRoute({
                     return <Component {...props} />;
                 } else {
                     return (
-                        <Redirect
-                            to={{
-                                pathname: "/accounts/login",
-                                state: { from: props.location }
-                            }}
-                        />
+                        // <Redirect
+                        //     to={{
+                        //         pathname: "/accounts/login",
+                        //         state: { from: props.location }
+                        //     }}
+                        // />
+                        navigate("/accounts/login", 
+                        { state: { from: props.location } })
                     );
                 }
             }}
