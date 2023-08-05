@@ -9,7 +9,7 @@ import User from './pages/User';
 import BecomeHost from './pages/BecomeHost';
 import Ammenities from './pages/Ammenities';
 import Room from './pages/Room';
-// import LoginRequiredRoute from './utils/LoginRequiredRoute';
+import LoginRequiredRoute from './utils/LoginRequiredRoute';
 
 function App(){
   return (

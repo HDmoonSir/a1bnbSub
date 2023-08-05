@@ -14,6 +14,7 @@ const serverUrl = `${back_ip_port}accounts/token/`;
 
 export default function Login() {
     const { dispatch } = useAppContext();
+
     const location = location();
     const navigate = useNavigate();
     const [fieldErrors, setFieldErrors] = useState({});

@@ -1,10 +1,9 @@
 // 리액트 react-router-dom 수정
 
 import React from "react";
-// import { Route, Redirect } from "react-router-dom";
+
 import { Route} from "react-router-dom";
 import { useAppContext } from "../store";
-// import { Navigate } from "react-router-dom";
 
 export default function LoginRequiredRoute({
     component: Component,
@@ -17,7 +16,9 @@ export default function LoginRequiredRoute({
     if (isAuthenticated) {
     } else {
     }
+
     const navigate = navigate();
+
 
     return (
         <Route
