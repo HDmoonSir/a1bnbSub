@@ -1,18 +1,49 @@
-from .models import Post
+from .models import Post, Image
 from rest_framework.decorators import api_view
 import requests
 from django.http import JsonResponse
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.permissions import AllowAny
-from .serializers import PostSerializer
+from .serializers import PostSerializer, ImageSerializer
 
 from django_web.server_urls import *
 import copy
+
+# 더미 데이터 만들때 사용한 코드입니다
+#from accounts.models import User
+#import json
+#@api_view(['GET'])
+#def home_view(request):
+
+    #user = User.objects.first()
+
+    #room = '{"roomInfo": [ {"livingroom01": [["http://18.132.187.120/images/livingroom120230801.jpg", "http://18.132.187.120/images/liningroom120230801.jpg"], {"desk": 1, "chair": 2}]}, {"bathroom01": [["http://18.132.187.120/images/bathroom120230801.jpg", "http://18.132.187.120/images/liningroom120230801.jpg"], {"desk": 1, "chair": 2}]}]}'
+    #room2 = json.loads(room)
+
+    #paths1 =  '{"paths": {"0": "http://18.132.187.120/images/exterior120230801.jpg", "1": "http://18.132.187.120/images/bathroom120230801.jpg", "2": "http://18.132.187.120/images/bathroom120230801.jpg", "3": "http://18.132.187.120/images/exterior120230801.jpg", "4": "http://18.132.187.120/images/bathroom120230801.jpg", "5": "http://18.132.187.120/images/bathroom120230801.jpg", "6": "http://18.132.187.120/images/bathroom120230801.jpg", "7": "http://18.132.187.120/images/bathroom120230801.jpg", "8": "http://18.132.187.120/images/bathroom120230801.jpg", "9": "http://18.132.187.120/images/livingroom120230801.jpg"}}'
+    #paths2 = json.loads(paths1)
+
+    # 포스트 모델 생성
+    #post_model = Post.objects.create(
+    #    user = user,
+    #    title = "oo호텔",
+    #    caption = "소개글입니다.",
+    #    imagePaths = paths2,
+    #    roomInfo = room2
+    #)
+
+    # 이미지 모델 생성
+    #image_model = Image.objects.create(
+    #    imagePath = "http://18.132.187.120/images/bathroom120230801.jpg"
+    #)
+
+
 
 # /upload POST 요청 시 호출
 # 이미지를 fast-api 로 post
 @api_view(['post'])
 def upload_images(request):
+
     if request.FILES.getlist("images"):
         # fast-api post 요청 부분
         fast_api_images = request.FILES.getlist("images")
@@ -73,9 +104,6 @@ def get_rooms(request):
     post_id = request.json()
     return JsonResponse({'result': "get_rooms success"}, status=200)
 
-
-#####################################################################################################333
-
 class PostViewSet(ModelViewSet):
     queryset = Post.objects.all()
     serializer_class = PostSerializer
@@ -84,5 +112,15 @@ class PostViewSet(ModelViewSet):
 class PostViewSet(ModelViewSet):
     queryset = Post.objects.all()
     serializer_class = PostSerializer
+    permission_classes = [AllowAny]  # FIXME: 인증 적용
+
+class ImageViewSet(ModelViewSet):
+    queryset = Image.objects.all()
+    serializer_class = ImageSerializer
+
+
+class ImageViewSet(ModelViewSet):
+    queryset = Image.objects.all()
+    serializer_class = ImageSerializer
     permission_classes = [AllowAny]  # FIXME: 인증 적용
 

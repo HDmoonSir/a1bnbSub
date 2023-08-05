@@ -127,10 +127,10 @@ DATABASES = {
     #    'ENGINE': 'django.db.backends.sqlite3',
     #    'NAME': BASE_DIR / 'db.sqlite3',
     #}
-    # 'default': {
-    #     'ENGINE': 'djongo',
-    #     'NAME': 'a1bnb',
-    # }
+    'default': {
+        'ENGINE': 'djongo',
+        'NAME': 'a1bnb',
+    }
 }
 
 # Password validation

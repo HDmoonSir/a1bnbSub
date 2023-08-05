@@ -6,6 +6,7 @@ from .views import get_homepage, upload_images, get_rooms, get_mypage, get_resul
 
 router = DefaultRouter()
 router.register('posts', views.PostViewSet)
+router.register('images', views.PostViewSet)
 
 urlpatterns =[
     path('home/', get_homepage), 
