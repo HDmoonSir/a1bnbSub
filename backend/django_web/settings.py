@@ -130,6 +130,8 @@ DATABASES = {
     'default': {
         'ENGINE': 'djongo',
         'NAME': 'a1bnb',
+        'HOST': 'host.docker.internal',
+        'PORT': '27017',
     }
 }
 

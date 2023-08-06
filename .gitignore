@@ -10,3 +10,4 @@ backend/media/images
 
 backend/django_web/server_urls.py
 frontend/src/pages/back_ip_port.js
+frontend/package.json
