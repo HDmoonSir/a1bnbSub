@@ -9,6 +9,13 @@ from .serializers import PostSerializer, ImageSerializer
 from django_web.server_urls import *
 import copy
 
+from PIL import Image, ImageDraw
+
+import io
+import json
+import pylab
+import os
+
 # 더미 데이터 만들때 사용한 코드입니다
 #from accounts.models import User
 #import json
@@ -37,7 +44,78 @@ import copy
     #    imagePath = "http://18.132.187.120/images/bathroom120230801.jpg"
     #)
 
+# detection용 json형식 변환 함수
+def custom_jsonify(result, file_names):
+    output = {}
 
+    for idx, lst in enumerate(result):
+        n = file_names[idx]
+        output[n] = {}
+        for item in lst:
+            ite = json.loads(item.tojson())
+            name = ite[0]["name"]
+            bbox = [ite[0]["box"]["x1"], ite[0]["box"]["y1"], ite[0]["box"]["x2"], ite[0]["box"]["y2"], ite[0]["confidence"]]
+            output[n][name] = bbox
+    return output
+
+object_list = ['Bathtub', 
+                'Bed',
+                'Chest of drawers',
+                'Closet',
+                'Computer monitor',
+                'Couch',
+                'Frying pan',
+                'Hair dryer',
+                'Home appliance',
+                'Jacuzzi',
+                'Kitchen appliance',
+                'Microwave oven',
+                'Oven',
+                'Pressure cooker',
+                'Printer',
+                'Refrigerator',
+                'Sink',
+                'Sofa bed',
+                'Swimming pool',
+                'Table',
+                'Wardrobe',
+                'Washing machine',
+                'Television',
+                'toaster']
+
+NUM_COLORS = len(object_list)
+
+def get_color(label):
+    cm = pylab.get_cmap('gist_rainbow')
+    color = cm(1.*object_list.index(label)/NUM_COLORS) 
+    return color
+
+# (detection) bbox 그려주는 함수. return : PIL.Image.Image 객체
+def draw_bbox(detect_json, image_files_bbox):
+    img_dir = "../backend/media/images"
+    if not os.path.exists(img_dir):
+        os.makedirs(img_dir)
+
+    file_data = [image.file.read() for image in image_files_bbox]
+    infer_images = [Image.open(io.BytesIO(data)) for data in file_data]
+    file_names = [image.filename for image in image_files_bbox]
+
+    bbox_images = []
+
+    for img_file, bbox in detect_json.items():
+        img_idx = file_names.index(img_file)
+        image = infer_images[img_idx]
+        draw = ImageDraw.Draw(image)
+
+        for label, bbox in bbox.items():
+            x1, y1, x2, y2, _ = bbox
+            color = get_color(label)
+            color = (int(color[0] * 255), int(color[1] * 255), int(color[2] * 255))
+            draw.rectangle([x1, y1, x2, y2], outline = color, width = 4)
+        bbox_images.append(image)
+        output_path = os.path.join(img_dir, img_file)
+        image.save(output_path)
+    return bbox_images
 
 # /upload POST 요청 시 호출
 # 이미지를 fast-api 로 post
@@ -50,6 +128,8 @@ def upload_images(request):
         image_files_detection = [('images', img) for img in fast_api_images]
         image_files_classification = copy.deepcopy(image_files_detection)
         image_files_generation = copy.deepcopy(image_files_detection)
+        image_files_bbox = copy.deepcopy(image_files_detection)
+        
 
         # fast api 각각 3번 호출
         # print 부분 logging으로 변경 고려
@@ -67,6 +147,8 @@ def upload_images(request):
         result_generation= requests.post(fast_api_ip_generation, files = image_files_generation)
         print(result_generation.json())
         print("textgeneration complete")
+
+        draw_bbox(result_detection['result'])
 
         return JsonResponse({"detect_result": result_detection.json(), "classi_result": result_classification.json(), "text_result":result_generation.json()})
     return JsonResponse({'result': "fail"}, status=400)
@@ -123,4 +205,3 @@ class ImageViewSet(ModelViewSet):
     queryset = Image.objects.all()
     serializer_class = ImageSerializer
     permission_classes = [AllowAny]  # FIXME: 인증 적용
-
