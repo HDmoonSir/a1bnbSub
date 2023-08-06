@@ -130,8 +130,16 @@ DATABASES = {
     'default': {
         'ENGINE': 'djongo',
         'NAME': 'a1bnb',
-        'HOST': 'host.docker.internal',
-        'PORT': '27017',
+        # 'HOST': 'host.docker.internal',
+        # 'PORT': '27017',
+        'CLIENT': {
+            'host': 'host.docker.internal',
+            'port': 27017,
+            # 'username': '몽고DB 사용자 계정을 넣어주세요',
+            # 'password': "몽고DB 사용자 비밀번호 넣어주세요",
+            # 'authSource': 'admin',
+            # 'authMechanism': 'SCRAM-SHA-1'
+        }
     }
 }
 
