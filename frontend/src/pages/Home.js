@@ -6,18 +6,15 @@ import Card from 'react-bootstrap/Card';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 import { back_ip_port } from './back_ip_port';
-
 const serverUrl = `${back_ip_port}`;
 
 function Home() {
     const navigate = useNavigate();
     const [imageList, setImageList] = useState([]);
     // const [searchParams] = useSearchParams();
-
     useEffect(() => {
         fetchData();
     }, []);
-
     const fetchData = async () => {
         try {
             // const postid = searchParams.get('postid');
@@ -29,11 +26,9 @@ function Home() {
             console.error('Error fetching images:', error);
         }
     };
-
     const handleCardClick = (postId) => {
         navigate(`/room/${postId}`);
     };
-
     return (
         <div>
             <h1 style={{ textAlign: 'center' }}>홈</h1>
@@ -54,7 +49,6 @@ function Home() {
         </div>
     );
 }
-
 export default Home;
 
 // // import { Link } from 'react-router-dom';

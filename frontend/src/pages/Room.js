@@ -45,7 +45,7 @@ const Room = () => {
     // useSearchParams 사용
     // setSearchParams의 경우 다음 페이지에 쿼리값을 전해주기 위해 사용 room?postid=3
     // const [searchParams, setSearchParams]=useSearchParams();
-    const data = {}
+    let data = {}
     let userName = ''
     let title = ''
     let caption = ''
@@ -84,7 +84,7 @@ const Room = () => {
     
     return (
       <div>
-
+        console.log();
         <hr></hr>
         <h1 style={{textAlign:'left'}}>{title}</h1>
         <p style={{textAlign:'right'}}>{userName}</p>
