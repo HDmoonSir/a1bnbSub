@@ -18,34 +18,6 @@ import os
 
 import base64
 
-# 더미 데이터 만들때 사용한 코드입니다
-#from accounts.models import User
-#import json
-#@api_view(['GET'])
-#def home_view(request):
-
-    #user = User.objects.first()
-
-    #room = '{"roomInfo": [ {"livingroom01": [["http://18.132.187.120/images/livingroom120230801.jpg", "http://18.132.187.120/images/liningroom120230801.jpg"], {"desk": 1, "chair": 2}]}, {"bathroom01": [["http://18.132.187.120/images/bathroom120230801.jpg", "http://18.132.187.120/images/liningroom120230801.jpg"], {"desk": 1, "chair": 2}]}]}'
-    #room2 = json.loads(room)
-
-    #paths1 =  '{"paths": {"0": "http://18.132.187.120/images/exterior120230801.jpg", "1": "http://18.132.187.120/images/bathroom120230801.jpg", "2": "http://18.132.187.120/images/bathroom120230801.jpg", "3": "http://18.132.187.120/images/exterior120230801.jpg", "4": "http://18.132.187.120/images/bathroom120230801.jpg", "5": "http://18.132.187.120/images/bathroom120230801.jpg", "6": "http://18.132.187.120/images/bathroom120230801.jpg", "7": "http://18.132.187.120/images/bathroom120230801.jpg", "8": "http://18.132.187.120/images/bathroom120230801.jpg", "9": "http://18.132.187.120/images/livingroom120230801.jpg"}}'
-    #paths2 = json.loads(paths1)
-
-    # 포스트 모델 생성
-    #post_model = Post.objects.create(
-    #    user = user,
-    #    title = "oo호텔",
-    #    caption = "소개글입니다.",
-    #    imagePaths = paths2,
-    #    roomInfo = room2
-    #)
-
-    # 이미지 모델 생성
-    #image_model = Image.objects.create(
-    #    imagePath = "http://18.132.187.120/images/bathroom120230801.jpg"
-    #)
-
 # detection용 json형식 변환 함수
 def custom_jsonify(result, file_names):
     output = {}
@@ -274,8 +246,42 @@ def get_uploaded_page(request):
 
 def get_room(request):
     #post ID로 필터링해서 가져오기
-    posts = Post.objects.all().filter(post_id = request.GET.get('post_id'))
+    # posts = Post.objects.all().filter(post_id = request.GET.get('post_id'))
+    # data = {
+    #     'postInfo': list(posts.values())
+    # }
     data = {
-        'postInfo': list(posts.values())
-    }
+        'postInfo': 
+            {
+                "userName": "망망망",
+                "title": "좋은 방입니다",
+                "post_id": 3,
+                "thumb_image": "http://hostip/images/thumbimage1.jpg",
+                "caption": "너무 좋아서 평생 살고싶네요",
+                "roomInfo": {
+                    "livingroom01": {
+                        "img_path": [
+                            "http://hostip/images/livingroomimage1.jpg",
+                            "http://hostip/images/livingroomimage2.jpg"
+                        ],
+                        "detected": {
+                            "Desk": 2,
+                            "Table": 1,
+                            "Lamp": 1
+                        }
+                    },
+                    "kitchen01": {
+                        "img_path": [
+                            "http://hostip/images/kitchenimage1.jpg",
+                            "http://hostip/images/kitchenimage2.jpg"
+                        ],
+                        "detected": {
+                            "Oven": 2,
+                            "Microwave": 1,
+                            "Ref": 1
+                        }
+                    }
+                }
+            }
+        }
     return JsonResponse(data, status=200)
