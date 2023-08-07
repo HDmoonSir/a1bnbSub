@@ -138,11 +138,14 @@ def upload_images(request):
 @api_view(['get'])
 def get_homepage(request):
     #post ID로 필터링해서 최신순으로 8개 가져오기
-    posts = Post.objects.all().order_by('-postID')[:8]
-    data = {
-        'homepageInfo': list(posts.values())
-    }
-    return JsonResponse(data, status=200)
+    try:
+        posts = Post.objects.all().order_by('-postID')[:8]
+        data = {
+            'homepageInfo': list(posts.values())
+        }
+        return JsonResponse(data, status=200)
+    except:
+        return JsonResponse("Fail to load posts from DB", status=400)
 
 @api_view(['get'])
 def get_mypage(request):
