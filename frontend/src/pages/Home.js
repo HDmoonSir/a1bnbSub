@@ -1,4 +1,5 @@
-import { useNavigate, useSearchParams, useEffect, useState } from 'react';
+import { useSearchParams, useEffect, useState } from 'react';
+import { useNavigate, useLocation} from "react-router-dom";
 import axios from 'axios';
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
@@ -8,7 +9,7 @@ import { back_ip_port } from './back_ip_port';
 
 const serverUrl = `${back_ip_port}`;
 
-const Home = () => {
+function Home() {
     const navigate = useNavigate();
     const [imageList, setImageList] = useState([]);
     // const [searchParams] = useSearchParams();
@@ -21,7 +22,7 @@ const Home = () => {
         try {
             // const postid = searchParams.get('postid');
             const response = await axios.get(`${serverUrl}`);
-            const latestData = response.data.homepageInfo; // 최신 8개 데이터 배열
+            const latestData = response.data; // 최신 8개 데이터 배열
 
             setImageList(latestData); // 이미지 리스트에 최신 데이터 할당
         } catch (error) {
@@ -52,7 +53,7 @@ const Home = () => {
             </Row>
         </div>
     );
-};
+}
 
 export default Home;
 
