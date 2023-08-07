@@ -1,7 +1,11 @@
 // 메인에서 숙소 열람 페이지 
 import Image from 'react-bootstrap/Image';
 // useSearchParams로 전 페이지에서 보내온 post_id값을 받아옴
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams, useState } from "react-router-dom";
+import Axios from 'axios';
+import { Form, Input, Button, notification } from "antd";
+import { SmileOutlined, FrownOutlined } from "@ant-design/icons";
+
 import { back_ip_port } from './back_ip_port'
 
 const serverUrl = `${back_ip_port}room`;
