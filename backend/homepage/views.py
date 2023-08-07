@@ -86,7 +86,7 @@ def draw_bbox(detect_json, image_files_bbox):
 
             # bbox draw
             draw.rectangle([x1, y1, x2, y2], outline = color, width = 4)
-            
+
             # text background draw
             draw.rectangle([x1, y1-20, x1+font.getsize(label)[0], y1], outline = color,  fill = color,  width = 0)
             draw.text((x1, y1-20), label_text, font=font, fill=(255,255,255))
@@ -140,7 +140,10 @@ def upload_images(request):
         bbox_images = draw_bbox(result_detection['result'], image_files_detection)
         result_images = get_image_data(bbox_images)
 
-        return JsonResponse({"detect_result": result_detection.json(), "classi_result": result_classification.json(), "text_result":result_generation.json(), "bbox_result" : result_images})
+        return JsonResponse({"detect_result": result_detection.json(), 
+                             "classi_result": result_classification.json(), 
+                             "text_result":result_generation.json(),
+                             "bbox_result" : result_images})
     return JsonResponse({'result': "fail"}, status=400)
 
 @api_view(['get'])
@@ -153,16 +156,19 @@ def get_homepage(request):
         }
         return JsonResponse(data, status=200)
     except:
-        return JsonResponse("Fail to load posts from DB", status=400)
+        return JsonResponse({"result": "Fail to load posts from DB"}, status=400)
 
 @api_view(['get'])
 def get_mypage(request):
-    #user로 필터링해서 가져오기
-    posts = Post.objects.all().filter(user = request.user)
-    data = {
-        'mypageInfo': list(posts.values())
-    }
-    return JsonResponse(data, status=200)
+    try:
+        #user로 필터링해서 가져오기
+        posts = Post.objects.all().filter(user = request.user)
+        data = {
+            'mypageInfo': list(posts.values())
+        }
+        return JsonResponse(data, status=200)
+    except:
+        return JsonResponse({"result": "Fail to load posts from DB"}, status=400)
 
 def count_objects_by_room(img_paths, result_detection):
     def extract_labels(result):
@@ -195,23 +201,26 @@ def count_objects_by_room(img_paths, result_detection):
 
 @api_view(['get'])
 def get_result(request):
-    rooms = set(request.result_classification.values())
-    
-    data = {'dlInfo': {}}
-    for room in rooms:
-        img_paths = [img_path for img_path in request.result_detection.keys() \
-                     if request.result_classification[img_path] == room]
-        data['dlInfo'][room]['img_paths'] = img_paths
-        data['dlInfo'][room]['list_amenities'] = count_objects_by_room(img_paths,
-                                                                       request.result_detection, 
-                                                                       request.result_classification,
-                                                                       room)
-        data['dlInfo'][room]['result_thumb_text'] = request.result_generation
-    return JsonResponse(data, status=200)
+    try:
+        rooms = set(request.result_classification.values())
+        
+        data = {'dlInfo': {}}
+        for room in rooms:
+            img_paths = [img_path for img_path in request.result_detection.keys() \
+                        if request.result_classification[img_path] == room]
+            data['dlInfo'][room]['img_paths'] = img_paths
+            data['dlInfo'][room]['list_amenities'] = count_objects_by_room(img_paths,
+                                                                        request.result_detection, 
+                                                                        request.result_classification,
+                                                                        room)
+            data['dlInfo'][room]['result_thumb_text'] = request.result_generation
+        return JsonResponse(data, status=200)
+    except:
+        return JsonResponse({"result": "Fail to get result"}, status=400)
 
 @api_view(['post'])
 def upload_post(request):
-    if request.user.is_authenticated:
+    try:
         user = request.user
         rooms = set(request.confirm_list_room_class.values())
     
@@ -247,7 +256,8 @@ def upload_post(request):
         # )
 
         return JsonResponse({'result': "upload_post success"}, status=201)
-    return JsonResponse({'result': "User is not authenticated"}, status=400)
+    except:
+        return JsonResponse({'result': "Fail to upload"}, status=400)
 
 @api_view(['get'])
 def get_uploaded_page(request):
@@ -256,42 +266,46 @@ def get_uploaded_page(request):
 @api_view(['get'])
 def get_room(request):
     #post ID로 필터링해서 가져오기
-    # posts = Post.objects.all().filter(post_id = request.GET.get('post_id'))
-    # data = {
-    #     'postInfo': list(posts.values())
-    # }
-    data = {
-        'postInfo': 
-            {
-                "userName": "망망망",
-                "title": "좋은 방입니다",
-                "post_id": 3,
-                "thumb_image": "http://hostip/images/thumbimage1.jpg",
-                "caption": "너무 좋아서 평생 살고싶네요",
-                "roomInfo": {
-                    "livingroom01": {
-                        "img_path": [
-                            "http://hostip/images/livingroomimage1.jpg",
-                            "http://hostip/images/livingroomimage2.jpg"
-                        ],
-                        "detected": {
-                            "Desk": 2,
-                            "Table": 1,
-                            "Lamp": 1
-                        }
-                    },
-                    "kitchen01": {
-                        "img_path": [
-                            "http://hostip/images/kitchenimage1.jpg",
-                            "http://hostip/images/kitchenimage2.jpg"
-                        ],
-                        "detected": {
-                            "Oven": 2,
-                            "Microwave": 1,
-                            "Ref": 1
+    try:
+        print("Success to load room")
+        posts = Post.objects.all().filter(post_id = request.GET.get('post_id'))
+        data = {
+            'postInfo': list(posts.values())
+        }
+    except:
+        print("Fail to load room, get dummy data")
+        data = {
+            'postInfo': 
+                {
+                    "userName": "망망망",
+                    "title": "좋은 방입니다",
+                    "post_id": 3,
+                    "thumb_image": "http://hostip/images/thumbimage1.jpg",
+                    "caption": "너무 좋아서 평생 살고싶네요",
+                    "roomInfo": {
+                        "livingroom01": {
+                            "img_path": [
+                                "http://hostip/images/livingroomimage1.jpg",
+                                "http://hostip/images/livingroomimage2.jpg"
+                            ],
+                            "detected": {
+                                "Desk": 2,
+                                "Table": 1,
+                                "Lamp": 1
+                            }
+                        },
+                        "kitchen01": {
+                            "img_path": [
+                                "http://hostip/images/kitchenimage1.jpg",
+                                "http://hostip/images/kitchenimage2.jpg"
+                            ],
+                            "detected": {
+                                "Oven": 2,
+                                "Microwave": 1,
+                                "Ref": 1
+                            }
                         }
                     }
                 }
             }
-        }
     return JsonResponse(data, status=200)
