@@ -41,11 +41,10 @@ const othersImageView = (roomInfo) => {
 };
 
 const Room = () => {
-    const navigate = useNavigate();
-    const [fieldErrors, setFieldErrors]=useState({});
+    // const navigate = useNavigate();
     // useSearchParams 사용
     // setSearchParams의 경우 다음 페이지에 쿼리값을 전해주기 위해 사용 room?postid=3
-    const [searchParams, setSearchParams]=useSearchParams();
+    // const [searchParams, setSearchParams]=useSearchParams();
     const data = {}
     let userName = ''
     let title = ''
@@ -55,68 +54,32 @@ const Room = () => {
 
     // 쿼리 get으로 받아오기
     // const postid = searchParams.get('postid');
-
     // serverUrl =  `${serverUrl}?postid=${postid}`;
-    setFieldErrors({});
 
-    // const data = { username, password };
+    // data 설정
+    // data = response.data.postInfo
+    // userName = JSON.stringify(data.userName)
+    // title = JSON.stringify(data.title)
+    // thumbImgSrc = JSON.stringify(data.thumbImgSrc)
+    // caption = JSON.stringify(data.caption)
+    // roomInfo = data.roomInfo
+
     // GET요청
     useEffect(() => {
-      try{
-        axios.get(serverUrl)
-      .then((response) => {
-        data = response.data.postInfo
-        userName = JSON.stringify(data.userName)
-        title = JSON.stringify(data.title)
-        thumbImgSrc = JSON.stringify(data.thumbImgSrc)
-        caption = JSON.stringify(data.caption)
-      })
-          // axios.get(serverUrl)
-          // .then(function (response) {
-          //   // 성공 핸들링
-          //   // db를 json 파일로 해서 받을 예정 response.data = json 형태
-            
-          // })
-          // .catch(function (error) {
-          //   // 에러 핸들링
-            
-          //   console.log(error);
-          // });
-
-          // // navigate("/accounts/login");
-          // data = response.data.postInfo
-          // userName = JSON.stringify(data.userName)
-          // title = JSON.stringify(data.title)
-          // thumbImgSrc = JSON.stringify(data.thumbImgSrc)
-          // caption = JSON.stringify(data.caption)
-          
-          // roomInfo = data.roomInfo
-
-          // console.log(response);
-      }catch(error){
-          if (error.response){
-              notification.open({
-                  message: "방 정보 불러오기 실패",
-                  description: "죄송합니다.",
-                  icon: <FrownOutlined style={{ color: "#ff3333"}} />
-              });
-
-              const { data:filedsErrorMessages } = error.response;
-
-              setFieldErrors(
-                  Object.entries(filedsErrorMessages).reduce(
-                      (acc, [fieldName, errors]) => {
-                          acc[fieldName] = {
-                              validateStatus: "error",
-                              help: errors.join(" ")
-                          };
-                          return acc;
-                      },
-                      {}
-                  )
-              );
-          }
-      };
+      // 서버에 GET 요청 보내기
+      axios.get(serverUrl)
+        .then((response) => {
+          // data 설정
+          data = response.data.postInfo
+          userName = JSON.stringify(data.userName)
+          title = JSON.stringify(data.title)
+          thumbImgSrc = JSON.stringify(data.thumbImgSrc)
+          caption = JSON.stringify(data.caption)
+          roomInfo = data.roomInfo
+        })
+        .catch((error) => {
+          console.error('Error fetching data:', error);
+        });
     }, []);
     
     return (
