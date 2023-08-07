@@ -150,9 +150,9 @@ def upload_images(request):
 def get_homepage(request):
     #post ID로 필터링해서 최신순으로 8개 가져오기
     try:
-        posts = Post.objects.all().order_by('-postID')[:8]
+        queryset = Post.objects.order_by('-created_at')[:8]
         data = {
-            'homepageInfo': list(posts.values())
+            'homepageInfo': list(queryset.values())
         }
         return JsonResponse(data, status=200)
     except:
@@ -202,15 +202,21 @@ def count_objects_by_room(img_paths, result_detection):
 @api_view(['post'])
 def set_result(request):
     try:
+        print(1)
         rooms = set(request.data["result_classification"].values())
         data = {'dlInfo': {}}
+        print(2)
         for room in rooms:
+            print(3)
             img_paths = [img_path for img_path in request.data["result_detection"].keys() \
                         if request.data["result_classification"][img_path] == room]
+            print(4)
             data['dlInfo'][room]['img_paths'] = img_paths
+            print(5)
             data['dlInfo'][room]['list_amenities'] = count_objects_by_room(img_paths,
                                                                         request.data["result_detection"], 
                                                                         )
+            print(6)
         return JsonResponse(data, status=200)
     except:
         return JsonResponse({"result": "Fail to get result"}, status=400)
