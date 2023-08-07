@@ -70,7 +70,7 @@ const Room = () => {
           <div>
           <h1 style={{textAlign:'left'}}>{value.title}</h1>
           <p style={{textAlign:'right'}}>{value.userName}</p>
-          <img src = {value.thumb_image} />
+          <img src = {value.thumbnail} />
           <p style={{ textAlign: "left" }}>{value.caption}</p>
 
 
