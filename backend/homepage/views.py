@@ -241,15 +241,15 @@ def count_objects_by_room(img_paths, result_detection):
 @api_view(['post'])
 def set_result(request):
     try:
-        rooms = set(request.result_classification["result"].values())
+        rooms = set(request.result_classification.values())
         
         data = {'dlInfo': {}}
         for room in rooms:
-            img_paths = [img_path for img_path in request.result_detection["result"].keys() \
-                        if request.result_classification["result"][img_path] == room]
+            img_paths = [img_path for img_path in request.result_detection.keys() \
+                        if request.result_classification[img_path] == room]
             data['dlInfo'][room]['img_paths'] = img_paths
             data['dlInfo'][room]['list_amenities'] = count_objects_by_room(img_paths,
-                                                                        request.result_detection["result"], 
+                                                                        request.result_detection, 
                                                                         )
         return JsonResponse(data, status=200)
     except:
