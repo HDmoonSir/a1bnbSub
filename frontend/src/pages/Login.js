@@ -9,7 +9,7 @@ import Axios from "axios";
 import { back_ip_port } from './back_ip_port'
 import { useAppContext, setToken } from "../store";
 
-const serverUrl = `${back_ip_port}accounts/token/`;
+const serverUrl = `${back_ip_port}user/token/`;
 
 export default function Login() {
     const { dispatch } = useAppContext();
