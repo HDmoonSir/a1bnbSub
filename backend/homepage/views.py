@@ -243,7 +243,6 @@ def get_uploaded_page(request):
     return JsonResponse({'result': "get_uploaded_page success"}, status=200)
 
 @api_view(['get'])
-
 def get_room(request):
     #post ID로 필터링해서 가져오기
     # posts = Post.objects.all().filter(post_id = request.GET.get('post_id'))
