@@ -66,9 +66,9 @@ def get_color(label):
 
 # (detection) bbox 그려주는 함수. return : PIL.Image.Image 객체
 def draw_bbox(detect_json, image_files_bbox):
-    file_data = [image.file.read() for image in image_files_bbox]
+    file_data = [image.file.read() for _, image in image_files_bbox]
     infer_images = [Image.open(io.BytesIO(data)) for data in file_data]
-    file_names = [image.filename for image in image_files_bbox]
+    file_names = [image.filename for _, image in image_files_bbox]
 
     bbox_images = []
 
@@ -266,11 +266,11 @@ def get_uploaded_page(request):
 def get_room(request):
     #post ID로 필터링해서 가져오기
     try:
-        print("Success to load room")
         posts = Post.objects.all().filter(post_id = request.GET.get('post_id'))
         data = {
             'postInfo': list(posts.values())
         }
+        print("Success to load room")
     except:
         print("Fail to load room, get dummy data")
         data = {
