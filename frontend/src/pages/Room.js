@@ -45,12 +45,12 @@ const Room = () => {
     // useSearchParams 사용
     // setSearchParams의 경우 다음 페이지에 쿼리값을 전해주기 위해 사용 room?postid=3
     // const [searchParams, setSearchParams]=useSearchParams();
-    const data = {}
-    let userName = ''
-    let title = ''
-    let caption = ''
-    let thumbImgSrc = ''
-    let roomInfo = {}
+    const data = useState();
+    const userName = useState();
+    const title = useState();
+    const caption = useState();
+    const thumbImgSrc = useState();
+    const roomInfo = useState();
 
     // 쿼리 get으로 받아오기
     // const postid = searchParams.get('postid');
