@@ -27,7 +27,7 @@ function Home() {
         }
     };
     const handleCardClick = (postId) => {
-        navigate(`/room/${postId}`);
+        navigate(`/room?postId=${postId}`);
     };
     return (
         <div>
