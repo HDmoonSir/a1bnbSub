@@ -5,103 +5,116 @@ import { useNavigate } from "react-router-dom";
 import Axios from "axios";
 import { back_ip_port } from './back_ip_port'
 
-const serverUrl = `${back_ip_port}user/signup`;
+const serverUrl = `${back_ip_port}user/signup/`;
 
 export default function Signup() {
-    const navigate = useNavigate();
-    const [fieldErrors, setFieldErrors]=useState({});
+  const navigate = useNavigate();
+  const [fieldErrors, setFieldErrors] = useState({});
 
-    const onFinish = values => {
-        async function fn() {
-            const { username, password } = values;
-            
-            setFieldErrors({});
+  const onFinish = values => {
+    async function fn() {
+      const { fullname, username, password } = values;
 
-            const data = { username, password };
-            try{
-                await Axios.post(serverUrl, data);
+      setFieldErrors({});
 
-                notification.open({
-                    message: "회원가입 성공",
-                    description: "로그인 페이지로 이동합니다.",
-                    icon: <SmileOutlined style={{ color: "#108ee9" }} />
-                });
+      const data = { fullname, username, password };
+      try {
+        await Axios.post(serverUrl, data);
 
-                navigate("/accounts/login");
-            }catch(error){
-                if (error.response){
-                    notification.open({
-                        message: "회원가입 실패",
-                        description: "아이디/암호를 확인해주세요.",
-                        icon: <FrownOutlined style={{ color: "#ff3333"}} />
-                    });
+        notification.open({
+          message: "회원가입 성공",
+          description: "로그인 페이지로 이동합니다.",
+          icon: <SmileOutlined style={{ color: "#108ee9" }} />
+        });
 
-                    const { data:filedsErrorMessages } = error.response;
+        navigate("/user/login");
+      } catch (error) {
+        if (error.response) {
+          notification.open({
+            message: "회원가입 실패",
+            description: "아이디/암호를 확인해주세요.",
+            icon: <FrownOutlined style={{ color: "#ff3333" }} />
+          });
 
-                    setFieldErrors(
-                        Object.entries(filedsErrorMessages).reduce(
-                            (acc, [fieldName, errors]) => {
-                                acc[fieldName] = {
-                                    validateStatus: "error",
-                                    help: errors.join(" ")
-                                };
-                                return acc;
-                            },
-                            {}
-                        )
-                    );
-                }
-            }
+          const { data: filedsErrorMessages } = error.response;
+
+          setFieldErrors(
+            Object.entries(filedsErrorMessages).reduce(
+              (acc, [fieldName, errors]) => {
+                acc[fieldName] = {
+                  validateStatus: "error",
+                  help: errors.join(" ")
+                };
+                return acc;
+              },
+              {}
+            )
+          );
         }
-        fn();
-    };
+      }
+    }
+    fn();
+  };
 
-    return (
-      <div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "500px" }}>
-        <Form
-          {...layout}
-          onFinish={onFinish}
+  return (
+    <div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "500px" }}>
+      <Form
+        {...layout}
+        onFinish={onFinish}
 
+      >
+        <Form.Item>
+          <h1>회원가입</h1>
+        </Form.Item>
+
+        <Form.Item
+          label="이름"
+          name="fullname"
+          rules={[
+            { required: true, message: "Please input your name!" }
+          ]}
+          hasFeedback
+          {...fieldErrors.fullname}
         >
-          <Form.Item>
-            <h1>회원가입</h1>
-          </Form.Item>
-          <Form.Item
-            label="Username"
-            name="username"
-            rules={[
-              { required: true, message: "Please input your username!" },
-              { min: 5, message: "5글자 입력해주세요." }
-            ]}
-            hasFeedback
-            {...fieldErrors.username}
-          >
-            <Input />
-          </Form.Item>
-    
-          <Form.Item
-            label="Password"
-            name="password"
-            rules={[{ required: true, message: "Please input your password!" }]}
-            {...fieldErrors.password}
-          >
-            <Input.Password />
-          </Form.Item>
-    
-          <Form.Item {...tailLayout}>
-            <Button type="primary" htmlType="submit">
-              Signup
-            </Button>
-          </Form.Item>
-        </Form>
-      </div>
-    );
+          <Input />
+        </Form.Item>
+
+        <Form.Item
+          label="아이디"
+          name="username"
+          rules={[
+            { required: true, message: "Please input your id!" },
+            { min: 5, message: "5글자 입력해주세요." }
+          ]}
+          hasFeedback
+          {...fieldErrors.username}
+        >
+          <Input />
+        </Form.Item>
+
+        <Form.Item
+          label="비밀번호"
+          name="password"
+          rules={[{ required: true, message: "Please input your password!" }]}
+          {...fieldErrors.password}
+        >
+          <Input.Password />
+        </Form.Item>
+
+        <Form.Item {...tailLayout}>
+          <Button type="primary" htmlType="submit">
+            Signup
+          </Button>
+        </Form.Item>
+      </Form>
+    </div>
+  );
 }
 
 const layout = {
-    labelCol: { span: 8 },
-    wrapperCol: { span: 16 }
-  };
+  labelCol: { span: 8 },
+  wrapperCol: { span: 16 }
+};
 
 const tailLayout = {
   wrapperCol: { offset: 8, span: 16 }

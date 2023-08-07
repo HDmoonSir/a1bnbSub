@@ -1,8 +1,8 @@
 // 메인에서 숙소 열람 페이지 
 import Image from 'react-bootstrap/Image';
 // useSearchParams로 전 페이지에서 보내온 post_id값을 받아옴
-import { useNavigate, useSearchParams, useState } from "react";
-import Axios from 'axios';
+import { useNavigate, useSearchParams, useState, useEffect } from "react";
+import axios from 'axios';
 import { Form, Input, Button, notification } from "antd";
 import { SmileOutlined, FrownOutlined } from "@ant-design/icons";
 
@@ -20,20 +20,17 @@ const othersImageView = (roomInfo) => {
   // Object.values(showRoomsByClassification).map
   return (
     <div>
-      <p style={{ textAlign: "center" }}>
-        방 사진 열거 맨 sort by Classification Result
-      </p>
+      
       {Object.entries(showRoomsByClassification).map(([classifiedRoomType, roomData]) => (
         <div>
-          <h1>{classifiedRoomType}</h1>
+          <h3>{classifiedRoomType}</h3>
           {/* <p>{roomData.img_path}</p> */}
           {/* <p>{imageView(roomData.img_path)}</p> */}
           <p>{Object.values(roomData.img_path).map((path)=> (
             // <div><img src = {path}/></div>
             <img src = {path}/>
           ))}</p>
-          <h2>{JSON.stringify(roomData.detected)}</h2>
-          <p>확인</p>
+          <p>{JSON.stringify(roomData.detected)}</p>
         </div>
       ))}
     </div>
@@ -41,96 +38,44 @@ const othersImageView = (roomInfo) => {
 };
 
 const Room = () => {
-    const navigate = useNavigate();
-    const [fieldErrors, setFieldErrors]=useState({});
-    // useSearchParams 사용
-    // setSearchParams의 경우 다음 페이지에 쿼리값을 전해주기 위해 사용 room?postid=3
-    const [searchParams, setSearchParams]=useSearchParams();
-    const data = {}
-    let userName = ''
-    let title = ''
-    let caption = ''
-    let thumbImgSrc = ''
-    let roomInfo = {}
+    const [data, setData] = useState([]);
 
-    // 쿼리 get으로 받아오기
-    const onFinish = values => {
-      async function fn() {
-          // const { username, password } = values;
-          const postid = searchParams.get('postid');
-
-          serverUrl =  `${serverUrl}?postid=${postid}`;
-          setFieldErrors({});
-
-          // const data = { username, password };
-          // GET요청
-          try{
-              await Axios.get(serverUrl)
-              .then(function (response) {
-                // 성공 핸들링
-                // db를 json 파일로 해서 받을 예정 response.data = json 형태
-                data = response.data.postInfo
-                userName = JSON.stringify(data.userName)
-                title = JSON.stringify(data.title)
-                thumbImgSrc = JSON.stringify(data.thumbImgSrc)
-                caption = JSON.stringify(data.caption)
-                
-                roomInfo = data.roomInfo
-
-                console.log(response);
-              })
-              .catch(function (error) {
-                // 에러 핸들링
-                
-                console.log(error);
-              })
-              .finally(function () {
-                // 항상 실행되는 영역
-                
-              });
-
-              // navigate("/accounts/login");
-
-          }catch(error){
-              if (error.response){
-                  notification.open({
-                      message: "방 정보 불러오기 실패",
-                      description: "죄송합니다.",
-                      icon: <FrownOutlined style={{ color: "#ff3333"}} />
-                  });
-
-                  const { data:filedsErrorMessages } = error.response;
-
-                  setFieldErrors(
-                      Object.entries(filedsErrorMessages).reduce(
-                          (acc, [fieldName, errors]) => {
-                              acc[fieldName] = {
-                                  validateStatus: "error",
-                                  help: errors.join(" ")
-                              };
-                              return acc;
-                          },
-                          {}
-                      )
-                  );
-              }
-          }
-      }
-      fn();
-  };
+    // GET요청
+    useEffect(() => {
+      // 서버에 GET 요청 보내기
+      axios.get(serverUrl)
+        .then((response) => {
+          // data 설정
+          setData(response.data)
+          // data = response.data.postInfo
+          // userName = JSON.stringify(data.userName)
+          // title = JSON.stringify(data.title)
+          // thumbImgSrc = JSON.stringify(data.thumbImgSrc)
+          // caption = JSON.stringify(data.caption)
+          // roomInfo = data.roomInfo
+        })
+        .catch((error) => {
+          console.error('Error fetching data:', error);
+        });
+    }, []);
     
     return (
       <div>
-        <hr></hr>
-        <h1 style={{textAlign:'left'}}>{title}</h1>
-        <p style={{textAlign:'right'}}>{userName}</p>
-        <img src = {thumbImgSrc} />
-        <p style={{ textAlign: "left" }}>{caption}</p>
+        <h1>방 소개</h1>
+        {Object.entries(data).map(([item, value]) => (
+          <div>
+          <h1 style={{textAlign:'left'}}>{value.title}</h1>
+          <p style={{textAlign:'right'}}>{value.userName}</p>
+          <img src = {value.thumb_image} />
+          <p style={{ textAlign: "left" }}>{value.caption}</p>
 
 
-        <h2>상세 방 소개</h2>
-        
-        {othersImageView(roomInfo)}
+          <h2>상세 방 소개</h2>
+          
+          {othersImageView(value.roomInfo)}
+          </div>
+        ))}
+
       </div>
     );
   };
