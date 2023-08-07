@@ -264,9 +264,24 @@ def upload_post(request):
 def get_room(request):
     #post ID로 필터링해서 가져오기
     try:
-        post = Post.objects.all().filter(postId=request.GET.get('postId'))
-        post_serializer = PostSerializer(post, many=True)
-        return JsonResponse(post_serializer.data, safe=False, status=200)
+        post = Post.objects.all().filter(postId=request.GET.get('postid'))
+        data = post[0].roomInfo
+        def ordered_dict_to_json(data):
+            return json.dumps(data, indent=2)
+        json_str = ordered_dict_to_json(data)
+        a = json.loads(json_str)
+        newDict = {'postInfo': 
+                    {"userName": post[0].userName,
+                    "title": post[0].title,
+                    "post_id": post[0].postId,
+                    "thumbnail": post[0].thumbnail,
+                    "caption": post[0].caption,
+                    "roomInfo": a}
+        }
+        print(newDict)
+        # post_serializer = PostSerializer(post, many=True)
+        # return JsonResponse(post_serializer.data, safe=False, status=200)
+        return JsonResponse(newDict, status=200)
     except:
         print("Fail to load room, get dummy data")
         data = {
