@@ -20,20 +20,17 @@ const othersImageView = (roomInfo) => {
   // Object.values(showRoomsByClassification).map
   return (
     <div>
-      <p style={{ textAlign: "center" }}>
-        방 사진 열거 맨 sort by Classification Result
-      </p>
+      
       {Object.entries(showRoomsByClassification).map(([classifiedRoomType, roomData]) => (
         <div>
-          <h1>{classifiedRoomType}</h1>
+          <h3>{classifiedRoomType}</h3>
           {/* <p>{roomData.img_path}</p> */}
           {/* <p>{imageView(roomData.img_path)}</p> */}
           <p>{Object.values(roomData.img_path).map((path)=> (
             // <div><img src = {path}/></div>
             <img src = {path}/>
           ))}</p>
-          <h2>{JSON.stringify(roomData.detected)}</h2>
-          <p>확인</p>
+          <p>{JSON.stringify(roomData.detected)}</p>
         </div>
       ))}
     </div>
@@ -41,28 +38,7 @@ const othersImageView = (roomInfo) => {
 };
 
 const Room = () => {
-    // const navigate = useNavigate();
-    // useSearchParams 사용
-    // setSearchParams의 경우 다음 페이지에 쿼리값을 전해주기 위해 사용 room?postid=3
-    // const [searchParams, setSearchParams]=useSearchParams();
-    let data = {}
-    let userName = ''
-    let title = ''
-    let caption = ''
-    let thumbImgSrc = ''
-    let roomInfo = {}
-
-    // 쿼리 get으로 받아오기
-    // const postid = searchParams.get('postid');
-    // serverUrl =  `${serverUrl}?postid=${postid}`;
-
-    // data 설정
-    // data = response.data.postInfo
-    // userName = JSON.stringify(data.userName)
-    // title = JSON.stringify(data.title)
-    // thumbImgSrc = JSON.stringify(data.thumbImgSrc)
-    // caption = JSON.stringify(data.caption)
-    // roomInfo = data.roomInfo
+    const [data, setData] = useState([]);
 
     // GET요청
     useEffect(() => {
@@ -70,12 +46,13 @@ const Room = () => {
       axios.get(serverUrl)
         .then((response) => {
           // data 설정
-          data = response.data.postInfo
-          userName = JSON.stringify(data.userName)
-          title = JSON.stringify(data.title)
-          thumbImgSrc = JSON.stringify(data.thumbImgSrc)
-          caption = JSON.stringify(data.caption)
-          roomInfo = data.roomInfo
+          setData(response.data)
+          // data = response.data.postInfo
+          // userName = JSON.stringify(data.userName)
+          // title = JSON.stringify(data.title)
+          // thumbImgSrc = JSON.stringify(data.thumbImgSrc)
+          // caption = JSON.stringify(data.caption)
+          // roomInfo = data.roomInfo
         })
         .catch((error) => {
           console.error('Error fetching data:', error);
@@ -84,17 +61,21 @@ const Room = () => {
     
     return (
       <div>
-        console.log();
-        <hr></hr>
-        <h1 style={{textAlign:'left'}}>{title}</h1>
-        <p style={{textAlign:'right'}}>{userName}</p>
-        <img src = {thumbImgSrc} />
-        <p style={{ textAlign: "left" }}>{caption}</p>
+        <h1>방 소개</h1>
+        {Object.entries(data).map(([item, value]) => (
+          <div>
+          <h1 style={{textAlign:'left'}}>{value.title}</h1>
+          <p style={{textAlign:'right'}}>{value.userName}</p>
+          <img src = {value.thumb_image} />
+          <p style={{ textAlign: "left" }}>{value.caption}</p>
 
 
-        <h2>상세 방 소개</h2>
-        
-        {othersImageView(roomInfo)}
+          <h2>상세 방 소개</h2>
+          
+          {othersImageView(value.roomInfo)}
+          </div>
+        ))}
+
       </div>
     );
   };

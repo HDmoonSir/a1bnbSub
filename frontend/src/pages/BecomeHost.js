@@ -120,8 +120,10 @@ const BecomeHost = () => {
                     console.log(response.data);
                     let detect_result = response.data.detect_result.result;
                     let classi_result = response.data.classi_result.result;
-                    let text_result= response.data.text_result.result;
-                    navigate("/user/regist/result", { state: { detection_result: detect_result, classification_result: classi_result, textgeneration_result: text_result} });
+                    let text_result = response.data.text_result.result;
+                    let bbox_result = response.data.bbox_result;
+                    // navigate("/user/regist/result", { state: { detection_result: detect_result, classification_result: classi_result, textgeneration_result: text_result} });
+                    navigate("/user/regist/result", { state: { detection_result: detect_result, classification_result: classi_result, textgeneration_result: text_result, bboxing_result : bbox_result} });
                 })
                 .catch((err) => { console.log(err) })
             alert("성공!") // test 
