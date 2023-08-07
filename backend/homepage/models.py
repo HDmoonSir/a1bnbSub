@@ -1,10 +1,12 @@
 from djongo import models
 from accounts.models import User
 
-
 class Post(models.Model):
     # 포스트 id pk
-    postId = models.AutoField(db_column='_id', primary_key=True)
+    postId = models.AutoField(primary_key=True)
+
+    # 생성 일자
+    created_at = models.DateTimeField(auto_now_add=True)
 
     # 작성자
     user = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -19,7 +21,7 @@ class Post(models.Model):
     caption = models.TextField(max_length=500)
 
     # 사진 url
-    thumnail = models.URLField()
+    thumbnail = models.URLField()
 
     # 방 정보
     roomInfo = models.JSONField(max_length=500)

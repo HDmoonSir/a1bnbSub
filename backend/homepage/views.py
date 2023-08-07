@@ -5,6 +5,9 @@ from django.http import JsonResponse
 from accounts.models import User
 import json
 from collections import Counter
+from rest_framework.viewsets import ModelViewSet
+from rest_framework.permissions import AllowAny
+from .serializers import PostSerializer
 
 from django_web.server_urls import *
 import copy
@@ -150,11 +153,10 @@ def upload_images(request):
 def get_homepage(request):
     #post ID로 필터링해서 최신순으로 8개 가져오기
     try:
-        queryset = Post.objects.order_by('-created_at')[:8]
-        data = {
-            'homepageInfo': list(queryset.values())
-        }
-        return JsonResponse(data, status=200)
+        if request.method == 'GET':
+            queryset = Post.objects.order_by('-created_at')[:8]
+            post_serializer = PostSerializer(queryset, many=True)
+        return JsonResponse(post_serializer.data, safe=False, status=200)
     except:
         return JsonResponse({"result": "Fail to load posts from DB"}, status=400)
 
@@ -312,3 +314,4 @@ def get_room(request):
                 }
             }
     return JsonResponse(data, status=200)
+
