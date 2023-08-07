@@ -1,7 +1,8 @@
 // 메인에서 숙소 열람 페이지 
 import Image from 'react-bootstrap/Image';
 // useSearchParams로 전 페이지에서 보내온 post_id값을 받아옴
-import { useNavigate, useSearchParams, useState, useEffect } from "react";
+import { useNavigate, useState, useEffect } from "react";
+import { useSearchParams } from 'react-router-dom'; 
 import axios from 'axios';
 import { Form, Input, Button, notification } from "antd";
 import { SmileOutlined, FrownOutlined } from "@ant-design/icons";
@@ -39,11 +40,14 @@ const othersImageView = (roomInfo) => {
 
 const Room = () => {
     const [data, setData] = useState([]);
-
+    const [searchParams, setSearchParams] = useSearchParams();
+    const post_id = searchParams.get('postid')
+    
+    const serverUrl2 = `${serverUrl}?postid=${post_id}`;
     // GET요청
     useEffect(() => {
       // 서버에 GET 요청 보내기
-      axios.get(serverUrl)
+      axios.get(serverUrl2)
         .then((response) => {
           // data 설정
           setData(response.data)

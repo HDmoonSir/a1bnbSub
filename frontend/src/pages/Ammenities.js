@@ -1,11 +1,15 @@
 import Button from 'react-bootstrap/Button';
-import React, { Component, useState } from 'react';
+import React, { Component, useState, useEffect } from 'react';
 import axios from 'axios';
 import Image from 'react-bootstrap/Image'
 import Card from 'react-bootstrap/Card';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 import { useLocation } from "react-router-dom";
+
+import { back_ip_port } from './back_ip_port'
+
+const serverUrl = `${back_ip_port}user/regist/result`;
 
 const othersImageView = (roomInfo) => {
     // list로 만들어서 출력한다? ㄴㄴ
@@ -36,52 +40,45 @@ const othersImageView = (roomInfo) => {
 const Ammenities = () => {
     // /become-host 에서 navigate 으로 데이터 전달 받음
     const location = useLocation();
-    const detection_result= location.state.detection_result;
-    const classification_result= location.state.classification_result;
-    const textgeneration_result= location.state.textgeneration_result;
-    const bbox_result = location.state.bboxing_result;
+    const result_detection= location.state.result_detection;
+    const result_classification= location.state.result_classification;
+    const result_textgeneration= location.state.result_textgeneration;
+    const bbox_result = location.state.result_bboxing;
 
     const [data, setData] = useState([]);
+    
+    console.log(result_detection)
+    console.log(result_classification)
 
-    async function uploadData() {
-        // const uploadData = () => {
-        const mergeData = {detection_result, classification_result}
-        
-        console.log("숙소 업로드"); // test 
-        console.log(previewImg); // test 
-
-        // POST 요청 
-        axios({
-            method: "POST",
-            url: serverUrl,
-            mode: "cors",
-            // data: previewImg,
-            data: mergeData,
-            // headers: {'content-type': 'multipart/form-data'}
+    const mergeData = {result_detection, result_classification}
+    
+    console.log(mergeData)
+    //
+    // POST 요청
+    useEffect(() => {
+      // 서버에 GET 요청 보내기
+      axios.post(serverUrl, mergeData)
+        .then((response) => {
+          // data 설정
+          setData(response.data)
+          console.log(response.data);
         })
-            .then(response => {
-                setData(response.data)
-                console.log(response.data);
-            })
-            .catch((err) => { console.log(err) })
-        alert("성공!") // test 
-        
-    }
-
-    console.log(detection_result)
-    console.log(classification_result)
-    console.log(textgeneration_result)
+        .catch((error) => {
+          console.error('Error fetching data:', error);
+        });
+    }, []);
+    //
     return (
         <div>
-            {/* {onLoading} */}
-            {uploadData}
+            
             <h1 style={{textAlign:'center'}}>등록 전에 결과를 확인하세요.</h1>
             {Object.entries(data).map(([item, value]) => (
             <div>
-            {othersImageView(value.dlInfo)}
+            {othersImageView(value)}
             </div>
             ))}
-
+            {/* {mergeData} */}
+            {result_textgeneration}
             {/* detecion 결과 화면 보기 */}
             {/* {getDetectImg(detection_result)} */}
             {/* classification 결과 화면 보기 */}

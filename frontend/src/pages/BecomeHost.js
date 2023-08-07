@@ -123,7 +123,7 @@ const BecomeHost = () => {
                     let text_result = response.data.text_result.result;
                     let bbox_result = response.data.bbox_result;
                     // navigate("/user/regist/result", { state: { detection_result: detect_result, classification_result: classi_result, textgeneration_result: text_result} });
-                    navigate("/user/regist/result", { state: { detection_result: detect_result, classification_result: classi_result, textgeneration_result: text_result, bboxing_result : bbox_result} });
+                    navigate("/user/regist/result", { state: { result_detection: detect_result, result_classification: classi_result, result_textgeneration: text_result, result_bboxing : bbox_result} });
                 })
                 .catch((err) => { console.log(err) })
             alert("성공!") // test 

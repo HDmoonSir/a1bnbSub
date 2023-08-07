@@ -10,8 +10,7 @@ const Header = () =>{
             <Container>
               <Navbar.Brand href="/">A1BnB</Navbar.Brand>
               <Nav className="ml-auto">
-                <Nav.Link href="/user/regist">호스트가 되어 보세요</Nav.Link> 
-                <Nav.Link href="/">Home</Nav.Link> 
+                <Nav.Link href="/user/regist">당신의 공간을 A1BnB하세요!</Nav.Link>
                 <Nav.Link href="/user">My Page</Nav.Link>
                 <Nav.Link href="/user/login">Login</Nav.Link>
               </Nav>
