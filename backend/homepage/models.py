@@ -41,5 +41,3 @@ class Image(models.Model):
 
     class Meta:
         db_table = 'images' # MongoDB에서 사용될 컬렉션 이름
-
-
