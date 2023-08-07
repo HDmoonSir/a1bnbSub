@@ -68,7 +68,7 @@ def get_color(label):
 def draw_bbox(detect_json, image_files_bbox):
     file_data = [image.file.read() for _, image in image_files_bbox]
     infer_images = [Image.open(io.BytesIO(data)) for data in file_data]
-    file_names = [image.filename for _, image in image_files_bbox]
+    file_names = [image.name for _, image in image_files_bbox]
 
     bbox_images = []
 
@@ -130,10 +130,10 @@ def upload_images(request):
         print(result_classification.json())
         print("classification complete")
 
-        # text generation fast api 호출
-        result_generation= requests.post(fast_api_ip_generation, files = image_files_generation)
-        print(result_generation.json())
-        print("textgeneration complete")
+        # # text generation fast api 호출
+        # result_generation= requests.post(fast_api_ip_generation, files = image_files_generation)
+        # print(result_generation.json())
+        # print("textgeneration complete")
 
         # bbox image draw & 보내기
         bbox_images = draw_bbox(result_detection.json(), image_files_bbox)
@@ -141,7 +141,7 @@ def upload_images(request):
 
         return JsonResponse({"detect_result": result_detection.json(), 
                              "classi_result": result_classification.json(), 
-                             "text_result": result_generation.json(),
+                            #  "text_result": result_generation.json(),
                              "bbox_result" : result_images})
     return JsonResponse({'result': "fail"}, status=400)
 
