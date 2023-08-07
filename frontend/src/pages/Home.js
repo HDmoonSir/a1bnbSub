@@ -20,8 +20,8 @@ const Home = () => {
     const fetchData = async () => {
         try {
             // const postid = searchParams.get('postid');
-            const response = await axios.get(`${serverUrl}/`);
-            const latestData = response.data; // 최신 8개 데이터 배열
+            const response = await axios.get(`${serverUrl}`);
+            const latestData = response.data.homepageInfo; // 최신 8개 데이터 배열
 
             setImageList(latestData); // 이미지 리스트에 최신 데이터 할당
         } catch (error) {
