@@ -175,13 +175,7 @@ def get_mypage(request):
 def count_objects_by_room(img_paths, result_detection):
     def extract_labels(result):
         print(2)
-        detect_list = []
-
-        for item in result:
-            ite = json.loads(item.tojson())
-            name = ite[0]["name"]
-            detect_list.append(name)
-        result = dict(Counter(detect_list))
+        result = dict(Counter(result.keys()))
         return result
     
     def max_option(lst):
@@ -225,14 +219,14 @@ def set_result(request):
 def upload_post(request):
     try:
         user = request.user
-        rooms = set(request.confirm_list_room_class.values())
+        rooms = set(request.data["confirm_list_room_class"].values())
     
         data = {'room_info': {}}
         for room in rooms:
             data['room_info'] = {
                 f"{room}": {
-                    {"img_path": request.img_paths},
-                    {"detected": request.confirm_list_amenities},
+                    {"img_path": request.data["img_paths"]},
+                    {"detected": request.data["confirm_list_amenities"]},
                 }
             }
 
@@ -270,11 +264,9 @@ def upload_post(request):
 def get_room(request):
     #post ID로 필터링해서 가져오기
     try:
-        posts = Post.objects.all().filter(post_id = request.GET.get('postid'))
-        data = {
-            'postInfo': list(posts.values())
-        }
-        print("Success to load room")
+        post = Post.objects.all().filter(postId=request.GET.get('postId'))
+        post_serializer = PostSerializer(post, many=True)
+        return JsonResponse(post_serializer.data, safe=False, status=200)
     except:
         print("Fail to load room, get dummy data")
         data = {
@@ -311,5 +303,4 @@ def get_room(request):
                     }
                 }
             }
-    return JsonResponse(data, status=200)
 
