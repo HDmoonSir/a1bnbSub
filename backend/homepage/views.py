@@ -142,6 +142,7 @@ def upload_images(request):
         return JsonResponse({"detect_result": result_detection.json(), 
                              "classi_result": result_classification.json(), 
                             #  "text_result": result_generation.json(),
+                             "text_result": {"result": "generation_result"},
                              "bbox_result" : result_images})
     return JsonResponse({'result': "fail"}, status=400)
 
