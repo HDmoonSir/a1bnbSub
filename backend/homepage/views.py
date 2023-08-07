@@ -156,4 +156,38 @@ def get_room(request):
     data = {
         'postInfo': list(posts.values())
     }
+    
+    data = {
+        'postInfo': {
+            "userName": "망망망",
+            "title": "좋은 방입니다",
+            "post_id": 3,
+            "thumb_image": "http://hostip/images/thumbimage1.jpg",
+            "caption": "너무 좋아서 평생 살고싶네요",
+            "roomInfo": {
+                "livingroom01": {
+                    "img_path": [
+                        "http://hostip/images/livingroomimage1.jpg",
+                        "http://hostip/images/livingroomimage2.jpg"
+                    ],
+                    "detected": {
+                        "Desk": 2,
+                        "Table": 1,
+                        "Lamp": 1
+                    }
+                },
+                "kitchen01": {
+                    "img_path": [
+                        "http://hostip/images/kitchenimage1.jpg",
+                        "http://hostip/images/kitchenimage2.jpg"
+                    ],
+                    "detected": {
+                        "Oven": 2,
+                        "Microwave": 1,
+                        "Ref": 1
+                    }
+                }
+            }
+        }
+    }
     return JsonResponse(data, status=200)
