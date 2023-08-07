@@ -1,4 +1,4 @@
-import { useHistory, useState } from 'react-router-dom'; 
+import { useNavigate, useState } from 'react-router-dom'; 
 import axios from 'axios';
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
@@ -8,8 +8,8 @@ import { back_ip_port } from './back_ip_port';
 
 const serverUrl = `${back_ip_port}`;
 
-const Home = () => {
-    const history = useHistory(); // useHistory 훅을 사용합니다.
+function Home () {
+    const navigate = useNavigate();
     const [imageList, setImageList] = useState([]);
     // const [searchParams] = useSearchParams();
 
@@ -30,7 +30,7 @@ const Home = () => {
     };
 
     const handleCardClick = (postId) => {
-        history.push(`/room/${postId}`);
+        navigate(`/room/${postId}`);
     };
 
     return (
