@@ -9,7 +9,7 @@ from collections import Counter
 from django_web.server_urls import *
 import copy
 
-from PIL import Image, ImageDraw
+from PIL import Image, ImageDraw, ImageFont
 
 import io
 import json
@@ -81,7 +81,15 @@ def draw_bbox(detect_json, image_files_bbox):
             x1, y1, x2, y2, _ = bbox
             color = get_color(label)
             color = (int(color[0] * 255), int(color[1] * 255), int(color[2] * 255))
+            font = ImageFont.truetype('arial.ttf', 20)
+            label_text = f"{label}"
+
+            # bbox draw
             draw.rectangle([x1, y1, x2, y2], outline = color, width = 4)
+            
+            # text background draw
+            draw.rectangle([x1, y1-20, x1+font.getsize(label)[0], y1], outline = color,  fill = color,  width = 0)
+            draw.text((x1, y1-20), label_text, font=font, fill=(255,255,255))
         bbox_images.append(image)
     return bbox_images
 
