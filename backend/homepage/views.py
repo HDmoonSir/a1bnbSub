@@ -152,50 +152,13 @@ def upload_images(request):
 @api_view(['get'])
 def get_homepage(request):
     #post ID로 필터링해서 최신순으로 8개 가져오기
-
-    user = User.objects.first()
-
-    data =  {
-        "livingroom01": {
-            "img_path": [
-                "http://hostip/images/livingroomimage1.jpg",
-                "http://hostip/images/livingroomimage2.jpg"
-            ],
-            "detected": {
-                "Desk": 2,
-                "Table": 1,
-                "Lamp": 1
-            }
-        },
-        "kitchen01": {
-            "img_path": [
-                "http://hostip/images/kitchenimage1.jpg",
-                "http://hostip/images/kitchenimage2.jpg"
-            ],
-            "detected": {
-                "Oven": 2,
-                "Microwave": 1,
-                "Ref": 1
-            }
-        }
-    }
-
-    # 포스트 모델 생성
-    #post_model = Post.objects.create(
-    #    user = user,
-    #    userName = user.fullname,
-    #    title = "oo호텔",
-    #    caption = "소개글입니다.",
-    #    thumbnail = "http://18.132.187.120/images/livingroom120230801.jpg",
-    #    roomInfo = data
-    #)
-
-    if request.method == 'GET':
-        queryset = Post.objects.all()
-        post_serializer = PostSerializer(queryset, many=True)
+    try:
+        if request.method == 'GET':
+            queryset = Post.objects.order_by('-created_at')[:8]
+            post_serializer = PostSerializer(queryset, many=True)
         return JsonResponse(post_serializer.data, safe=False, status=200)
-    else:
-        return JsonResponse({'error': 'Bad request'}, status=400)
+    except:
+        return JsonResponse({"result": "Fail to load posts from DB"}, status=400)
 
 @api_view(['get'])
 def get_mypage(request):
@@ -241,15 +204,21 @@ def count_objects_by_room(img_paths, result_detection):
 @api_view(['post'])
 def set_result(request):
     try:
+        print(1)
         rooms = set(request.data["result_classification"].values())
         data = {'dlInfo': {}}
+        print(2)
         for room in rooms:
+            print(3)
             img_paths = [img_path for img_path in request.data["result_detection"].keys() \
                         if request.data["result_classification"][img_path] == room]
+            print(4)
             data['dlInfo'][room]['img_paths'] = img_paths
+            print(5)
             data['dlInfo'][room]['list_amenities'] = count_objects_by_room(img_paths,
                                                                         request.data["result_detection"], 
                                                                         )
+            print(6)
         return JsonResponse(data, status=200)
     except:
         return JsonResponse({"result": "Fail to get result"}, status=400)
