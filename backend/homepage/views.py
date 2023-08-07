@@ -97,7 +97,6 @@ def get_image_data(bbox_images):
     result_images = []
 
     for bbox_image in bbox_images:  
-
         image_io = io.BytesIO()
         bbox_image.save(image_io, format='PNG')
         image_io.seek(0)
@@ -105,6 +104,7 @@ def get_image_data(bbox_images):
         image_base64 = base64.b64encode(image_io.read()).decode('utf-8')
 
         result_images.append(image_base64)
+    return result_images
  
 # /upload POST 요청 시 호출
 # 이미지를 fast-api 로 post
@@ -118,7 +118,6 @@ def upload_images(request):
         image_files_generation = copy.deepcopy(image_files_detection)
         image_files_bbox = copy.deepcopy(image_files_detection)
         
-
         # fast api 각각 3번 호출
         # print 부분 logging으로 변경 고려
         # detection fast api 호출
@@ -137,12 +136,12 @@ def upload_images(request):
         print("textgeneration complete")
 
         # bbox image draw & 보내기
-        bbox_images = draw_bbox(result_detection['result'], image_files_detection)
+        bbox_images = draw_bbox(result_detection.json(), image_files_bbox)
         result_images = get_image_data(bbox_images)
 
         return JsonResponse({"detect_result": result_detection.json(), 
                              "classi_result": result_classification.json(), 
-                             "text_result":result_generation.json(),
+                             "text_result": result_generation.json(),
                              "bbox_result" : result_images})
     return JsonResponse({'result': "fail"}, status=400)
 
