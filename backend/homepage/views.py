@@ -16,6 +16,8 @@ import json
 import pylab
 import os
 
+import base64
+
 # 더미 데이터 만들때 사용한 코드입니다
 #from accounts.models import User
 #import json
@@ -92,10 +94,6 @@ def get_color(label):
 
 # (detection) bbox 그려주는 함수. return : PIL.Image.Image 객체
 def draw_bbox(detect_json, image_files_bbox):
-    img_dir = "../backend/media/images"
-    if not os.path.exists(img_dir):
-        os.makedirs(img_dir)
-
     file_data = [image.file.read() for image in image_files_bbox]
     infer_images = [Image.open(io.BytesIO(data)) for data in file_data]
     file_names = [image.filename for image in image_files_bbox]
@@ -113,9 +111,21 @@ def draw_bbox(detect_json, image_files_bbox):
             color = (int(color[0] * 255), int(color[1] * 255), int(color[2] * 255))
             draw.rectangle([x1, y1, x2, y2], outline = color, width = 4)
         bbox_images.append(image)
-        output_path = os.path.join(img_dir, img_file)
-        image.save(output_path)
     return bbox_images
+
+def get_image_data(bbox_images):
+    result_images = []
+
+    for bbox_image in bbox_images:  
+
+        image_io = io.BytesIO()
+        bbox_image.save(image_io, format='PNG')
+        image_io.seek(0)
+
+        image_base64 = base64.b64encode(image_io.read()).decode('utf-8')
+
+        result_images.append(image_base64)
+    return result_images
 
 # /upload POST 요청 시 호출
 # 이미지를 fast-api 로 post
@@ -148,9 +158,11 @@ def upload_images(request):
         print(result_generation.json())
         print("textgeneration complete")
 
-        draw_bbox(result_detection['result'])
+        # bbox image draw & 보내기
+        bbox_images = draw_bbox(result_detection['result'], image_files_detection)
+        result_images = get_image_data(bbox_images)
 
-        return JsonResponse({"detect_result": result_detection.json(), "classi_result": result_classification.json(), "text_result":result_generation.json()})
+        return JsonResponse({"detect_result": result_detection.json(), "classi_result": result_classification.json(), "text_result":result_generation.json(), "bbox_result" : result_images})
     return JsonResponse({'result': "fail"}, status=400)
 
 @api_view(['get'])
