@@ -174,16 +174,18 @@ def get_mypage(request):
 
 def count_objects_by_room(img_paths, result_detection):
     def extract_labels(result):
+        print(2)
         detect_list = []
-        for lst in result:
-            for item in lst:
-                ite = json.loads(item.tojson())
-                name = ite[0]["name"]
-                detect_list.append(name)
+
+        for item in result:
+            ite = json.loads(item.tojson())
+            name = ite[0]["name"]
+            detect_list.append(name)
         result = dict(Counter(detect_list))
         return result
     
     def max_option(lst):
+        print(3)
         result = {}
         for i in lst:
             for key, value in i.items():
@@ -213,9 +215,8 @@ def set_result(request):
             data['dlInfo'][room]['img_paths'] = img_paths
             print(1)
             data['dlInfo'][room]['list_amenities'] = count_objects_by_room(img_paths,
-                                                                        request.data["result_detection"], 
-                                                                        )
-            print(2)
+                                                                        request.data["result_detection"])
+            print(4)
         return JsonResponse(data, status=200)
     except:
         return JsonResponse({"result": "Fail to get result"}, status=400)
@@ -269,7 +270,7 @@ def upload_post(request):
 def get_room(request):
     #post ID로 필터링해서 가져오기
     try:
-        posts = Post.objects.all().filter(post_id = request.GET.get('post_id'))
+        posts = Post.objects.all().filter(post_id = request.GET.get('postid'))
         data = {
             'postInfo': list(posts.values())
         }
