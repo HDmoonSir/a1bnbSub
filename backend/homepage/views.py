@@ -5,6 +5,9 @@ from django.http import JsonResponse
 from accounts.models import User
 import json
 from collections import Counter
+from rest_framework.viewsets import ModelViewSet
+from rest_framework.permissions import AllowAny
+from .serializers import PostSerializer
 
 from django_web.server_urls import *
 import copy
@@ -148,14 +151,50 @@ def upload_images(request):
 @api_view(['get'])
 def get_homepage(request):
     #post ID로 필터링해서 최신순으로 8개 가져오기
-    try:
-        posts = Post.objects.all().order_by('-postID')[:8]
-        data = {
-            'homepageInfo': list(posts.values())
+
+    user = User.objects.first()
+
+    data =  {
+        "livingroom01": {
+            "img_path": [
+                "http://hostip/images/livingroomimage1.jpg",
+                "http://hostip/images/livingroomimage2.jpg"
+            ],
+            "detected": {
+                "Desk": 2,
+                "Table": 1,
+                "Lamp": 1
+            }
+        },
+        "kitchen01": {
+            "img_path": [
+                "http://hostip/images/kitchenimage1.jpg",
+                "http://hostip/images/kitchenimage2.jpg"
+            ],
+            "detected": {
+                "Oven": 2,
+                "Microwave": 1,
+                "Ref": 1
+            }
         }
-        return JsonResponse(data, status=200)
-    except:
-        return JsonResponse({"result": "Fail to load posts from DB"}, status=400)
+    }
+
+    # 포스트 모델 생성
+    #post_model = Post.objects.create(
+    #    user = user,
+    #    userName = user.fullname,
+    #    title = "oo호텔",
+    #    caption = "소개글입니다.",
+    #    thumbnail = "http://18.132.187.120/images/livingroom120230801.jpg",
+    #    roomInfo = data
+    #)
+
+    if request.method == 'GET':
+        queryset = Post.objects.all()
+        post_serializer = PostSerializer(queryset, many=True)
+        return JsonResponse(post_serializer.data, safe=False, status=200)
+    else:
+        return JsonResponse({'error': 'Bad request'}, status=400)
 
 @api_view(['get'])
 def get_mypage(request):
@@ -308,3 +347,4 @@ def get_room(request):
                 }
             }
     return JsonResponse(data, status=200)
+
