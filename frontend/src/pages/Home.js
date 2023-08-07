@@ -41,10 +41,10 @@ const Home = () => {
                 {imageList.map((info, idx) => (
                     <Col key={idx}>
                         <Card style={{ width: '18rem' }}>
-                            <Card.Img variant="top" src={info.thumbImgView} />
+                            <Card.Img variant="top" src={info.thumbImgSrc} />
                             <Card.Body>
                                 <Card.Title>{info.title}</Card.Title>
-                                <Button variant="primary" onClick={() => handleCardClick(info.postid)}>이동</Button>
+                                <Button variant="primary" onClick={() => handleCardClick(info.postId)}>이동</Button>
                             </Card.Body>
                         </Card>
                     </Col>
