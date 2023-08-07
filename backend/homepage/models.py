@@ -6,8 +6,14 @@ class Post(models.Model):
     # 포스트 id pk
     postId = models.AutoField(db_column='_id', primary_key=True)
 
-    # 작성자 id
+    # 생성 일자
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    # 작성자
     user = models.ForeignKey(User, on_delete=models.CASCADE)
+
+    # 작성자 이름
+    userName = models.CharField(max_length=100)
 
     # 포스트 제목
     title = models.CharField(max_length=100)
@@ -16,7 +22,7 @@ class Post(models.Model):
     caption = models.TextField(max_length=500)
 
     # 사진 url
-    imagePaths = models.JSONField()
+    thumnail = models.URLField()
 
     # 방 정보
     roomInfo = models.JSONField(max_length=500)
