@@ -72,7 +72,7 @@ def draw_bbox(detect_json, image_files_bbox):
 
     bbox_images = []
 
-    for img_file, bbox in detect_json.items():
+    for img_file, bbox in detect_json["result"].items():
         img_idx = file_names.index(img_file)
         image = infer_images[img_idx]
         draw = ImageDraw.Draw(image)
