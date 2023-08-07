@@ -54,70 +54,63 @@ const Room = () => {
     let roomInfo = {}
 
     // 쿼리 get으로 받아오기
-    const onFinish = values => {
-      async function fn() {
-          // const { username, password } = values;
-          const postid = searchParams.get('postid');
+    
+    const postid = searchParams.get('postid');
 
-          serverUrl =  `${serverUrl}?postid=${postid}`;
-          setFieldErrors({});
+    serverUrl =  `${serverUrl}?postid=${postid}`;
+    setFieldErrors({});
 
-          // const data = { username, password };
-          // GET요청
-          try{
-              await Axios.get(serverUrl)
-              .then(function (response) {
-                // 성공 핸들링
-                // db를 json 파일로 해서 받을 예정 response.data = json 형태
-                data = response.data.postInfo
-                userName = JSON.stringify(data.userName)
-                title = JSON.stringify(data.title)
-                thumbImgSrc = JSON.stringify(data.thumbImgSrc)
-                caption = JSON.stringify(data.caption)
-                
-                roomInfo = data.roomInfo
+    // const data = { username, password };
+    // GET요청
+    try{
+        Axios.get(serverUrl)
+        .then(function (response) {
+          // 성공 핸들링
+          // db를 json 파일로 해서 받을 예정 response.data = json 형태
+          data = response.data.postInfo
+          userName = JSON.stringify(data.userName)
+          title = JSON.stringify(data.title)
+          thumbImgSrc = JSON.stringify(data.thumbImgSrc)
+          caption = JSON.stringify(data.caption)
+          
+          roomInfo = data.roomInfo
 
-                console.log(response);
-              })
-              .catch(function (error) {
-                // 에러 핸들링
-                
-                console.log(error);
-              })
-              .finally(function () {
-                // 항상 실행되는 영역
-                
-              });
+          console.log(response);
+        })
+        .catch(function (error) {
+          // 에러 핸들링
+          
+          console.log(error);
+        })
+        .finally(function () {
+          // 항상 실행되는 영역
+          
+        });
+        // navigate("/accounts/login");
+    }catch(error){
+        if (error.response){
+            notification.open({
+                message: "방 정보 불러오기 실패",
+                description: "죄송합니다.",
+                icon: <FrownOutlined style={{ color: "#ff3333"}} />
+            });
 
-              // navigate("/accounts/login");
+            const { data:filedsErrorMessages } = error.response;
 
-          }catch(error){
-              if (error.response){
-                  notification.open({
-                      message: "방 정보 불러오기 실패",
-                      description: "죄송합니다.",
-                      icon: <FrownOutlined style={{ color: "#ff3333"}} />
-                  });
-
-                  const { data:filedsErrorMessages } = error.response;
-
-                  setFieldErrors(
-                      Object.entries(filedsErrorMessages).reduce(
-                          (acc, [fieldName, errors]) => {
-                              acc[fieldName] = {
-                                  validateStatus: "error",
-                                  help: errors.join(" ")
-                              };
-                              return acc;
-                          },
-                          {}
-                      )
-                  );
-              }
-          }
-      }
-      fn();
-  };
+            setFieldErrors(
+                Object.entries(filedsErrorMessages).reduce(
+                    (acc, [fieldName, errors]) => {
+                        acc[fieldName] = {
+                            validateStatus: "error",
+                            help: errors.join(" ")
+                        };
+                        return acc;
+                    },
+                    {}
+                )
+            );
+        }
+    };
     
     return (
       <div>
