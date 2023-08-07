@@ -1,5 +1,4 @@
-import { useState } from 'react-router-dom'; 
-import { useNavigate } from 'react';
+import { useNavigate, useState } from 'react-router-dom'; 
 import axios from 'axios';
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
@@ -9,7 +8,7 @@ import { back_ip_port } from './back_ip_port';
 
 const serverUrl = `${back_ip_port}`;
 
-const Home = () => {
+function Home () {
     const navigate = useNavigate();
     const [imageList, setImageList] = useState([]);
     // const [searchParams] = useSearchParams();
