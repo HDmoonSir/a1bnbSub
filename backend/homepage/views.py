@@ -142,7 +142,7 @@ def upload_images(request):
         return JsonResponse({"detect_result": result_detection.json(), 
                              "classi_result": result_classification.json(), 
                             #  "text_result": result_generation.json(),
-                             "text_result": {"result": "generation_result"},
+                             "text_result": {"result": "멋진 방"},
                              "bbox_result" : result_images})
     return JsonResponse({'result': "fail"}, status=400)
 
@@ -199,21 +199,19 @@ def count_objects_by_room(img_paths, result_detection):
         lst.append(extract_labels(result_detection[img_path]))
     return max_option(lst)
 
-@api_view(['get'])
-def get_result(request):
+@api_view(['post'])
+def set_result(request):
     try:
-        rooms = set(request.result_classification.values())
+        rooms = set(request.result_classification["result"].values())
         
         data = {'dlInfo': {}}
         for room in rooms:
-            img_paths = [img_path for img_path in request.result_detection.keys() \
-                        if request.result_classification[img_path] == room]
+            img_paths = [img_path for img_path in request.result_detection["result"].keys() \
+                        if request.result_classification["result"][img_path] == room]
             data['dlInfo'][room]['img_paths'] = img_paths
             data['dlInfo'][room]['list_amenities'] = count_objects_by_room(img_paths,
-                                                                        request.result_detection, 
-                                                                        request.result_classification,
-                                                                        room)
-            data['dlInfo'][room]['result_thumb_text'] = request.result_generation
+                                                                        request.result_detection["result"], 
+                                                                        )
         return JsonResponse(data, status=200)
     except:
         return JsonResponse({"result": "Fail to get result"}, status=400)
@@ -259,9 +257,9 @@ def upload_post(request):
     except:
         return JsonResponse({'result': "Fail to upload"}, status=400)
 
-@api_view(['get'])
-def get_uploaded_page(request):
-    return JsonResponse({'result': "get_uploaded_page success"}, status=200)
+# @api_view(['post'])
+# def get_uploaded_page(request):
+#     return JsonResponse({'result': "get_uploaded_page success"}, status=200)
 
 @api_view(['get'])
 def get_room(request):
