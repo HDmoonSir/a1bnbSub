@@ -29,12 +29,12 @@ const othersImageView = (roomInfo) => {
           {/* <p>{roomData.img_path}</p> */}
           {/* <p>{imageView(roomData.img_path)}</p> */}
           <div style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', marginBottom: '10px' }}>
-            {Object.values(roomData.img_path).map((path, index)=> (
+            {Object.values(roomData.img_paths).map((path, index)=> (
               <img key={index} src={`${imgUrl}/${path}`} style={{ marginRight: '10px', marginBottom: '10px', maxWidth: '300px', maxHeight: '180px' }} />
               // <img src = {path}/>
             ))}
           </div>
-          <p>{Object.entries(roomData.detected).map(([amenity, count]) => (
+          <p>{Object.entries(roomData.list_amenities).map(([amenity, count]) => (
             <span key = {amenity}>
               {amenity} {count} &nbsp;
             </span>        

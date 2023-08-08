@@ -241,7 +241,7 @@ def upload_post(request):
         
         Post.objects.create(
             user = user,
-            # username = "날먹맨",
+            username = user.fullname,
             title = request.data['title'],
             caption = request.data['caption'],
             thumbnail = list(request.data['result_detection'].keys())[0],
