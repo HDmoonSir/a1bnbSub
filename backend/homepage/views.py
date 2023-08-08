@@ -75,7 +75,7 @@ def draw_bbox(detect_json, image_files_bbox):
 
     bbox_images = []
 
-    for img_file, bbox in detect_json["result"].items():
+    for img_file, bbox in detect_json.items():
         img_idx = file_names.index(img_file)
         image = infer_images[img_idx]
         draw = ImageDraw.Draw(image)
@@ -96,18 +96,26 @@ def draw_bbox(detect_json, image_files_bbox):
         bbox_images.append(image)
     return bbox_images
 
-def get_image_data(bbox_images):
-    result_images = []
+def get_image_data(result_classification, bbox_images):
+    rooms = set(result_classification["result_classification"].values())
+    data = {'bboxImages': {}}
 
-    for bbox_image in bbox_images:  
-        image_io = io.BytesIO()
-        bbox_image.save(image_io, format='PNG')
-        image_io.seek(0)
+    for room in rooms:
+        room_bbox_list = []
+        data['bboxImages'][room] = {}
+        bbox_images = [bbox_images[i] for i in range(len(result_classification)) \
+                    if result_classification[i].values == room]
+        
+        for bbox_image in bbox_images:  
+            image_io = io.BytesIO()
+            bbox_image.save(image_io, format='JPG')
+            image_io.seek(0)
 
-        image_base64 = base64.b64encode(image_io.read()).decode('utf-8')
+            image_base64 = base64.b64encode(image_io.read()).decode('utf-8')
 
-        result_images.append(image_base64)
-    return result_images
+            room_bbox_list.append(image_base64)
+        data['bboxImages'][room]['images'] = room_bbox_list
+    return data
  
 # /upload POST 요청 시 호출
 # 이미지를 fast-api 로 post
@@ -139,8 +147,8 @@ def upload_images(request):
         # print("textgeneration complete")
 
         # bbox image draw & 보내기
-        bbox_images = draw_bbox(result_detection.json(), image_files_bbox)
-        result_images = get_image_data(bbox_images)
+        bbox_images = draw_bbox(result_detection.json()["result"], image_files_bbox)
+        result_images = get_image_data(result_classification.json()["result"], bbox_images)
 
         return JsonResponse({"detect_result": result_detection.json(), 
                              "classi_result": result_classification.json(), 
@@ -188,7 +196,6 @@ def count_objects_by_room(img_paths, result_detection):
                     result[key] = value
         return result
     
-    # room_types_to_label = ["bathroom", "bedroom", "living_room", "dining_room", "kitchen"]
     lst = []
 
     for img_path in img_paths:
@@ -260,24 +267,9 @@ def upload_post(request):
 def get_room(request):
     #post ID로 필터링해서 가져오기
     try:
-        post = Post.objects.all().filter(postId=request.GET.get('postid'))
-        data = post[0].roomInfo
-        def ordered_dict_to_json(data):
-            return json.dumps(data, indent=2)
-        json_str = ordered_dict_to_json(data)
-        a = json.loads(json_str)
-        newDict = {'postInfo': 
-                    {"userName": post[0].userName,
-                    "title": post[0].title,
-                    "post_id": post[0].postId,
-                    "thumbnail": post[0].thumbnail,
-                    "caption": post[0].caption,
-                    "roomInfo": a}
-        }
-        print(newDict)
-        # post_serializer = PostSerializer(post, many=True)
-        # return JsonResponse(post_serializer.data, safe=False, status=200)
-        return JsonResponse(newDict, status=200)
+        post = Post.objects.all().filter(postId=request.GET.get('postId'))
+        post_serializer = PostSerializer(post, many=True)
+        return JsonResponse(post_serializer.data, safe=False, status=200)
     except:
         print("Fail to load room, get dummy data")
         data = {
