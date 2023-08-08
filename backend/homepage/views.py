@@ -238,7 +238,7 @@ def upload_post(request):
             username = user.username,
             title = request.post_title,
             caption = request.post_content,
-            thumb_image = request.thumbnail_path,
+            thumbnail = request.thumbnail_path,
             roomInfo = data['room_info']
         )
         
@@ -290,7 +290,7 @@ def get_room(request):
                     "userName": "망망망",
                     "title": "좋은 방입니다",
                     "post_id": 3,
-                    "thumb_image": "http://hostip/images/thumbimage1.jpg",
+                    "thumbnail": "http://hostip/images/thumbimage1.jpg",
                     "caption": "너무 좋아서 평생 살고싶네요",
                     "roomInfo": {
                         "livingroom01": {
