@@ -1,8 +1,12 @@
 // import react from 'react';
 import {Navbar, Nav, Container} from 'react-bootstrap'
-// import About from './pages/About';
+import { useAppContext } from "../store";
 
 const Header = () =>{
+  const {
+    store: { isAuthenticated },
+  } = useAppContext();
+
     return (
         <> 
         {/* fixed="top"  */}
@@ -12,7 +16,10 @@ const Header = () =>{
               <Nav className="ml-auto">
                 <Nav.Link href="/user/regist">당신의 공간을 A1BnB하세요!</Nav.Link>
                 <Nav.Link href="/user">My Page</Nav.Link>
-                <Nav.Link href="/user/login">Login</Nav.Link>
+                {isAuthenticated ? (
+                  <Nav.Link href="/user/logout">Logout</Nav.Link>):( 
+                  <Nav.Link href="/user/login">Login</Nav.Link>
+                )}
               </Nav>
             </Container>
           </Navbar>

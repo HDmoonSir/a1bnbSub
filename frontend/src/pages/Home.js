@@ -1,5 +1,5 @@
 import { useSearchParams, useEffect, useState } from 'react';
-import { useNavigate, useLocation} from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import axios from 'axios';
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
@@ -56,7 +56,7 @@ export default Home;
 // import Card from 'react-bootstrap/Card';
 // import Col from 'react-bootstrap/Col';
 // import Row from 'react-bootstrap/Row';
-// // 메인 화면 
+// // 메인 화면
 // const Home = () => {
 //   return (
 //     <div>
