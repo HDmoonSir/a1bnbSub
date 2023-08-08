@@ -52,11 +52,10 @@ const othersImageView = (roomInfo, bbox_result) => {
                   ))}
                 </div>
               ))}
-              <p>
-                {Object.entries(roomData.list_amenities).map(([options, count])=> (
-                <p>{options}{count}</p>
-                ))}
-              </p>
+
+              {Object.entries(roomData.list_amenities).map(([options, count])=> (
+                <span>{options}{count}&nbsp;</span>
+              ))}
               {/* <p>{Object.entries(roomData.img_paths).map(([options, count])=> (
               // <div><img src = {path}/></div>
               <p>{options}{count}</p>
@@ -152,20 +151,25 @@ const Ammenities = () => {
     }, []);
     //
     function title_value(){
-      const title = ref_title.current.value;
+      const title = ref_title.current.value
       return title
     };
     function caption_value(){
       const caption = ref_caption.current.value
       return caption
     };
-    const regist_complete = () => {
+    // function roomInfo_value(){
+    //   const roomInfo = ref_roomInfo.current.value
+    //   return roomInfo
+    // };
+    const regist_complete = (data) => {
       let title_result = title_value()
       let caption_result = caption_value()
+      let roomInfo_result = data
       console.log(title_result)
       console.log(caption_result)
       navigate("/user/regist/uploaded", { state: { result_detection: result_detection, result_classification: result_classification, 
-        post_title: title_result, post_caption: caption_result } })
+        post_title: title_result, post_caption: caption_result, post_roomInfo: roomInfo_result} })
     };
     return (
         <div>
@@ -197,7 +201,7 @@ const Ammenities = () => {
               <p>
                 <Button variant="primary" type="submit" href="/user/regist">이전</Button>
                 {/* <Button variant="primary" type="submit" href="/user/regist/uploaded">완료</Button> */}
-                <Button variant="primary" type="submit" onClick={() => regist_complete()}>완료</Button>
+                <Button variant="primary" type="submit" onClick={() => regist_complete(data)}>완료</Button>
               </p>
             </div>
         </div>

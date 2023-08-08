@@ -20,36 +20,38 @@ const Uploaded = () => {
     const result_classification= location.state.result_classification;
     const result_title = location.state.post_title;
     const result_caption = location.state.post_caption;
+    const result_roomInfo = location.state.post_roomInfo;
 
     console.log(result_detection)
     console.log(result_classification)
     console.log(result_title)
     console.log(result_caption)
+    console.log(result_roomInfo)
+    // const [data, setData] = useState([]);
 
-    const [data, setData] = useState([]);
-
-    const mergeData = {result_detection, result_classification, 'title' : result_title, 'caption' : result_caption}
+    const mergeData = {result_detection, result_classification, 'title' : result_title, 'caption' : result_caption, 'roomInfo' : result_roomInfo}
     
-    // POST 요청
-    useEffect(() => {
-      // 서버에 POST 요청 보내기
-      axios.post(serverUrl, mergeData)
-        .then((response) => {
-          // data 설정
-          setData(response.data)
-          console.log(response.data);
-        })
-        .catch((error) => {
-          console.error('Error fetching data:', error);
-        });
-    }, []);
+    console.log(mergeData)
+    // // POST 요청
+    // useEffect(() => {
+    //   // 서버에 POST 요청 보내기
+    //   axios.post(serverUrl, mergeData)
+    //     .then((response) => {
+    //       // data 설정
+    //       setData(response.data)
+    //       console.log(response.data);
+    //     })
+    //     .catch((error) => {
+    //       console.error('Error fetching data:', error);
+    //     });
+    // }, []);
     
     return (
-        <div>
+        <div style={{textAlign:'center'}}>
             
             <h1 style={{textAlign:'center'}}>등록이 완료되었습니다.</h1>
-            <p>{result_title}</p>
-            <p>{result_caption}</p>
+            {/* <p>{result_title}</p>
+            <p>{result_caption}</p> */}
             {/* <p>{result_detection}</p>
             <p>{result_classification}</p> */}
 
