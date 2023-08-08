@@ -1,44 +1,31 @@
-// 리액트 react-router-dom 수정
-
 import React from "react";
-
-import { Route} from "react-router-dom";
+import { Navigate } from "react-router-dom";
 import { useAppContext } from "../store";
+import { notification } from "antd";
+import { FrownOutlined } from "@ant-design/icons";
 
-export default function LoginRequiredRoute({
-    component: Component,
-    ...kwargs
-}) {
-    const {
-        store: { isAuthenticated }
-    } = useAppContext();
+export default function LoginRequiredRoute({ children }) {
+  const {
+    store: { isAuthenticated },
+  } = useAppContext();
 
-    if (isAuthenticated) {
-    } else {
-    }
+  if (isAuthenticated) {
+    return children;
+  }
 
-    const navigate = navigate();
+  notification.open({
+    message: "로그인이 필요합니다!",
+    icon: <FrownOutlined style={{ color: "#ff3333" }} />
+  });
 
+  
 
-    return (
-        <Route
-            {...kwargs}
-            render={props => {
-                if (isAuthenticated) {
-                    return <Component {...props} />;
-                } else {
-                    return (
-                        // <Redirect
-                        //     to={{
-                        //         pathname: "/accounts/login",
-                        //         state: { from: props.location }
-                        //     }}
-                        // />
-                        navigate("/accounts/login", 
-                        { state: { from: props.location } })
-                    );
-                }
-            }}
-        />
-    );
+  return (
+    <Navigate
+      to={{
+        pathname: "/user/login",
+        state: { from: "/protected" },
+      }}
+    />
+  );
 }

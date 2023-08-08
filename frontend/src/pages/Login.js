@@ -89,7 +89,7 @@ export default function Login() {
                     <h1>로그인</h1>
                 </Form.Item>
                 <Form.Item
-                    label="Username"
+                    label="아이디"
                     name="username"
                     rules={[
                         { required: true, message: "Please input your username!" },
@@ -103,7 +103,7 @@ export default function Login() {
                 </Form.Item>
 
                 <Form.Item
-                    label="Password"
+                    label="비밀번호"
                     name="password"
                     rules={[{ required: true, message: "Please input your password!" }]}
                     {...fieldErrors.password}
