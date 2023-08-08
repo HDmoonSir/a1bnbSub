@@ -26,12 +26,10 @@ const othersImageView = (roomInfo, bbox_result) => {
     // Object.values(showRoomsByClassification).map
     console.log(bbox_result)
     return (
-      <div>
-
+      <div style={{ padding: '20px' , margin: '20px'}}>
         {Object.entries(showRoomsByClassification).map(([classifiedRoomType, roomData]) => (
-          //
-            <div>
-              <h3>{classifiedRoomType}</h3>
+            <div key={classifiedRoomType} style={{ marginBottom: '20px'}}>
+              <h3 style = {{margin: '20px', fontSize: '24px', color: '#333', fontWeight: 'bold'}}>{classifiedRoomType}</h3>
               {/* {temp_a = classifiedRoomType} */}
               {Object.entries(bbox_result).map(([imagedict, true_data]) => (
                 <div>
@@ -52,10 +50,10 @@ const othersImageView = (roomInfo, bbox_result) => {
                   ))}
                 </div>
               ))}
-
+              <p>
               {Object.entries(roomData.list_amenities).map(([options, count])=> (
-                <span>{options}{count}&nbsp;</span>
-              ))}
+                <span style = {{fontSize: '18px', margin: '0 5px'}}>{options} {count}&nbsp;</span>       
+              ))}</p>
               {/* <p>{Object.entries(roomData.img_paths).map(([options, count])=> (
               // <div><img src = {path}/></div>
               <p>{options}{count}</p>
@@ -97,7 +95,7 @@ const ImageComponent = ({ base64Image }) => {
   const blobURL = URL.createObjectURL(blob);
   
   return (
-    <img src={blobURL} width="20%" height="20%" alt="Image" />
+    <img src={blobURL} width="30%" height="auto" alt="Image" />
   );
 };
 // function ImageComponent({ base64Image }, a, b){
@@ -172,9 +170,9 @@ const Ammenities = () => {
         post_title: title_result, post_caption: caption_result, post_roomInfo: roomInfo_result} })
     };
     return (
-        <div>
-            
-            <h1 style={{textAlign:'center'}}>등록 전에 결과를 확인하세요.</h1>
+        <div style={{textAlign:'center', padding: '30px'}}>
+            <h2>결과를 확인해보세요</h2>
+            <p>수정 후 최종 업로드하세요</p>
             {/* <img src={`data:image/JPG;base64,${base64Image}`} /> */}
             {/* {render(base64Image)} */}
             {/* <ImageComponent base64Image={bbox_result[0]} />
