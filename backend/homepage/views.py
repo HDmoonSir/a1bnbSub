@@ -220,25 +220,26 @@ def set_result(request):
 @api_view(['post'])
 def upload_post(request):
     try:
-        user = request.user
-        rooms = set(request.data["confirm_list_room_class"].values())
+        # user = request.user
+        # rooms = set(request.data["confirm_list_room_class"].values())
     
-        data = {'room_info': {}}
-        for room in rooms:
-            data['room_info'] = {
-                f"{room}": {
-                    {"img_path": request.data["img_paths"]},
-                    {"detected": request.data["confirm_list_amenities"]},
-                }
-            }
-
+        # data = {'room_info': {}}
+        # for room in rooms:
+        #     data['room_info'] = {
+        #         f"{room}": {
+        #             {"img_path": request.data["img_paths"]},
+        #             {"detected": request.data["confirm_list_amenities"]},
+        #         }
+        #     }
+        
+        user = User.objects.first()
         Post.objects.create(
             user = user,
-            username = user.username,
+            username = user.fullname,
             title = request.post_title,
             caption = request.post_content,
-            thumbnail = request.thumbnail_path,
-            roomInfo = data['room_info']
+            thumbnail = list(request.data['result_detection'].keys())[0],
+            roomInfo = request.data['dlInfo']
         )
         
         # save_detection = False
