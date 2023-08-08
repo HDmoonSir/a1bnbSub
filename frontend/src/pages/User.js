@@ -6,9 +6,10 @@ import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
-import { back_ip_port } from './back_ip_port';
-
+import { back_ip_port, img_ip_port } from './back_ip_port';
 const serverUrl = `${back_ip_port}`;
+const imgUrl = `${img_ip_port}`;
+
 function User() {
     const navigate = useNavigate();
     const [imageList, setImageList] = useState([]);
@@ -33,13 +34,12 @@ function User() {
 };
   return (
       <div>
-        <h1 style={{textAlign:'center'}}>마이 페이지</h1>
-        <p style={{textAlign:'center'}}>마이 페이지 화면입니다</p>
+        <h1 style={{ textAlign: 'center', margin: '30px'}}>마이 페이지</h1>
         <Row sx={1} md={4} className="g-4">
             {imageList.map((info, idx) => (
                 <Col key={idx}>
                 <Card style={{ width: '18rem' }}>
-                    <Card.Img variant="top" src={info.thumbnail} />
+                     <Card.Img variant="top" src={`${imgUrl}/${info.thumbnail}`} />
                     <Card.Body>
                         <Card.Title>{info.title}</Card.Title>
                         <Button variant="primary" onClick={() => handleCardClick(info.postId)}>이동</Button>
