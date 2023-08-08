@@ -20,18 +20,24 @@ const othersImageView = (roomInfo) => {
   showRoomsByClassification = JSON.parse(showRoomsByClassification);
   // Object.values(showRoomsByClassification).map
   return (
-    <div>
-      
+    <div style={{ padding: '20px' }}>
+
       {Object.entries(showRoomsByClassification).map(([classifiedRoomType, roomData]) => (
-        <div>
+        <div key={classifiedRoomType} style={{ marginBottom: '20px' }}>
           <h3>{classifiedRoomType}</h3>
           {/* <p>{roomData.img_path}</p> */}
           {/* <p>{imageView(roomData.img_path)}</p> */}
-          <p>{Object.values(roomData.img_path).map((path)=> (
-            // <div><img src = {path}/></div>
-            <img src = {path}/>
+          <div style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', marginBottom: '10px' }}>
+            {Object.values(roomData.img_path).map((path, index)=> (
+              <img key={index} src={path} style={{ marginRight: '10px', marginBottom: '10px', maxWidth: '300px', maxHeight: '180px' }} />
+              // <img src = {path}/>
+            ))}
+          </div>
+          <p>{Object.entries(roomData.detected).map(([amenity, count]) => (
+            <span key = {amenity}>
+              {amenity} {count} &nbsp;
+            </span>        
           ))}</p>
-          <p>{JSON.stringify(roomData.detected)}</p>
         </div>
       ))}
     </div>
@@ -64,24 +70,46 @@ const Room = () => {
     }, []);
     
     return (
-      <div>
-        <h1>방 소개</h1>
+      <div style={{ padding: '20px' }}>
+        {/* <h1>방 소개</h1> */}
         {Object.entries(data).map(([item, value]) => (
-          <div>
-          <h1 style={{textAlign:'left'}}>{value.title}</h1>
-          <p style={{textAlign:'right'}}>{value.userName}</p>
-          <img src = {value.thumbnail} />
-          <p style={{ textAlign: "left" }}>{value.caption}</p>
-
-
-          <h2>상세 방 소개</h2>
-          
-          {othersImageView(value.roomInfo)}
+          <div 
+            key={item} 
+            style={{ 
+              // display: 'flex', // Flexbox layout
+              // flexDirection: 'column', // Align items in a column
+              // alignItems: 'center', // Center items horizontally
+              border: '5px solid #ddd',
+              padding: '20px',
+              margin: '20px 0',
+              borderRadius: '15px',
+              textAlign: 'center',
+            }}
+          >
+            {/* <div style={{ flex: '1', maxWidth: '80%' }}>
+              <div style={{ display: 'flex' ,  justifyContent: 'center'}}> */}
+              <h2 style={{ marginBottom: '10px', textAlign: 'center'}}>{value.title}</h2>
+              <p style={{ textAlign: 'right', color: '#666'}}>작성자: {value.userName}</p>
+              {/* </div> */}
+              <img
+                src={value.thumbnail}
+                alt={value.title}
+                style={{
+                  maxWidth: '600px',
+                  height: '360px',
+                }}
+              />
+              <p style={{  width: '600px', margin: '10px auto', border: '2px solid #ddd', padding: '5px', textAlign: 'center'}}>{value.caption}</p>
+            {/* </div> */}
+              <div style={{ flexDirection: 'column', alignItems: 'center', marginTop: '20px' }}>
+                {/* <h3>상세 방 소개</h3> */}
+                {othersImageView(value.roomInfo)}
+              </div>
           </div>
         ))}
-
       </div>
     );
+    
   };
 
 export default Room;
