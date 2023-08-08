@@ -1,5 +1,5 @@
 import Button from 'react-bootstrap/Button';
-import React, { Component, useState, useEffect } from 'react';
+import React, { Component, useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import Image from 'react-bootstrap/Image'
 import Card from 'react-bootstrap/Card';
@@ -74,10 +74,7 @@ const ImageComponent = ({ base64Image }) => {
     </div>
   );
 };
-function regist_complete() {
-  navigate("/user/regist/uploaded", { state: { result_detection: result_detection, result_classification: result_classification, 
-    post_title: text_result, post_caption: caption_result } })
-};
+
 const Ammenities = () => {
     // /become-host 에서 navigate 으로 데이터 전달 받음
     const location = useLocation();
@@ -91,7 +88,8 @@ const Ammenities = () => {
     console.log(bbox_result)
 
     const [data, setData] = useState([]);
-    
+    const ref_title = useRef(null);
+    const ref_caption = useRef(null);
     // const base64Image = base64ToBlob(bbox_result);
 
     const mergeData = {result_detection, result_classification}
@@ -113,16 +111,18 @@ const Ammenities = () => {
     }, []);
     //
     function title_value(){
-      const title = document.getElementById('area_title').value;
+      const title = ref_title.current.value;
       return title
     };
     function caption_value(){
-      const caption = document.getElementById('area_caption').value;
+      const caption = ref_caption.current.value
       return caption
     };
     const regist_complete = () => {
       let title_result = title_value()
       let caption_result = caption_value()
+      console.log(title_result)
+      console.log(caption_result)
       navigate("/user/regist/uploaded", { state: { result_detection: result_detection, result_classification: result_classification, 
         post_title: title_result, post_caption: caption_result } })
     };
@@ -141,8 +141,8 @@ const Ammenities = () => {
             </div>
             ))}
             <div align="center">
-              <p><textarea id="area_title" onChange='title_value()' placeholder="제목을 입력하세요" rows="1" cols="80" style={{resize:'none'}}></textarea></p>
-              <p><textarea id="area_caption" onChange='caption_value()' rows="10" cols="80" style={{resize:'none'}}>
+              <p><textarea id="area_title" ref={ref_title} placeholder="제목을 입력하세요" rows="1" cols="80" style={{resize:'none'}}></textarea></p>
+              <p><textarea id="area_caption" ref={ref_caption} rows="10" cols="80" style={{resize:'none'}}>
                 {result_textgeneration}
               </textarea></p>
               {/* detecion 결과 화면 보기 */}
@@ -156,7 +156,7 @@ const Ammenities = () => {
               <p>
                 <Button variant="primary" type="submit" href="/user/regist">이전</Button>
                 {/* <Button variant="primary" type="submit" href="/user/regist/uploaded">완료</Button> */}
-                <Button variant="primary" type="submit" onclick={() => regist_complete()}>완료</Button>
+                <Button variant="primary" type="submit" onClick={() => regist_complete()}>완료</Button>
               </p>
             </div>
         </div>

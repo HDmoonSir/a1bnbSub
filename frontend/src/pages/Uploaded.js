@@ -26,7 +26,7 @@ const Uploaded = () => {
     console.log(title)
     console.log(caption)
 
-    const [data, setData] = useState([]);
+    // const [data, setData] = useState([]);
     //
     // POST 요청
     // useEffect(() => {
@@ -48,8 +48,8 @@ const Uploaded = () => {
             <h1 style={{textAlign:'center'}}>등록이 완료되었습니다.</h1>
             <p>{title}</p>
             <p>{caption}</p>
-            <p>{result_detection}</p>
-            <p>{result_classification}</p>
+            {/* <p>{result_detection}</p>
+            <p>{result_classification}</p> */}
 
         </div>
     );

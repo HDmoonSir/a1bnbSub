@@ -1,5 +1,5 @@
 // 호스트 숙소 등록 화면 
-import { useState } from 'react-router-dom';
+import { useState } from 'react';
 import Image from 'react-bootstrap/Image'
 import Button from 'react-bootstrap/Button';
 import axios from 'axios';
@@ -38,18 +38,28 @@ const BecomeHost = () => {
                     if (previewImgUrl && previewImg.length + newPreviewImg.length < 10) {
                         newPreviewImg.push(previewImgUrl);
                         newNames.push(file.name);
+
+                        if (newPreviewImg.length === selectedFiles.length) {
+                            setPreviewImg([...previewImg, ...newPreviewImg]);
+                            setName([...name, ...newNames]);
+                        }
                         // alert("!") // test 
                     } else {
-                        alert("등록된 이미지가 10장을 초과할 수 없습니다!");
+                        // alert("등록된 이미지가 10장을 초과할 수 없습니다!");
+                        window.location.reload();
+                        // alert("등록된 이미지가 10장을 초과할 수 없습니다!");
+                        // return;
                     }
+                    //
+                    
                 };
         });
 
         // 모든 이미지를 처리한 후에 상태를 한 번에 업데이트
-        if (newPreviewImg.length === selectedFiles.length) {
-            setPreviewImg([...previewImg, ...newPreviewImg]);
-            setName([...name, ...newNames]);
-        }
+        // if (newPreviewImg.length === selectedFiles.length) {
+        //     setPreviewImg([...previewImg, ...newPreviewImg]);
+        //     setName([...name, ...newNames]);
+        // }
     }
         
 
@@ -74,22 +84,24 @@ const BecomeHost = () => {
 
         if (previewImg === null || previewImg.length === 0) {
             return (
-                <p>등록된 이미지가 없습니다</p>
+                <p>이미지를 등록해주세요.</p>
             )
         }
         else {
             return previewImg.map((el, index) => {
                 // const {name}= el
                 return (
-                    <>
+                    <div>
                         <Image
-                            src={previewImg[index]}
-                            style={{ maxWidth: "400px" }}>
-
+                        src={previewImg[index]}
+                        // style={{ maxWidth: "400px", maxHeigh: "200px" }}>
+                        // style={{ Width: "100", Height: "100" }}>
+                        width="20%" height="10%" title={name[index]}>
                         </Image>
-                        <p>{name[index]}</p>
-                        <button onClick={() => deleteImg(index)}>삭제</button>
-                    </>
+                        <button onClick={() => deleteImg(index)}>등록 취소</button>
+                        {/* {name[index]} */}
+                    </div>
+                    
                 )
             })
         }
@@ -143,26 +155,34 @@ const BecomeHost = () => {
         }
     }
     return (
+        // <div style={{ textAlign: 'center' }}>
         <div>
-            <h1 style={{ textAlign: 'center' }}>호스트 숙소 게시글 화면</h1>
-            <p style={{ textAlign: 'center' }}>
-                숙소 등록하는 화면입니다
-            </p>
-            <p style={{ textAlign: 'center' }}>숙소 이미지 10장 이내로 올려주세요</p>
-            {/* <Button onClick={uploadData} variant="primary" type="submit" href="/become-host/ammenities">다음</Button> */}
-            <Button onClick={uploadData} variant="primary">다음</Button>
+            <div style={{ textAlign: 'center' }}>
+                <h1 style={{ textAlign: 'center' }}>자동 숙소 소개글 생성을 위한 사진을 올려주세요.</h1>
+                <p style={{ textAlign: 'center' }}>
+                    
+                </p>
+                <h2 style={{ textAlign: 'center' }}>숙소 사진은 10장 이내로 올려주세요.</h2>
+                {/* <Button onClick={uploadData} variant="primary" type="submit" href="/become-host/ammenities">다음</Button> */}
+                <Button onClick={uploadData} variant="primary">사진 등록이 완료되었으면 눌러주세요.</Button>
+            </div>
+            <p></p>
             {/* 이미지 업로드 */}
-            <form encType='multipart/form-data'>
-                <input
-                    type="file"
-                    multiple
-                    // id="upload-img"
-                    name="images"
-                    accept="image/*"
-                    onChange={(e) => insertImg(e)} />
-            </form>
-            {/* 이미지 미리보기 */}
-            {getPreviewImg()}
+            <div style={{ textAlign: 'center' }}>
+                <form encType='multipart/form-data'>
+                    <input
+                        type="file"
+                        multiple
+                        // id="upload-img"
+                        name="images"
+                        accept="image/*"
+                        onChange={(e) => insertImg(e)}/>
+                </form>
+            </div>
+            <div style={{ textAlign: 'center' }}>
+                {/* 이미지 미리보기 */}
+                {getPreviewImg()}
+            </div>
         </div>
     );
 };
