@@ -82,29 +82,31 @@ const BecomeHost = () => {
     const getPreviewImg = () => {
         console.log(previewImg);
 
-        if (previewImg === null || previewImg.length === 0) {
+        // if (previewImg === null || previewImg.length === 0) {
+        //     return (
+        //         <p>이미지를 등록해주세요.</p>
+        //     )
+        // }
+        // else {
             return (
-                <p>이미지를 등록해주세요.</p>
-            )
-        }
-        else {
-            return previewImg.map((el, index) => {
-                // const {name}= el
-                return (
-                    <div>
+                <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: '20px' , textAlign: 'center'}}>
+                  {previewImg.map((el, index) => (
+                    <div key={index} style={{ flex: '0 0 calc(25% - 5px)' }}>
                         <Image
-                        src={previewImg[index]}
-                        // style={{ maxWidth: "400px", maxHeigh: "200px" }}>
-                        // style={{ Width: "100", Height: "100" }}>
-                        width="20%" height="10%" title={name[index]}>
-                        </Image>
-                        <button onClick={() => deleteImg(index)}>등록 취소</button>
-                        {/* {name[index]} */}
+                          src={previewImg[index]}
+                          width="100%"
+                          height="auto"
+                          title={name[index]}
+                        />     
+                        <button onClick={() => deleteImg(index)} style={{ backgroundColor: '#eb6864', color: 'white', border: 'None', margin: '5px', borderRadius: '5px' }}>
+                          삭제
+                        </button>
                     </div>
-                    
-                )
-            })
-        }
+                  ))}
+                </div>
+              );
+              
+        // }
     };
     // 서버로 데이터 전송하는 함수 
     async function uploadData() {
@@ -157,26 +159,46 @@ const BecomeHost = () => {
     return (
         // <div style={{ textAlign: 'center' }}>
         <div>
-            <div style={{ textAlign: 'center' }}>
-                <h1 style={{ textAlign: 'center' }}>자동 숙소 소개글 생성을 위한 사진을 올려주세요.</h1>
-                <p style={{ textAlign: 'center' }}>
-                    
-                </p>
-                <h2 style={{ textAlign: 'center' }}>숙소 사진은 10장 이내로 올려주세요.</h2>
+            <div style={{ textAlign: 'center', padding: '20px'}}>
+                {/* <h1>숙소 사진을 올려주세요.</h1> */}
+                <h2>숙소 사진을 10장 이내로 올려주세요</h2>
+                <div style = {{margin: '5px', textAlign: 'right', marginRight: '40px'}}>
                 {/* <Button onClick={uploadData} variant="primary" type="submit" href="/become-host/ammenities">다음</Button> */}
-                <Button onClick={uploadData} variant="primary">사진 등록이 완료되었으면 눌러주세요.</Button>
+                <Button onClick={uploadData} style = {{backgroundColor: '#BC5350', width: '100px', height: '40px'}}>등록하기</Button>
+                </div>
             </div>
             <p></p>
             {/* 이미지 업로드 */}
-            <div style={{ textAlign: 'center' }}>
-                <form encType='multipart/form-data'>
-                    <input
-                        type="file"
-                        multiple
-                        // id="upload-img"
-                        name="images"
-                        accept="image/*"
-                        onChange={(e) => insertImg(e)}/>
+            <div style ={{ textAlign: 'center', justifyContent: 'center', display: 'flex'}}>
+                <form encType='multipart/form-data' style={{ marginBottom: '20px' }}>
+                    {/* <label htmlFor="images" style={{ display: 'block', fontWeight: 'bold', marginBottom: '10px' }}>이미지 업로드</label> */}
+                    <label
+                        htmlFor="images"
+                        style={{
+                            display: 'block',
+                            backgroundColor: '#eb6864',
+                            color: '#fff',
+                            padding: '10px 20px',
+                            borderRadius: '5px',
+                            cursor: 'pointer',
+                            width: '300%',               
+                        }}
+                        >
+                        이미지 업로드
+                        <input
+                            type="file"
+                            multiple
+                            id="images"
+                            name="images"
+                            accept="image/*"
+                            style={{
+                            display: 'none',
+                            }}
+                            onChange={(e) => insertImg(e)}
+                        />
+                    </label>
+
+
                 </form>
             </div>
             <div style={{ textAlign: 'center' }}>

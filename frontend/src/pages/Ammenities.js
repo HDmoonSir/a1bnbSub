@@ -11,37 +11,57 @@ import { back_ip_port } from './back_ip_port'
 
 const serverUrl = `${back_ip_port}user/regist/result`;
 
-const othersImageView = (roomInfo) => {
+const othersImageView = (roomInfo, bbox_result) => {
     // list로 만들어서 출력한다? ㄴㄴ
     // 리빙룸1
     // 사진 사이즈로 열거 (브라우저 넓이 / 사진갯수로 줄여서)
     // 어메니티 출력
     let showRoomsByClassification = JSON.stringify(roomInfo);
     showRoomsByClassification = JSON.parse(showRoomsByClassification);
+
+    let temp_a = ''
+    let temp_b = ''
+    // let showRoomsImages = JSON.stringify(bbox_result);
+    // showRoomsImages = JSON.stringify(showRoomsImages);
     // Object.values(showRoomsByClassification).map
+    console.log(bbox_result)
     return (
       <div>
-        
+
         {Object.entries(showRoomsByClassification).map(([classifiedRoomType, roomData]) => (
-          
-          <div>
-            <div></div>
+          //
             <div>
               <h3>{classifiedRoomType}</h3>
-              {/* <p>{roomData.img_path}</p> */}
-              {/* <p>{imageView(roomData.img_path)}</p> */}
-              <p>{Object.entries(roomData.list_amenities).map(([options, count])=> (
+              {/* {temp_a = classifiedRoomType} */}
+              {Object.entries(bbox_result).map(([imagedict, true_data]) => (
+                <div>
+                  {Object.entries(true_data).map(([roomType, roomImgContainer]) => (
+                    <div>
+                      {/* {console.log(roomType)}
+                      {console.log(classifiedRoomType)} */}
+                      {/* {temp_b = roomType} */}
+                      {/* {console.log(roomImgContainer)} */}
+                      {/* {% if(classifiedRoomType.equals(roomType))%} */}
+                      {classifiedRoomType === roomType && (
+                      // classifiedRoomType와 roomType이 같을 때 실행
+                        Object.values(roomImgContainer).map((image) => (
+                            <ImageComponent base64Image={image} />
+                        ))
+                      )}
+                    </div>
+                  ))}
+                </div>
+              ))}
+              <p>
+                {Object.entries(roomData.list_amenities).map(([options, count])=> (
+                <p>{options}{count}</p>
+                ))}
+              </p>
+              {/* <p>{Object.entries(roomData.img_paths).map(([options, count])=> (
               // <div><img src = {path}/></div>
               <p>{options}{count}</p>
-              ))}</p>
-              <p>{Object.entries(roomData.img_paths).map(([options, count])=> (
-              // <div><img src = {path}/></div>
-              <p>{options}{count}</p>
-              ))}</p>
+              ))}</p> */}
             </div>
-            <div></div>
-            
-          </div>
         ))}
       </div>
     );
@@ -64,16 +84,37 @@ const base64ToBlob = (base64String, contentType = 'image/jpeg') => {
   
   return new Blob(byteArrays, { type: contentType });
 };
+// const ImageComponent = ( {base64Image} ) => {
+//   // for(let image in base64Image){
+//   console.log(base64Image)
+//   const blob = base64ToBlob(base64Image);
+//   const blobURL = URL.createObjectURL(blob);
+//   img_rendering(blobURL)
+//   // }
+// };
 const ImageComponent = ({ base64Image }) => {
+// const ImageComponent = ({ base64Image }, a, b) => {
   const blob = base64ToBlob(base64Image);
   const blobURL = URL.createObjectURL(blob);
-
+  
   return (
-    <div>
-      <img src={blobURL} alt="Image" />
-    </div>
+    <img src={blobURL} width="20%" height="20%" alt="Image" />
   );
 };
+// function ImageComponent({ base64Image }, a, b){
+//   console.log(a)
+//   console.log(b)
+//   const blob = base64ToBlob(base64Image);
+//   const blobURL = URL.createObjectURL(blob);
+//   if(a==b){
+//     return (
+//       <img src={blobURL} width="20%" height="20%" alt="Image" />
+//   );
+//   }
+//   else{
+//     return <></>
+//   }
+// };
 
 const Ammenities = () => {
     // /become-host 에서 navigate 으로 데이터 전달 받음
@@ -132,12 +173,12 @@ const Ammenities = () => {
             <h1 style={{textAlign:'center'}}>등록 전에 결과를 확인하세요.</h1>
             {/* <img src={`data:image/JPG;base64,${base64Image}`} /> */}
             {/* {render(base64Image)} */}
-            <ImageComponent base64Image={bbox_result[0]} />
-            <ImageComponent base64Image={bbox_result[1]} />
+            {/* <ImageComponent base64Image={bbox_result[0]} />
+            <ImageComponent base64Image={bbox_result[1]} /> */}
             
             {Object.entries(data).map(([item, value]) => (
-            <div>
-              {othersImageView(value)}
+            <div style={{textAlign:'center'}}>
+              {othersImageView(value, bbox_result)}
             </div>
             ))}
             <div align="center">
