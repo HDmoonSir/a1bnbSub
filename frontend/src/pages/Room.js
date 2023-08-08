@@ -7,7 +7,8 @@ import axios from 'axios';
 import { Form, Input, Button, notification } from "antd";
 import { SmileOutlined, FrownOutlined } from "@ant-design/icons";
 
-import { back_ip_port } from './back_ip_port'
+import { back_ip_port, img_ip_port } from './back_ip_port'
+const imgUrl = `${img_ip_port}`;
 
 const serverUrl = `${back_ip_port}room`;
 
@@ -29,7 +30,7 @@ const othersImageView = (roomInfo) => {
           {/* <p>{imageView(roomData.img_path)}</p> */}
           <div style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', marginBottom: '10px' }}>
             {Object.values(roomData.img_path).map((path, index)=> (
-              <img key={index} src={path} style={{ marginRight: '10px', marginBottom: '10px', maxWidth: '300px', maxHeight: '180px' }} />
+              <img key={index} src={`${imgUrl}/${path}`} style={{ marginRight: '10px', marginBottom: '10px', maxWidth: '300px', maxHeight: '180px' }} />
               // <img src = {path}/>
             ))}
           </div>
@@ -92,7 +93,7 @@ const Room = () => {
               <p style={{ textAlign: 'right', color: '#666'}}>작성자: {value.userName}</p>
               {/* </div> */}
               <img
-                src={value.thumbnail}
+                src={`${imgUrl}/${value.thumbnail}`}
                 alt={value.title}
                 style={{
                   maxWidth: '600px',
