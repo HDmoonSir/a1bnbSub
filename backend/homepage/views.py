@@ -102,12 +102,12 @@ def get_image_data(result_classification, bbox_images):
 
     for room in rooms:
         room_bbox_list = []
-        bbox_images = [bbox_images[i] for i in range(len(result_classification)) \
+        images_in_room = [bbox_images[i] for i in range(len(result_classification)) \
                     if result_classification.get(list(result_classification.keys())[i]) == room]
         
-        for bbox_image in bbox_images:  
+        for image_in_room in images_in_room:  
             image_io = io.BytesIO()
-            bbox_image.save(image_io, format='JPG')
+            image_in_room.save(image_io, format='PNG')
             image_io.seek(0)
 
             image_base64 = base64.b64encode(image_io.read()).decode('utf-8')
