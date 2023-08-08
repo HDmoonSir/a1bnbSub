@@ -19,15 +19,15 @@ args = {"resize": (224, 224),
         }
 
 def get_classes():
-    classes = ['exterior',
-                'balcony-interior',
-                'bathroom',
+    classes = [ 'living_room',
                 'bedroom',
                 'dining_room',
                 'kitchen',
-                'living_room',
+                'balcony-interior',
+                'bathroom',
                 'recreation_room',
-                'swimming_pool-outdoor']
+                'swimming_pool-outdoor',
+                'exterior']
     return classes
 
 def get_classification_model():
