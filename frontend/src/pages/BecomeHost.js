@@ -158,30 +158,22 @@ const BecomeHost = () => {
     }
     return (
         // <div style={{ textAlign: 'center' }}>
-        <div>
-            <div style={{ textAlign: 'center', padding: '20px'}}>
+        <div style = {{ textAlign: 'center', padding: '30px'}}>
+            <h2>숙소 사진을 10장 이내로 올려주세요</h2>
+            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginBottom: '20px', margin: '30px'}}>
                 {/* <h1>숙소 사진을 올려주세요.</h1> */}
-                <h2>숙소 사진을 10장 이내로 올려주세요</h2>
-                <div style = {{margin: '5px', textAlign: 'right', marginRight: '40px'}}>
-                {/* <Button onClick={uploadData} variant="primary" type="submit" href="/become-host/ammenities">다음</Button> */}
-                <Button onClick={uploadData} style = {{backgroundColor: '#BC5350', width: '100px', height: '40px'}}>등록하기</Button>
-                </div>
-            </div>
-            <p></p>
-            {/* 이미지 업로드 */}
-            <div style ={{ textAlign: 'center', justifyContent: 'center', display: 'flex'}}>
-                <form encType='multipart/form-data' style={{ marginBottom: '20px' }}>
-                    {/* <label htmlFor="images" style={{ display: 'block', fontWeight: 'bold', marginBottom: '10px' }}>이미지 업로드</label> */}
+                <form encType='multipart/form-data'>
                     <label
                         htmlFor="images"
                         style={{
                             display: 'block',
                             backgroundColor: '#eb6864',
                             color: '#fff',
-                            padding: '10px 20px',
+                            padding: '10px 40px',
                             borderRadius: '5px',
-                            cursor: 'pointer',
-                            width: '300%',               
+                            cursor: 'pointer',     
+                            fontsize: '16px',
+                            fontFamily: 'inherit'                     
                         }}
                         >
                         이미지 업로드
@@ -197,9 +189,11 @@ const BecomeHost = () => {
                             onChange={(e) => insertImg(e)}
                         />
                     </label>
-
-
-                </form>
+                </form>            
+                <div style = {{display: 'flex', justifyContent: 'flex-end', marginRight: '40px'}}>
+                {/* <Button onClick={uploadData} variant="primary" type="submit" href="/become-host/ammenities">다음</Button> */}
+                    <Button onClick={uploadData} style = {{backgroundColor: '#BC5350', width: '180px', height: '44px', fontsize: '16px', fontFamily: 'inherit'}}>등록하기</Button>
+                </div>
             </div>
             <div style={{ textAlign: 'center' }}>
                 {/* 이미지 미리보기 */}
