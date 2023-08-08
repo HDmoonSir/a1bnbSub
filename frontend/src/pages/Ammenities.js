@@ -46,26 +46,6 @@ const othersImageView = (roomInfo) => {
       </div>
     );
   };
-//
-// const byteToBase64 = (bytes) => {
-//   const binary = [];
-//   for (let i = 0; i < bytes.length; i++) {
-//     binary.push(String.fromCharCode(bytes[i]));
-//   }
-//   return btoa(binary.join(''));
-// };
-// function decodeBase64(base64data) {
-//   let base64ToString = Buffer.from(base64data, "base64").toString()
-//   return ({data: base64ToString })
-// };
-// function render(base64Image) {
-//   return (
-//      <img src={"data:image/jpeg;base64," + base64Image.data} />
-//   )
-// };
-// const base64ToImageURL = (base64String) => {
-//   return `data:image/png;base64,${base64String}`;
-// };
 const base64ToBlob = (base64String, contentType = 'image/jpeg') => {
   const byteCharacters = window.atob(base64String);
   const byteArrays = [];
@@ -94,7 +74,10 @@ const ImageComponent = ({ base64Image }) => {
     </div>
   );
 };
-
+function regist_complete() {
+  navigate("/user/regist/uploaded", { state: { result_detection: result_detection, result_classification: result_classification, 
+    post_title: text_result, post_caption: caption_result } })
+};
 const Ammenities = () => {
     // /become-host 에서 navigate 으로 데이터 전달 받음
     const location = useLocation();
@@ -129,6 +112,20 @@ const Ammenities = () => {
         });
     }, []);
     //
+    function title_value(){
+      const title = document.getElementById('area_title').value;
+      return title
+    };
+    function caption_value(){
+      const caption = document.getElementById('area_caption').value;
+      return caption
+    };
+    const regist_complete = () => {
+      let title_result = title_value()
+      let caption_result = caption_value()
+      navigate("/user/regist/uploaded", { state: { result_detection: result_detection, result_classification: result_classification, 
+        post_title: title_result, post_caption: caption_result } })
+    };
     return (
         <div>
             
@@ -144,8 +141,8 @@ const Ammenities = () => {
             </div>
             ))}
             <div align="center">
-              <p><textarea id="area_title" placeholder="제목을 입력하세요" rows="1" cols="80" style={{resize:'none'}}></textarea></p>
-              <p><textarea id="area_caption" rows="10" cols="80" style={{resize:'none'}}>
+              <p><textarea id="area_title" onChange='title_value()' placeholder="제목을 입력하세요" rows="1" cols="80" style={{resize:'none'}}></textarea></p>
+              <p><textarea id="area_caption" onChange='caption_value()' rows="10" cols="80" style={{resize:'none'}}>
                 {result_textgeneration}
               </textarea></p>
               {/* detecion 결과 화면 보기 */}
@@ -158,7 +155,8 @@ const Ammenities = () => {
                 post_title: text_result, post_caption: caption_result } })} */}
               <p>
                 <Button variant="primary" type="submit" href="/user/regist">이전</Button>
-                <Button variant="primary" type="submit" href="/user/regist/uploaded">완료</Button>
+                {/* <Button variant="primary" type="submit" href="/user/regist/uploaded">완료</Button> */}
+                <Button variant="primary" type="submit" onclick={() => regist_complete()}>완료</Button>
               </p>
             </div>
         </div>
