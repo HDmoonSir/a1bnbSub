@@ -219,6 +219,7 @@ def set_result(request):
 
 @api_view(['post'])
 def upload_post(request):
+    print(request.data)
     try:
         # user = request.user
         # rooms = set(request.data["confirm_list_room_class"].values())
@@ -233,15 +234,20 @@ def upload_post(request):
         #     }
 
         user = User.objects.first()
+        print(request.data['title'])
+        print(request.data['caption'])
+        print(list(request.data['result_detection'].keys())[0])
+        print(request.data["roomInfo"]["dlInfo"])
+        
         Post.objects.create(
             user = user,
-            username = user.fullname,
-            title = request.post_title,
-            caption = request.post_content,
+            # username = "날먹맨",
+            title = request.data['title'],
+            caption = request.data['caption'],
             thumbnail = list(request.data['result_detection'].keys())[0],
             roomInfo = request.data["roomInfo"]["dlInfo"]
         )
-        
+        print("module created")
         # save_detection = False
 
         # if count_objects_by_room(request.result_detection.json(), room) == request.confirm_list_amenities:

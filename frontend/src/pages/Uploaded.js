@@ -32,19 +32,19 @@ const Uploaded = () => {
     const mergeData = {result_detection, result_classification, 'title' : result_title, 'caption' : result_caption, 'roomInfo' : result_roomInfo}
     
     console.log(mergeData)
-    // // POST 요청
-    // useEffect(() => {
-    //   // 서버에 POST 요청 보내기
-    //   axios.post(serverUrl, mergeData)
-    //     .then((response) => {
-    //       // data 설정
-    //       setData(response.data)
-    //       console.log(response.data);
-    //     })
-    //     .catch((error) => {
-    //       console.error('Error fetching data:', error);
-    //     });
-    // }, []);
+    // POST 요청
+    useEffect(() => {
+      // 서버에 POST 요청 보내기
+      axios.post(serverUrl, mergeData)
+        .then((response) => {
+          // data 설정
+          setData(response.data)
+          console.log(response.data);
+        })
+        .catch((error) => {
+          console.error('Error fetching data:', error);
+        });
+    }, []);
     
     return (
         <div style={{textAlign:'center'}}>
