@@ -73,7 +73,7 @@ def draw_bbox(detect_json, image_files_bbox):
     infer_images = [Image.open(io.BytesIO(data)) for data in file_data]
     file_names = [image.name for _, image in image_files_bbox]
 
-    bbox_images = []
+    bbox_images = {}
 
     for img_file, bbox in detect_json.items():
         img_idx = file_names.index(img_file)
@@ -93,7 +93,7 @@ def draw_bbox(detect_json, image_files_bbox):
             # text background draw
             draw.rectangle([x1, y1-20, x1+font.getsize(label)[0], y1], outline = color,  fill = color,  width = 0)
             draw.text((x1, y1-20), label_text, font=font, fill=(255,255,255))
-        bbox_images.append(image)
+        bbox_images[img_file] = image
     return bbox_images
 
 def get_image_data(result_classification, bbox_images):
@@ -102,8 +102,8 @@ def get_image_data(result_classification, bbox_images):
 
     for room in rooms:
         room_bbox_list = []
-        images_in_room = [bbox_images[i] for i in range(len(result_classification)) \
-                    if result_classification.get(list(result_classification.keys())[i]) == room]
+        images_in_room = [bbox_images[filename] for filename in result_classification.keys() \
+                    if result_classification[filename] == room]
         
         for image_in_room in images_in_room:  
             image_io = io.BytesIO()
