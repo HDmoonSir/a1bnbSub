@@ -97,12 +97,11 @@ def draw_bbox(detect_json, image_files_bbox):
     return bbox_images
 
 def get_image_data(result_classification, bbox_images):
-    rooms = set(result_classification["result_classification"].values())
+    rooms = set(result_classification.values())
     data = {'bboxImages': {}}
 
     for room in rooms:
         room_bbox_list = []
-        data['bboxImages'][room] = {}
         bbox_images = [bbox_images[i] for i in range(len(result_classification)) \
                     if result_classification[i].values == room]
         
@@ -114,7 +113,7 @@ def get_image_data(result_classification, bbox_images):
             image_base64 = base64.b64encode(image_io.read()).decode('utf-8')
 
             room_bbox_list.append(image_base64)
-        data['bboxImages'][room]['images'] = room_bbox_list
+        data['bboxImages'][room] = room_bbox_list
     return data
  
 # /upload POST 요청 시 호출
