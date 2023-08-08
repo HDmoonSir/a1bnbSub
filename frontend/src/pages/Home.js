@@ -32,7 +32,7 @@ function Home() {
     };
     return (
         <div>
-            <h1 style={{ textAlign: 'center' }}>A1BnB를 이용해 보세요</h1>
+            <h1 style={{ textAlign: 'center', margin: '30px'}}>A1BnB를 이용해 보세요</h1>
 
             <Row sx={1} md={4} className="g-4">
                 {imageList.map((info, idx) => (
