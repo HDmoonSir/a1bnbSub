@@ -3,6 +3,7 @@ detection/venv_winV
 
 *.pt
 *.pyc
+*.DS_Store
 
 classification/LightGlue
 
