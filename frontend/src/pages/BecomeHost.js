@@ -172,7 +172,7 @@ const BecomeHost = () => {
                             padding: '10px 40px',
                             borderRadius: '5px',
                             cursor: 'pointer',     
-                            fontsize: '16px',
+                            fontSize: '16px',
                             fontFamily: 'inherit'                     
                         }}
                         >
@@ -192,7 +192,7 @@ const BecomeHost = () => {
                 </form>            
                 <div style = {{display: 'flex', justifyContent: 'flex-end', marginRight: '40px'}}>
                 {/* <Button onClick={uploadData} variant="primary" type="submit" href="/become-host/ammenities">다음</Button> */}
-                    <Button onClick={uploadData} style = {{backgroundColor: '#BC5350', width: '180px', height: '44px', fontsize: '16px', fontFamily: 'inherit'}}>등록하기</Button>
+                    <Button onClick={uploadData} style = {{backgroundColor: '#BC5350', width: '180px', height: '44px', fontSize: '16px', fontFamily: 'inherit'}}>등록하기</Button>
                 </div>
             </div>
             <div style={{ textAlign: 'center' }}>
