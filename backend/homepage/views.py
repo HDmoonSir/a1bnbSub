@@ -103,7 +103,7 @@ def get_image_data(result_classification, bbox_images):
     for room in rooms:
         room_bbox_list = []
         bbox_images = [bbox_images[i] for i in range(len(result_classification)) \
-                    if result_classification[i].values == room]
+                    if result_classification.get(result_classification.keys()[i]) == room]
         
         for bbox_image in bbox_images:  
             image_io = io.BytesIO()
