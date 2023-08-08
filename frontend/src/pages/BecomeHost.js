@@ -1,5 +1,5 @@
 // 호스트 숙소 등록 화면 
-import { useState } from 'react';
+import { useState } from 'react-router-dom';
 import Image from 'react-bootstrap/Image'
 import Button from 'react-bootstrap/Button';
 import axios from 'axios';
@@ -20,32 +20,46 @@ const BecomeHost = () => {
     // 이미지 업로드 하는 함수 
     const insertImg = (e) => {
         console.log((e.target.files))
+        const selectedFiles = e.target.files;
         // var reader =new FileReader();
         // 이미지 여러 장을 저장하는 함수 
         // 현재 한 장의 이미지에 대해서만 동작 
-        function insertAll(file) {
-            var reader = new FileReader();
-            reader.readAsDataURL(file) // file url
+        function insertAll() {
+            const newPreviewImg = [];
+            const newNames = [];
+            // var reader = new FileReader();
+            // reader.readAsDataURL(file) // file url
+            Array.prototype.forEach.call(selectedFiles, (file) => {
+                var reader = new FileReader();
+                reader.readAsDataURL(file); // file url
 
-            reader.onload = () => {
-                const previewImgUrl = reader.result
-                if (previewImgUrl && previewImg.length < 10) {
-                    setPreviewImg([...previewImg, previewImgUrl])
-                    setName([...name, file['name']])
-                    // alert("!") // test 
-                } else {
-                    alert("등록된 이미지가 10장을 초과할 수 없습니다!");
-                }
-            };
+                reader.onload = () => {
+                    const previewImgUrl = reader.result;
+                    if (previewImgUrl && previewImg.length + newPreviewImg.length < 10) {
+                        newPreviewImg.push(previewImgUrl);
+                        newNames.push(file.name);
+                        // alert("!") // test 
+                    } else {
+                        alert("등록된 이미지가 10장을 초과할 수 없습니다!");
+                    }
+                };
+        });
+
+        // 모든 이미지를 처리한 후에 상태를 한 번에 업데이트
+        if (newPreviewImg.length === selectedFiles.length) {
+            setPreviewImg([...previewImg, ...newPreviewImg]);
+            setName([...name, ...newNames]);
         }
+    }
         
 
-        if (e.target.files) {
-            // 이미지를 여러 장 올릴 때 array 의 각 인덱스 마다 insertAll 함수를 호출하는 부분 
-            Array.prototype.forEach.call(e.target.files, (file) => insertAll(file));
-        }
+    if (selectedFiles) {
+        // // 이미지를 여러 장 올릴 때 array 의 각 인덱스 마다 insertAll 함수를 호출하는 부분 
+        Array.prototype.forEach.call(selectedFiles, (file) => insertAll(file));
+        // insertAll(selectedFiles)
+    }
 
-    };
+};
     // 이미지 삭제 
     const deleteImg = (index) => {
         const imgArr = previewImg.filter((el, idx) => idx !== index) // image url 
@@ -102,7 +116,7 @@ const BecomeHost = () => {
             // 위 과정을 통해 만든 image폼을 FormData 에 저장 
             formData.append("images", file);
         }
-        if (previewImg) {
+        if (previewImg.length > 0) {
             console.log("숙소 업로드"); // test 
             console.log(previewImg); // test 
 
@@ -120,9 +134,8 @@ const BecomeHost = () => {
                     console.log(response.data);
                     let detect_result = response.data.detect_result.result;
                     let classi_result = response.data.classi_result.result;
-                    let text_result = response.data.text_result.result;
+                    let text_result= response.data.text_result.result;
                     let bbox_result = response.data.bbox_result;
-                    // navigate("/user/regist/result", { state: { detection_result: detect_result, classification_result: classi_result, textgeneration_result: text_result} });
                     navigate("/user/regist/result", { state: { result_detection: detect_result, result_classification: classi_result, result_textgeneration: text_result, result_bboxing : bbox_result} });
                 })
                 .catch((err) => { console.log(err) })

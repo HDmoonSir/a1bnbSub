@@ -10,6 +10,7 @@ import User from './pages/User';
 import BecomeHost from './pages/BecomeHost';
 import Ammenities from './pages/Ammenities';
 import Room from './pages/Room';
+import Uploaded from './pages/Uploaded';
 import LoginRequiredRoute from './utils/LoginRequiredRoute';
 
 function App() {
@@ -22,9 +23,10 @@ function App() {
         <Route path="/user/login" element={<Login />} />
         <Route path="user/logout" element={<Logout />} />
         <Route path="/user/regist" element={<LoginRequiredRoute><BecomeHost /></LoginRequiredRoute>} />
-        <Route path="/user/regist/result" element={<Ammenities />} />
-        {/* <Route path= "/user/uploaded" element= {<Uploaded />} /> */}
-        <Route path="/room" element={<Room />} />
+        <Route path= "/user/regist/result" element= {<Ammenities />} />
+        <Route path= "/user/regist/uploaded" element= {<Uploaded />} />
+        <Route path= "/room" element ={<Room />} />
+
       </Routes>
     </Layout>
   )

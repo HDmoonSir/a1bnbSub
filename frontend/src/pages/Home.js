@@ -31,8 +31,8 @@ function Home() {
     };
     return (
         <div>
-            <h1 style={{ textAlign: 'center' }}>홈</h1>
-            <p style={{ textAlign: 'center' }}>가장 먼저 보여지는 페이지입니다.</p>
+            <h1 style={{ textAlign: 'center' }}>A1BnB에 등록된 숙소들</h1>
+
             <Row sx={1} md={4} className="g-4">
                 {imageList.map((info, idx) => (
                     <Col key={idx}>

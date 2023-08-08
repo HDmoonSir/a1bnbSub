@@ -5,7 +5,7 @@ import Image from 'react-bootstrap/Image'
 import Card from 'react-bootstrap/Card';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 import { back_ip_port } from './back_ip_port'
 
@@ -23,32 +23,76 @@ const othersImageView = (roomInfo) => {
       <div>
         
         {Object.entries(showRoomsByClassification).map(([classifiedRoomType, roomData]) => (
+          
           <div>
-            <h3>{classifiedRoomType}</h3>
-            {/* <p>{roomData.img_path}</p> */}
-            {/* <p>{imageView(roomData.img_path)}</p> */}
-            <p>{Object.values(roomData.list_amenities).map((options)=> (
+            <div></div>
+            <div>
+              <h3>{classifiedRoomType}</h3>
+              {/* <p>{roomData.img_path}</p> */}
+              {/* <p>{imageView(roomData.img_path)}</p> */}
+              <p>{Object.entries(roomData.list_amenities).map(([options, count])=> (
               // <div><img src = {path}/></div>
-              <p>{options}</p>
-            ))}</p>
+              <p>{options}{count}</p>
+              ))}</p>
+              <p>{Object.entries(roomData.img_paths).map(([options, count])=> (
+              // <div><img src = {path}/></div>
+              <p>{options}{count}</p>
+              ))}</p>
+            </div>
+            <div></div>
+            
           </div>
         ))}
       </div>
     );
   };
-//
+const base64ToBlob = (base64String, contentType = 'image/jpeg') => {
+  const byteCharacters = window.atob(base64String);
+  const byteArrays = [];
+  
+  for (let offset = 0; offset < byteCharacters.length; offset += 512) {
+    const slice = byteCharacters.slice(offset, offset + 512);
+    
+    const byteNumbers = new Array(slice.length);
+    for (let i = 0; i < slice.length; i++) {
+      byteNumbers[i] = slice.charCodeAt(i);
+    }
+    
+    const byteArray = new Uint8Array(byteNumbers);
+    byteArrays.push(byteArray);
+  }
+  
+  return new Blob(byteArrays, { type: contentType });
+};
+const ImageComponent = ({ base64Image }) => {
+  const blob = base64ToBlob(base64Image);
+  const blobURL = URL.createObjectURL(blob);
+
+  return (
+    <div>
+      <img src={blobURL} alt="Image" />
+    </div>
+  );
+};
+function regist_complete() {
+  navigate("/user/regist/uploaded", { state: { result_detection: result_detection, result_classification: result_classification, 
+    post_title: text_result, post_caption: caption_result } })
+};
 const Ammenities = () => {
     // /become-host 에서 navigate 으로 데이터 전달 받음
     const location = useLocation();
+    const navigate = useNavigate();
+
     const result_detection= location.state.result_detection;
     const result_classification= location.state.result_classification;
     const result_textgeneration= location.state.result_textgeneration;
     const bbox_result = location.state.result_bboxing;
 
+    console.log(bbox_result)
+
     const [data, setData] = useState([]);
     
-    console.log(result_detection)
-    console.log(result_classification)
+    // const base64Image = base64ToBlob(bbox_result);
 
     const mergeData = {result_detection, result_classification}
     
@@ -68,28 +112,53 @@ const Ammenities = () => {
         });
     }, []);
     //
+    function title_value(){
+      const title = document.getElementById('area_title').value;
+      return title
+    };
+    function caption_value(){
+      const caption = document.getElementById('area_caption').value;
+      return caption
+    };
+    const regist_complete = () => {
+      let title_result = title_value()
+      let caption_result = caption_value()
+      navigate("/user/regist/uploaded", { state: { result_detection: result_detection, result_classification: result_classification, 
+        post_title: title_result, post_caption: caption_result } })
+    };
     return (
         <div>
             
             <h1 style={{textAlign:'center'}}>등록 전에 결과를 확인하세요.</h1>
+            {/* <img src={`data:image/JPG;base64,${base64Image}`} /> */}
+            {/* {render(base64Image)} */}
+            <ImageComponent base64Image={bbox_result[0]} />
+            <ImageComponent base64Image={bbox_result[1]} />
+            
             {Object.entries(data).map(([item, value]) => (
             <div>
-            {othersImageView(value)}
+              {othersImageView(value)}
             </div>
             ))}
-            {/* {mergeData} */}
-            {result_textgeneration}
-            {/* detecion 결과 화면 보기 */}
-            {/* {getDetectImg(detection_result)} */}
-            {/* classification 결과 화면 보기 */}
-            {/* {getClassiImg(classification_result)} */}
-            {/* textgeneration 결과 화면 보기 */}
-            {/* {getGenerateText(textgeneration_result)} */}
-
-            {/* <p style={{textAlign:'center'}}>숙소 어메니티 확인 화면입니다.</p> */}
-            <Button variant="primary" type="submit" href="/user/regist">이전</Button>
-            <Button variant="primary" type="submit" href="">완료</Button>
-            
+            <div align="center">
+              <p><textarea id="area_title" onChange='title_value()' placeholder="제목을 입력하세요" rows="1" cols="80" style={{resize:'none'}}></textarea></p>
+              <p><textarea id="area_caption" onChange='caption_value()' rows="10" cols="80" style={{resize:'none'}}>
+                {result_textgeneration}
+              </textarea></p>
+              {/* detecion 결과 화면 보기 */}
+              {/* {getDetectImg(detection_result)} */}
+              {/* classification 결과 화면 보기 */}
+              {/* {getClassiImg(classification_result)} */}
+              {/* textgeneration 결과 화면 보기 */}
+              {/* {getGenerateText(textgeneration_result)} */}
+              {/* {navigate("/user/regist/uploaded", { state: { result_detection: result_detection, result_classification: result_classification, 
+                post_title: text_result, post_caption: caption_result } })} */}
+              <p>
+                <Button variant="primary" type="submit" href="/user/regist">이전</Button>
+                {/* <Button variant="primary" type="submit" href="/user/regist/uploaded">완료</Button> */}
+                <Button variant="primary" type="submit" onclick={() => regist_complete()}>완료</Button>
+              </p>
+            </div>
         </div>
     );
 }

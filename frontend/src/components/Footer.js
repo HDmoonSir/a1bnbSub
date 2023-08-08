@@ -6,7 +6,7 @@ const Footer = () => {
     <footer>
       <Container>
         <div style={{textAlign:'center'}}>
-          Footer
+          
         </div>
       </Container>
     </footer>
