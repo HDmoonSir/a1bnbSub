@@ -174,12 +174,10 @@ def get_mypage(request):
 
 def count_objects_by_room(img_paths, result_detection):
     def extract_labels(result):
-        print(2)
         result = dict(Counter(result.keys()))
         return result
     
     def max_option(lst):
-        print(3)
         result = {}
         for i in lst:
             for key, value in i.items():
@@ -207,10 +205,8 @@ def set_result(request):
             img_paths = [img_path for img_path in request.data["result_detection"].keys() \
                         if request.data["result_classification"][img_path] == room]
             data['dlInfo'][room]['img_paths'] = img_paths
-            print(1)
             data['dlInfo'][room]['list_amenities'] = count_objects_by_room(img_paths,
                                                                         request.data["result_detection"])
-            print(4)
         return JsonResponse(data, status=200)
     except:
         return JsonResponse({"result": "Fail to get result"}, status=400)
