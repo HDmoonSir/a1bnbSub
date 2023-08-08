@@ -231,7 +231,7 @@ def upload_post(request):
         #             {"detected": request.data["confirm_list_amenities"]},
         #         }
         #     }
-        
+
         user = User.objects.first()
         Post.objects.create(
             user = user,
@@ -239,7 +239,7 @@ def upload_post(request):
             title = request.post_title,
             caption = request.post_content,
             thumbnail = list(request.data['result_detection'].keys())[0],
-            roomInfo = request.data['dlInfo']
+            roomInfo = request.data["roomInfo"]["dlInfo"]
         )
         
         # save_detection = False
