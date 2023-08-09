@@ -6,6 +6,9 @@ import { useSearchParams } from 'react-router-dom';
 import axios from 'axios';
 import { Form, Input, Button, notification } from "antd";
 import { SmileOutlined, FrownOutlined } from "@ant-design/icons";
+import Card from 'react-bootstrap/Card';
+import Col from 'react-bootstrap/Col';
+import Row from 'react-bootstrap/Row';
 
 import { back_ip_port, img_ip_port } from './back_ip_port'
 const imgUrl = `${img_ip_port}`;
@@ -19,30 +22,65 @@ const othersImageView = (roomInfo) => {
   // 어메니티 출력
   let showRoomsByClassification = JSON.stringify(roomInfo);
   showRoomsByClassification = JSON.parse(showRoomsByClassification);
-  // Object.values(showRoomsByClassification).map
-  return (
-    <div style={{ padding: '20px' }}>
+  Object.values(showRoomsByClassification).map
+  // return (
+  //   <div style={{ padding: '20px', margin: '20px'}}>
 
-      {Object.entries(showRoomsByClassification).map(([classifiedRoomType, roomData]) => (
-        <div key={classifiedRoomType} style={{ marginBottom: '20px' }}>
-          <h3>{classifiedRoomType}</h3>
-          {/* <p>{roomData.img_path}</p> */}
-          {/* <p>{imageView(roomData.img_path)}</p> */}
-          <div style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', marginBottom: '10px' }}>
-            {Object.values(roomData.img_paths).map((path, index)=> (
-              <img key={index} src={`${imgUrl}/${path}`} style={{ marginRight: '10px', marginBottom: '10px', maxWidth: '300px', maxHeight: '180px' }} />
-              // <img src = {path}/>
-            ))}
-          </div>
-          <p>{Object.entries(roomData.list_amenities).map(([amenity, count]) => (
-            <span key = {amenity}>
-              {amenity} {count} &nbsp;
-            </span>        
-          ))}</p>
+  //     {Object.entries(showRoomsByClassification).map(([classifiedRoomType, roomData]) => (
+  //       <div key={classifiedRoomType} style={{ marginBottom: '20px' }}>
+  //         <h3 style ={{backgroundColor: '#eb6864', color: 'white'}}>{classifiedRoomType}</h3>
+  //         {/* <p>{roomData.img_path}</p> */}
+  //         {/* <p>{imageView(roomData.img_path)}</p> */}
+  //         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', flexWrap: 'wrap', marginBottom: '10px' }}>
+  //           {Object.values(roomData.img_paths).map((path, index)=> (
+  //             <img key={index} src={`${imgUrl}/${path}`} style={{ marginRight: '10px', marginBottom: '10px', maxWidth: '300px', maxHeight: '180px' }} />
+  //             // <img src = {path}/>
+  //           ))}
+  //         </div>
+  //         <p>{Object.entries(roomData.list_amenities).map(([amenity, count]) => (
+  //           <span key={amenity} style={{ margin: '5px', padding: '5px 10px', backgroundColor: '#f19592', color: 'white', borderRadius: '5px', border: '4px', boxShadow: '0px 0px 5px rgba(0, 0, 0, 0.1)' }}>
+  //             {amenity} {count} &nbsp;
+  //           </span>        
+  //         ))}</p>
+  //       </div>
+  //     ))}
+  //   </div>
+  // );
+  return (
+  <div style={{ padding: '20px', margin: '20px' }}>
+    {Object.entries(showRoomsByClassification).map(([classifiedRoomType, roomData]) => (
+      <div key={classifiedRoomType} style={{ marginBottom: '20px' }}>
+        <h3 style={{ backgroundColor: '#eb6864', color: 'white', padding: '10px', borderRadius: '5px', width: '100%', margin: '0 auto',}}>
+          {classifiedRoomType}
+        </h3>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', flexWrap: 'wrap', marginBottom: '10px' }}>
+          {Object.values(roomData.img_paths).map((path, index) => (
+            <Card key={index} style={{ width: '18rem', margin: '10px', borderRadius: '10px', boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.2)'}}>
+              <Card.Img variant="top" src={`${imgUrl}/${path}`} style={{ borderRadius: '10px', maxHeight: '180px' }} />
+            </Card>
+          ))}
         </div>
-      ))}
-    </div>
-  );
+        <p>
+          {Object.entries(roomData.list_amenities).map(([amenity, count]) => (
+            <span
+              key={amenity}
+              style={{
+                margin: '5px',
+                padding: '5px 10px',
+                backgroundColor: '#f19592',
+                color: 'white',
+                borderRadius: '5px',
+                boxShadow: '0px 0px 5px rgba(0, 0, 0, 0.1)',
+              }}>
+              {amenity} {count} &nbsp;
+            </span>
+          ))}
+        </p>
+      </div>
+    ))}
+  </div>
+);
+
 };
 
 const Room = () => {
@@ -98,11 +136,13 @@ const Room = () => {
                 style={{
                   maxWidth: '600px',
                   height: '360px',
+                  borderRadius: '10px'
                 }}
               />
-              <p style={{  width: '600px', margin: '10px auto', border: '2px solid #ddd', padding: '5px', textAlign: 'center'}}>{value.caption}</p>
+              <p style={{  width: '600px', margin: '10px auto', border: '2px solid #ddd', padding: '5px', textAlign: 'left', lineHeight: '1.5',  boxShadow: '0px 0px 5px rgba(0, 0, 0, 0.1)',
+  backgroundColor: '#f9f9f9', borderRadius: '5px', maxWidth: '100%'}}>{value.caption}</p>
             {/* </div> */}
-              <div style={{ flexDirection: 'column', alignItems: 'center', marginTop: '20px' }}>
+              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '20px', justifyContent: 'center' }}>
                 {/* <h3>상세 방 소개</h3> */}
                 {othersImageView(value.roomInfo)}
               </div>
