@@ -47,13 +47,19 @@ const Uploaded = () => {
     }, []);
     
     return (
-        <div style={{textAlign:'center'}}>
+      <div style={{
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center',
+        height: '100vh'
+      }}>
             
-            <h1 style={{textAlign:'center'}}>등록이 완료되었습니다.</h1>
-            {/* <p>{result_title}</p>
-            <p>{result_caption}</p> */}
-            {/* <p>{result_detection}</p>
-            <p>{result_classification}</p> */}
+          <h1 style={{ marginBottom: '20px', fontSize: '24px' }}>등록이 완료되었습니다.</h1>
+          {/* <p>{result_title}</p>
+          <p>{result_caption}</p> */}
+          {/* <p>{result_detection}</p>
+          <p>{result_classification}</p> */}
 
         </div>
     );
