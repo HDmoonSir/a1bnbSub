@@ -37,12 +37,17 @@ function Home() {
             <Row sx={1} md={4} className="g-4">
                 {imageList.map((info, idx) => (
                     <Col key={idx}>
-                        <Card style={{ width: '18rem' }}>
-                            <Card.Img variant="top" src={`${imgUrl}/${info.thumbnail}`} />
-                            <Card.Body>
-                                <Card.Title>{info.title}</Card.Title>
-                                <Button variant="primary" onClick={() => handleCardClick(info.postId)}>이동</Button>
-                            </Card.Body>
+                        <Card style={{ width: '18rem', borderRadius: '10px', boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.2)' }}>
+                        <Card.Img variant="top" src={`${imgUrl}/${info.thumbnail}`} style={{ borderRadius: '10px 10px 0 0' }} />
+                        <Card.Body>
+                            <Card.Title style={{ fontSize: '1.2rem', fontWeight: 'bold' }}>{info.title}</Card.Title>
+                            <Button
+                            variant="primary"
+                            onClick={() => handleCardClick(info.postId)}
+                            style={{ backgroundColor: 'f9f9f9', borderColor: '#f9f9f9' }}>
+                            이동
+                            </Button>
+                        </Card.Body>
                         </Card>
                     </Col>
                 ))}
