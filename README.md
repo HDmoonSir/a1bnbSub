@@ -1,5 +1,3 @@
-
-https://github.com/HDmoonSir/a1bnbSub/assets/15117257/e157facd-208e-4659-975c-3f515ce0334f
 # 🖥 Programmers AI 데브코스 5기 A1BNB
 
 ### 소개
