@@ -46,7 +46,9 @@ Object Detection, Classification, Image-to-text generation을 활용하여
 ![무제_등록까지](https://github.com/HDmoonSir/a1bnbSub/assets/15117257/234bd64e-6618-409f-a61e-1edb030772fb)
 
 - 숙소 게시글 최종 확인 & 등록 완료
-  
+![무제_등록완료1](https://github.com/HDmoonSir/a1bnbSub/assets/15117257/98d02114-4a19-4996-8e78-8c87692142c8)
+![무제_등록완료2](https://github.com/HDmoonSir/a1bnbSub/assets/15117257/9c7300c1-d454-4dea-af71-ef67e1a6ec42)
+
 - 등록한 숙소 게시글 확인
 ![무제_끝](https://github.com/HDmoonSir/a1bnbSub/assets/15117257/5c7033e0-3fcf-45fe-acac-7c25399b87e6)
 
