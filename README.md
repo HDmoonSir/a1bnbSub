@@ -1,3 +1,5 @@
+
+https://github.com/HDmoonSir/a1bnbSub/assets/15117257/e157facd-208e-4659-975c-3f515ce0334f
 # 🖥 Programmers AI 데브코스 5기 A1BNB
 
 ### 소개
@@ -37,6 +39,13 @@ Object Detection, Classification, Image-to-text generation을 활용하여
   </tr>
 
 </table>
+
+### 시연영상
+- 회원가입 & 로그인
+- 숙소 이미지 등록 전까지
+- 숙소 게시글 등록 완료
+- 등록한 숙소 게시글 확인
+![무제_끝](https://github.com/HDmoonSir/a1bnbSub/assets/15117257/5c7033e0-3fcf-45fe-acac-7c25399b87e6)
 
 ## ⚠️ commit 규칙
 
