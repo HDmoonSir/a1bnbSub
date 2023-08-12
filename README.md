@@ -38,7 +38,7 @@ Object Detection, Classification, Image-to-text generation을 활용하여
 
 </table>
 
-### 시연영상
+### 🎥 시연영상
 - 회원가입 & 로그인
 - 숙소 이미지 등록 전까지
 - 숙소 게시글 등록 완료
