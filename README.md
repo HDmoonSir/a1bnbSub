@@ -27,13 +27,13 @@ Object Detection, Classification, Image-to-text generation을 활용하여
     <td align="center"><a href="https://github.com/mcjeong95"><b>정민철</b></td>
   </tr>
   <tr> 
-    <td align="center">모델개발</td>
-    <td align="center">모델개발</td>
-    <td align="center">모델개발</td>
-    <td align="center">모델개발</td>
-    <td align="center">모델개발</td>
-    <td align="center">모델개발</td>
-    <td align="center">모델개발</td>
+    <td align="center">Backend<br>Frontend</td>
+    <td align="center">Frontend<br>Backend</td>
+    <td align="center">Text Generation<br>Backend</td>
+    <td align="center">Classification<br>Backend</td>
+    <td align="center">Object Detection<br>Backend</td>
+    <td align="center">Object Detection<br>Backend</td>
+    <td align="center">Classification<br>Backend</td>
   </tr>
 
 </table>
