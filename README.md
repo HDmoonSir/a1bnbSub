@@ -28,11 +28,11 @@ Object Detection, Classification, Image-to-text generation을 활용하여
   </tr>
   <tr> 
     <td align="center">Backend<br>Frontend</td>
+    <td align="center">Object Detection<br>Backend</td>
     <td align="center">Frontend<br>Backend</td>
+    <td align="center">Object Detection<br>Backend</td>
     <td align="center">Text Generation<br>Backend</td>
     <td align="center">Classification<br>Backend</td>
-    <td align="center">Object Detection<br>Backend</td>
-    <td align="center">Object Detection<br>Backend</td>
     <td align="center">Classification<br>Backend</td>
   </tr>
 
