@@ -39,7 +39,8 @@ Object Detection, Classification, Image-to-text generation을 활용하여
 </table>
 
 ### 🎥 시연영상
-- ![썸네일 설명]((https://www.youtube.com/watch?v=zjDOIbcjrfk&list=PLM1R75VoMYgnQiZzLOaqFyu1Ioph6eVdP&index=7&ab_channel=%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4%EB%8D%B0%EB%B8%8C%EC%BD%94%EC%8A%A4)/hqdefault.jpg)
+- ![썸네일 설명](https://www.youtube.com/watch?v=zjDOIbcjrfk&list=PLM1R75VoMYgnQiZzLOaqFyu1Ioph6eVdP&index=7&ab_channel=%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4%EB%8D%B0%EB%B8%8C%EC%BD%94%EC%8A%A4
+/hqdefault.jpg)
 - [유튜브 링크] (https://www.youtube.com/watch?v=zjDOIbcjrfk&list=PLM1R75VoMYgnQiZzLOaqFyu1Ioph6eVdP&index=7&ab_channel=%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4%EB%8D%B0%EB%B8%8C%EC%BD%94%EC%8A%A4)
 - 회원가입 & 로그인
 ![무제_로그인까지](https://github.com/HDmoonSir/a1bnbSub/assets/15117257/1d2148d2-8859-4b8c-89fb-3ee98a55a78d)
