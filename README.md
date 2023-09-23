@@ -39,7 +39,7 @@ Object Detection, Classification, Image-to-text generation을 활용하여
 </table>
 
 ### 🎥 시연영상
-[![유튜브 링크](https://youtu.be/zjDOIbcjrfk?si=pBQBoop-jWVjLgmH/hqdefault.jpg)](https://youtu.be/zjDOIbcjrfk?si=pBQBoop-jWVjLgmH)
+[![유튜브 링크](https://img.youtube.com/vi/zjDOIbcjrfk/hqdefault.jpg)](https://youtu.be/zjDOIbcjrfk?si=pBQBoop-jWVjLgmH)
 
 - 회원가입 & 로그인
 ![무제_로그인까지](https://github.com/HDmoonSir/a1bnbSub/assets/15117257/1d2148d2-8859-4b8c-89fb-3ee98a55a78d)
